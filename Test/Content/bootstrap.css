@@ -4291,7 +4291,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin-left: -15px;
   }
 }
-.navbar-toggle {
+.navbar-toggler {
   position: relative;
   float: right;
   padding: 9px 10px;
@@ -4303,20 +4303,20 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
   border-radius: 4px;
 }
-.navbar-toggle:focus {
+.navbar-toggler:focus {
   outline: 0;
 }
-.navbar-toggle .icon-bar {
+.navbar-toggler .icon-bar {
   display: block;
   width: 22px;
   height: 2px;
   border-radius: 1px;
 }
-.navbar-toggle .icon-bar + .icon-bar {
+.navbar-toggler .icon-bar + .icon-bar {
   margin-top: 4px;
 }
 @media (min-width: 768px) {
-  .navbar-toggle {
+  .navbar-toggler {
     display: none;
   }
 }
@@ -4527,14 +4527,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #ccc;
   background-color: transparent;
 }
-.navbar-default .navbar-toggle {
+.navbar-default .navbar-toggler {
   border-color: #ddd;
 }
-.navbar-default .navbar-toggle:hover,
-.navbar-default .navbar-toggle:focus {
+.navbar-default .navbar-toggler:hover,
+.navbar-default .navbar-toggler:focus {
   background-color: #ddd;
 }
-.navbar-default .navbar-toggle .icon-bar {
+.navbar-default .navbar-toggler .icon-bar {
   background-color: #888;
 }
 .navbar-default .navbar-collapse,
@@ -4623,14 +4623,14 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #444;
   background-color: transparent;
 }
-.navbar-inverse .navbar-toggle {
+.navbar-inverse .navbar-toggler {
   border-color: #333;
 }
-.navbar-inverse .navbar-toggle:hover,
-.navbar-inverse .navbar-toggle:focus {
+.navbar-inverse .navbar-toggler:hover,
+.navbar-inverse .navbar-toggler:focus {
   background-color: #333;
 }
-.navbar-inverse .navbar-toggle .icon-bar {
+.navbar-inverse .navbar-toggler .icon-bar {
   background-color: #fff;
 }
 .navbar-inverse .navbar-collapse,
