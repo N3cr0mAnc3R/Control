@@ -4,17 +4,24 @@
     <title></title>
 </head>
 <body>
-    <div class="form-wrapper text-center" >
-        <form >
-            <div class="form-group">
-                <label for="Text">Опишите проблему</label>
-                <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
+    <div class="form-wrapper text-center">
 
-            </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                @using (Html.BeginForm("SubmitApplication", "Application", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <label for="Text">Опишите проблему</label>
+                    <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
+                    <input type="file" name="Files" id="Files" accept=".jpg, .jpeg, .gif, .png" multiple />
+
+                    if (TempData["FileNames"] != null)
+                    {
+                        <p>Last uploaded files:</p>
+                        @Html.Raw(TempData["FileNames"].ToString())
+                    }
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                }
+
     </div>
-    
+
 </body>
 </html>
