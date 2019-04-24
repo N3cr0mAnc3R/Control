@@ -33,9 +33,9 @@
                 </li>
 
             </ul>
-                <span class="navbar-text">
-                    @Html.Partial("_LoginPartial", new { @class = "nav-link" })
-                    </span>
+            <span class="navbar-text">
+                @Html.Partial("_LoginPartial", new { @class = "nav-link" })
+            </span>
         </div>
     </div>
     <div class="container body-content">
@@ -48,7 +48,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    
+    @Scripts.Render("~/bundles/vue")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
