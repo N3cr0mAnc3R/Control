@@ -1,19 +1,49 @@
-﻿
-    <div  class="form-wrapper text-center">
-        <input v-model="Text" type="text"/>
-                @using (Html.BeginForm("SubmitApplication", "Application", FormMethod.Post, new { enctype = "multipart/form-data", id="form" }))
-                {
-                    <label for="Text">Опишите проблему</label>
-                    <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
-                    <input type="file"  id="Files" v-on:change="InputFileValidate()" accept=".jpg, .jpeg, .gif, .png" multiple />
+﻿<style type="text/css">
 
-                    if (TempData["FileNames"] != null)
-                    {
-                        <p>Last uploaded files:</p>
-                        @Html.Raw(TempData["FileNames"].ToString())
-                    }
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                }
+    #map {
+        width: 600px;
+        height: 600px;
+    }
+</style>
+<div class="form-wrapper text-center">
+    <div id="form">
 
+        <label for="Text">Опишите проблему</label>
+        <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
+
+        <label for="Reason">К кому вы хотите обратиться?</label>
+        <select class="form-control col" id="Authority">
+            @*достать из БД*@
+            <option>Дорожники</option>
+            <option>Мусорщики</option>
+            <option>Дворники</option>
+            <option>Строители</option>
+            <option>Губернатор</option>
+        </select>
+
+        <label for="Reason">Выберите наиболее подходящую причину для обращения</label>
+        <select class="form-control col" id="Reason">
+            @*достать из БД*@
+            <option>Это ты</option>
+            <option>Все твои мечты</option>
+            <option>Все твои слова</option>
+            <option>Ложь</option>
+            <option>Боль</option>
+        </select>
+
+
+
+        <input type="file" id="Files" v-on:change="InputFileValidate()" accept=".jpg, .jpeg, .gif, .png" multiple />
+
+        <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
     </div>
-    <script src="~/Scripts/Application/ApplicationValidate.js"></script>
+        <div id="map"></div>
+       
+        <button type="submit" class="btn btn-primary">Submit</button>
+    
+
+</div>
+<script src="~/Scripts/Application/ApplicationValidate.js"></script>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
+<script src="~/Scripts/Application/event_reverse_geocode.js"></script>
+

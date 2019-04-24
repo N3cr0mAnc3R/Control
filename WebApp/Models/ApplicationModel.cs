@@ -10,6 +10,15 @@ namespace WebApp.Models
     {
         [Required]
         public string Text { get; set; }
+
+        public string Address { get; set; }
+
+        public int ReasonId { get; set; }
+
+       // public string GeoObjId { get; set; }
+
+
+
         public HttpPostedFileBase[] Files { get; set; }
     }
 }
