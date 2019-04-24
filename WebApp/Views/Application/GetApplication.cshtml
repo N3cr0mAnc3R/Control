@@ -1,17 +1,11 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-    <div class="form-wrapper text-center">
-
-
-                @using (Html.BeginForm("SubmitApplication", "Application", FormMethod.Post, new { enctype = "multipart/form-data" }))
+﻿
+    <div  class="form-wrapper text-center">
+        <input v-model="Text" type="text"/>
+                @using (Html.BeginForm("SubmitApplication", "Application", FormMethod.Post, new { enctype = "multipart/form-data", id="form" }))
                 {
                     <label for="Text">Опишите проблему</label>
                     <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
-                    <input type="file" name="Files" id="Files" accept=".jpg, .jpeg, .gif, .png" multiple />
+                    <input type="file"  id="Files" v-on:change="InputFileValidate()" accept=".jpg, .jpeg, .gif, .png" multiple />
 
                     if (TempData["FileNames"] != null)
                     {
@@ -22,6 +16,4 @@
                 }
 
     </div>
-
-</body>
-</html>
+    <script src="~/Scripts/Application/ApplicationValidate.js"></script>
