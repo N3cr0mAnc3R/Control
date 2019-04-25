@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using DarkSide;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(WebApp.Startup))]
@@ -8,7 +9,9 @@ namespace WebApp
     {
         public void Configuration(IAppBuilder app)
         {
+            app.CreatePerOwinContext<Concrete>(CreateConcrete);
             ConfigureAuth(app);
+            DomainConfiguration(app);
         }
     }
 }

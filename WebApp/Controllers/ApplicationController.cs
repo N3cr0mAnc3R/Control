@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using WebApp.Models;
+using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
 {
@@ -13,9 +15,8 @@ namespace WebApp.Controllers
     {
         public ActionResult GetApplication()
         {
-           
+            ViewBag.News = NewsManager.ShowFreshNews(DateTime.Now);
             return View();
-         
         }
 
 
@@ -39,6 +40,13 @@ namespace WebApp.Controllers
 
             return View();
 
+        }
+        protected NewsManager NewsManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<NewsManager>();
+            }
         }
 
 
