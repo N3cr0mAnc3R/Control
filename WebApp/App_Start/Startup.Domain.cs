@@ -20,6 +20,10 @@ namespace WebApp
             {
                 return new NewsManager(context.Get<Concrete>());
             });
+            app.CreatePerOwinContext((IdentityFactoryOptions<ApplicationManager> options, IOwinContext context) =>
+            {
+                return new ApplicationManager(context.Get<Concrete>());
+            });
 
 
             //app.CreatePerOwinContext<AccountManager>((IdentityFactoryOptions<AccountManager> options, IOwinContext context) =>

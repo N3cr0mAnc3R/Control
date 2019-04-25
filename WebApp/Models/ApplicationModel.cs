@@ -13,6 +13,8 @@ namespace WebApp.Models
 
         public string Address { get; set; }
 
+        public int DepartmentId { get; set; }
+
         public int ReasonId { get; set; }
 
        // public string GeoObjId { get; set; }

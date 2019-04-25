@@ -1,4 +1,6 @@
-﻿<style type="text/css">
+﻿@using WebApp.Models.News
+@using WebApp.Models
+<style type="text/css">
 
     #map {
         width: 600px;
@@ -7,28 +9,33 @@
 </style>
 <div class="form-wrapper text-center">
     <div id="form">
-
+        @foreach (New newspiece in ViewBag.News)
+        {
+            <span> @newspiece.Text</span>
+        }
         <label for="Text">Опишите проблему</label>
         <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
 
-        <label for="Reason">К кому вы хотите обратиться?</label>
-        <select class="form-control col" id="Authority">
-            @*достать из БД*@
-            <option>Дорожники</option>
-            <option>Мусорщики</option>
-            <option>Дворники</option>
-            <option>Строители</option>
-            <option>Губернатор</option>
+        <label for="Department">К кому вы хотите обратиться?</label>
+
+        <select class="form-control col" id="Department">
+            @foreach (IndexType department in ViewBag.Departments)
+            {
+                <option>@department.Name</option>
+            }
+            @*<option>Дорожники</option>
+        <option>Мусорщики</option>
+        <option>Дворники</option>
+        <option>Строители</option>
+        <option>Губернатор</option>*@
         </select>
 
         <label for="Reason">Выберите наиболее подходящую причину для обращения</label>
         <select class="form-control col" id="Reason">
-            @*достать из БД*@
-            <option>Это ты</option>
-            <option>Все твои мечты</option>
-            <option>Все твои слова</option>
-            <option>Ложь</option>
-            <option>Боль</option>
+            @foreach (IndexType reason in ViewBag.Reasons)
+            {
+                <option>@reason.Name</option>
+            }
         </select>
 
 
@@ -37,10 +44,10 @@
 
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
     </div>
-        <div id="map"></div>
-       
-        <button type="submit" class="btn btn-primary">Submit</button>
-    
+    <div id="map"></div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
 
 </div>
 <script src="~/Scripts/Application/ApplicationValidate.js"></script>

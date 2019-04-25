@@ -19,7 +19,7 @@ namespace WebApp.Models.Managers
             {
                 return cnt.Query<New>(
                     sql: "dbo.ShowFreshNews",
-                    param:new { date },
+                    param:new { date }, // параметр из хранимки = название переменной
                     commandType: CommandType.StoredProcedure
                 );
             }
