@@ -4,7 +4,8 @@
         data: {
             Text: "11111",
             Files: [],
-            Errors: []
+            Errors: [],
+            department: 0
         },
         methods: {
             InputFileValidate: function () {
@@ -13,6 +14,9 @@
                     $("#Files")[0].value = "";
                 }
                 console.log(event.target.files);
+            },
+            loadResons: function () {
+                console.log(this.department);
             }
         }
 

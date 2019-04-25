@@ -18,10 +18,10 @@
 
         <label for="Department">К кому вы хотите обратиться?</label>
 
-        <select class="form-control col" id="Department">
+        <select class="form-control col" id="Department" v-on:change="loadResons" v-model="department" >
             @foreach (IndexType department in ViewBag.Departments)
             {
-                <option>@department.Name</option>
+                <option value="@department.Id">@department.Name</option>
             }
             @*<option>Дорожники</option>
         <option>Мусорщики</option>
