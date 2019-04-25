@@ -44,6 +44,11 @@ namespace WebApp.Controllers
             return View();
 
         }
+
+        public JsonResult GetReasonsByDepartment(int Id)
+        {
+            return Json(ApplicationManager.GetReasonsByDepartment(Id));
+        }
         protected NewsManager NewsManager
         {
             get

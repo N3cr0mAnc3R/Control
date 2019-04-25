@@ -5,7 +5,10 @@
             Text: "11111",
             Files: [],
             Errors: [],
-            department: 0
+            departmentId: 1,
+            reasons: [],
+            reasonNames: [],
+            reasonId: 0
         },
         methods: {
             InputFileValidate: function () {
@@ -15,9 +18,20 @@
                 }
                 console.log(event.target.files);
             },
-            loadResons: function () {
-                console.log(this.department);
+            ajaxGetReasonsByDepartment: function () {
+                $.ajax({
+                    url: "/application/GetReasonsByDepartment",
+                    type: "POST",
+                    data: { Id: this.departmentId },
+                    success: function (reasons) {
+                        this.reasons = reasons;
+                        console.log(this.reasons);
+
+
+                    }
+                })
             }
+            
         }
 
     })
