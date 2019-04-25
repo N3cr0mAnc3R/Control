@@ -7,7 +7,6 @@
             Errors: [],
             departmentId: 1,
             reasons: [],
-            reasonNames: [],
             reasonId: 0
         },
         methods: {
@@ -18,21 +17,41 @@
                 }
                 console.log(event.target.files);
             },
+            init: function () {
+                $.ajax({
+                    url: "/application/GetReasonsByDepartment",
+                    type: "POST",
+                    async: false,
+                    data: { Id: this.departmentId },
+                    success: function (reasons) {
+                        Vue.nextTick(function () {
+                            reasons.forEach(function (reason) {
+                                app.reasons.push(reason);
+                            });
+                        });
+                    }
+                });
+            },
             ajaxGetReasonsByDepartment: function () {
                 $.ajax({
                     url: "/application/GetReasonsByDepartment",
                     type: "POST",
+                    async: false,
                     data: { Id: this.departmentId },
                     success: function (reasons) {
-                        this.reasons = reasons;
-                        console.log(this.reasons);
-
-
+                        Vue.nextTick(function () {
+                            reasons.forEach(function (reason) {
+                                app.reasons.push(reason);
+                            });
+                        });
                     }
-                })
+                });
             }
-            
+
+        },
+        beforeMount() {
+            this.init();
         }
 
-    })
-}
+    });
+};
