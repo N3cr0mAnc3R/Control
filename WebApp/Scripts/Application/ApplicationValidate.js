@@ -34,16 +34,29 @@
                     }
                 });
             },
-            submit: function () {
-                console.log("широта " + app.coordinates[0] )
-                Vue.nextTick(function () {
-                    app.coordinates = [];
-                    myPlacemark.geometry._coordinates.forEach(function (coord) {
-                        app.coordinates.push(coord);
-                    });
-                    //внутри nextTick???
-                   
+            test: function () {
+                app.coordinates = [];
+                myPlacemark.geometry._coordinates.forEach(function (coord) {
+                    app.coordinates.push(coord);
                 });
+            },
+            submit: function () {                
+                //Vue.nextTick(function () {
+                //    app.coordinates = [];
+                //    myPlacemark.geometry._coordinates.forEach(function (coord) {
+                //        app.coordinates.push(coord);
+                //    });
+                //    //внутри nextTick???
+                //    console.log("nextTick широта " + app.coordinates[0])
+                //    console.log("nextTick долгота " + app.coordinates[1])
+                //});
+
+                //app.coordinates = [];
+                //myPlacemark.geometry._coordinates.forEach(function (coord) {
+                //    app.coordinates.push(coord);
+                //});
+                //console.log("широта " + app.coordinates[0])
+                //console.log("долгота " + app.coordinates[1])
                 $.ajax({
                     url: "/application/SubmitApplication",
                     type: "POST",
@@ -55,8 +68,8 @@
                         posCount: 0, //  Хардкод!! И нужен ли?
                         negCount: 0, //  Хардкод!! И нужен ли?
                         reasonId: this.reasonId,
-                        longitude: app.coordinates[1], // сначала долгота... потому что
-                        latitude: app.coordinates[0]
+                        longitude: parseFloat( app.coordinates[1]), // сначала долгота... потому что
+                        latitude: parseFloat(app.coordinates[0])
 
                     },
                 });

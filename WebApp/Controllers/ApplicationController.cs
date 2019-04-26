@@ -23,23 +23,25 @@ namespace WebApp.Controllers
         }
 
 
-        public ActionResult SubmitApplication(ApplicationModel model)
-        {
-            if (ModelState.IsValid)
-            {
+        //public ActionResult SubmitApplication(ApplicationModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
 
-                 return View();
-            }
+        //         return View();
+        //    }
 
-            return View();
+        //    return View();
 
-        }
+        //}
 
         public JsonResult GetReasonsByDepartment(int Id)
         {
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
+
+        [System.Web.Mvc.HttpPost]
         public JsonResult SubmitApplication(string uid, string text, bool isActive,
                                     int posCount, int negCount, int reasonId,
                                     float longitude, float latitude)
