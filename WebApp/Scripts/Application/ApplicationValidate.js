@@ -35,31 +35,31 @@
                 });
             },
             submit: function () {
-
+                console.log("широта " + app.coordinates[0] )
                 Vue.nextTick(function () {
                     app.coordinates = [];
                     myPlacemark.geometry._coordinates.forEach(function (coord) {
                         app.coordinates.push(coord);
                     });
                     //внутри nextTick???
-                    $.ajax({
-                        url: "/application/SubmitApplication",
-                        type: "POST",
-                        async: false,
-                        data: {
-                            uid: "08c7a7f0-d942-494b-84fd-be4b4f98066a", //Тест Тестович
-                            text: this.Text,
-                            isActive: true, // Хардкод!!
-                            posCount: 0, //  Хардкод!! И нужен ли?
-                            negCount: 0, //  Хардкод!! И нужен ли?
-                            reasonId: this.reasonId,
-                            longitude: coordinates[1], // сначала долгота... потому что
-                            latitude: coordinates[0]
-
-                        },
-                    });
+                   
                 });
+                $.ajax({
+                    url: "/application/SubmitApplication",
+                    type: "POST",
+                    async: false,
+                    data: {
+                        uid: "08c7a7f0-d942-494b-84fd-be4b4f98066a", //Тест Тестович
+                        text: this.Text,
+                        isActive: true, // Хардкод!!
+                        posCount: 0, //  Хардкод!! И нужен ли?
+                        negCount: 0, //  Хардкод!! И нужен ли?
+                        reasonId: this.reasonId,
+                        longitude: app.coordinates[1], // сначала долгота... потому что
+                        latitude: app.coordinates[0]
 
+                    },
+                });
             },
             ajaxGetReasonsByDepartment: function () {
                 $.ajax({

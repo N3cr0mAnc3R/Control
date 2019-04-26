@@ -38,13 +38,15 @@
 
 
 
-        <input type="file" id="Files" v-on:change="InputFileValidate()" accept=".jpg, .jpeg, .gif, .png" multiple />
+        <input type="file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" multiple />
 
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
+
+        <button type="submit" class="btn btn-primary" v-on:click="submit">Отправить</button>
     </div>
     <div id="map"></div>
 
-    <button type="submit" class="btn btn-primary" v-on:click="submit">Отправить</button>
+   
 
 
 </div>
