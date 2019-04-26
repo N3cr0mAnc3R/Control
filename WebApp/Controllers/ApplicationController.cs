@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +22,19 @@ namespace WebApp.Controllers
 
             return View();
         }
-
-
-        public ActionResult SubmitApplication(ApplicationModel model)
+        protected ApplicationUserManager ApplicationUserManager
         {
-            if (ModelState.IsValid)
+
+            get
             {
-
-                 return View();
+                return Request.GetOwinContext().Get<ApplicationUserManager>();
             }
-
-            return View();
-
+        }
+        [System.Web.Mvc.HttpPost]
+        public JsonResult SubmitApplication(ApplicationModel model)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            return Json(ApplicationManager.SubmitApplication(model, user.Id));
         }
 
         public JsonResult GetReasonsByDepartment(int Id)
@@ -40,12 +42,12 @@ namespace WebApp.Controllers
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
-        public JsonResult SubmitApplication(string uid, string text, bool isActive,
-                                    int posCount, int negCount, int reasonId,
-                                    float longitude, float latitude)
-        {
-            return Json(ApplicationManager.SubmitApplication(uid, text, isActive, posCount, negCount, reasonId, longitude, latitude));
-        }
+        //public JsonResult SubmitApplication(string uid, string text, bool isActive,
+        //                            int posCount, int negCount, int reasonId,
+        //                            float longitude, float latitude)
+        //{
+        //    return Json(ApplicationManager.SubmitApplication(uid, text, isActive, posCount, negCount, reasonId, longitude, latitude));
+        //}
 
         protected NewsManager NewsManager
         {

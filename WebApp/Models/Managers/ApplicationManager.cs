@@ -38,15 +38,13 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public IEnumerable<int> SubmitApplication(string uid, string text, bool isActive,
-                                    int posCount, int negCount, int reasonId,
-                                    float longitude, float latitude)
+        public IEnumerable<int> SubmitApplication(ApplicationModel application, string uid)
         {
             using (var cnt = Concrete.OpenConnection())
             {
                 return cnt.Query<int>(
                     sql: "dbo.AddApplication",
-                    param: new { UserId = uid, Text = text, IsActive = isActive, PosCount=posCount, NegCount = negCount, ReasonId = reasonId, Longitude = longitude, Latitude = latitude},
+                    param: new { UserId = uid, application.Text, application.ReasonId, Longitude = double.Parse(application.Longitude.Replace('.', ',')), Latitude = double.Parse(application.Latitude.Replace('.', ',')) },
                     commandType: CommandType.StoredProcedure
                 );
 
