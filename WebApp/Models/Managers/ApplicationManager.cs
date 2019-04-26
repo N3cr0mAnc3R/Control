@@ -37,5 +37,24 @@ namespace WebApp.Models.Managers
 
             }
         }
+
+        public IEnumerable<int> SubmitApplication(string uid, string text, bool isActive,
+                                    int posCount, int negCount, int reasonId,
+                                    float longitude, float latitude)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<int>(
+                    sql: "dbo.AddApplication",
+                    param: new { UserId = uid, Text = text, IsActive = isActive, PosCount=posCount, NegCount = negCount, ReasonId = reasonId, Longitude = longitude, Latitude = latitude},
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+        }
+
     }
+
+
+
 }

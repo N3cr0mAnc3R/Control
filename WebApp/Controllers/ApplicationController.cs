@@ -27,17 +27,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                //StringBuilder fileNames = new StringBuilder();
-                //fileNames.Append("<ul>");
-                //foreach (HttpPostedFileBase file in model.Files)
-                //{
-                //    //You can do something with the files here like save them to disk
-                //    fileNames.Append("<li>");
-                //    fileNames.Append(file.FileName);
-                //    fileNames.Append("</li>");
-                //}
-                //fileNames.Append("</ul>");
-                //TempData["FileNames"] = fileNames.ToString();
+
                  return View();
             }
 
@@ -49,6 +39,14 @@ namespace WebApp.Controllers
         {
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
+
+        public JsonResult SubmitApplication(string uid, string text, bool isActive,
+                                    int posCount, int negCount, int reasonId,
+                                    float longitude, float latitude)
+        {
+            return Json(ApplicationManager.SubmitApplication(uid, text, isActive, posCount, negCount, reasonId, longitude, latitude));
+        }
+
         protected NewsManager NewsManager
         {
             get

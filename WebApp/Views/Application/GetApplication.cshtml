@@ -9,15 +9,12 @@
 </style>
 <div class="form-wrapper text-center">
     <div id="form">
-
-        <button type="button" class="btn btn-primary" v-on:click="setCoordinates">TEST</button>
-
         @foreach (New newspiece in ViewBag.News)
         {
             <span> @newspiece.Text</span>
         }
         <label for="Text">Опишите проблему</label>
-        <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
+        <textarea class="form-control col" id="Text" placeholder="Описание проблемы..." v-model="Text"></textarea>
 
         <label for="Department">К кому вы хотите обратиться?</label>
 
@@ -33,8 +30,12 @@
 
             <option v-for="reason in reasons" v-bind:value="reason.Id">{{reason.Name}} </option>
         </select>
-        <p>{{coordinates}}</p>
-        
+        <p>Текст: {{Text}}</p>
+        <p>Министерство номер: {{departmentId}}</p>
+        <p>Причина номер: {{reasonId}}</p>
+        <p>Долгота: {{coordinates[1]}}</p>
+        <p>Широта: {{coordinates[0]}}</p>
+
 
 
         <input type="file" id="Files" v-on:change="InputFileValidate()" accept=".jpg, .jpeg, .gif, .png" multiple />
@@ -43,7 +44,7 @@
     </div>
     <div id="map"></div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" v-on:click="submit">Отправить</button>
 
 
 </div>
