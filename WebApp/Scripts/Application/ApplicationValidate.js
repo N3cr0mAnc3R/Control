@@ -7,7 +7,8 @@
             Errors: [],
             departmentId: 1,
             reasons: [],
-            reasonId: 0
+            reasonId: 0,
+            coordinates: []
         },
         methods: {
             InputFileValidate: function () {
@@ -25,12 +26,24 @@
                     data: { Id: this.departmentId },
                     success: function (reasons) {
                         Vue.nextTick(function () {
+                            app.reasons = [];
                             reasons.forEach(function (reason) {
                                 app.reasons.push(reason);
                             });
                         });
                     }
                 });
+            },
+            setCoordinates: function () {
+               // coordinates = myPlacemark.geometry._coordinates;
+                Vue.nextTick(function () {
+                    app.coordinates = [];
+                    myPlacemark.geometry._coordinates.forEach(function (coord) {
+                        app.coordinates.push(coord);
+                    });
+                });
+                console.log("Координаты маркера: " + myPlacemark.geometry._coordinates); 
+                console.log("Тем временем в переменной Vue: " + coordinates);
             },
             ajaxGetReasonsByDepartment: function () {
                 $.ajax({
@@ -55,3 +68,7 @@
 
     });
 };
+
+
+   
+

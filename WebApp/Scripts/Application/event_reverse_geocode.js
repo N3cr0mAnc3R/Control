@@ -1,7 +1,7 @@
 ymaps.ready(init);
-
+var myPlacemark;
 function init() {
-    var myPlacemark,
+    //var myPlacemark, //Перемещена выше для видимости в Vue
         myMap = new ymaps.Map('map', {
             center: [45.043515, 41.961798],
             zoom: 9

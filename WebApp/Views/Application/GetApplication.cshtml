@@ -9,6 +9,9 @@
 </style>
 <div class="form-wrapper text-center">
     <div id="form">
+
+        <button type="button" class="btn btn-primary" v-on:click="setCoordinates">TEST</button>
+
         @foreach (New newspiece in ViewBag.News)
         {
             <span> @newspiece.Text</span>
@@ -18,7 +21,7 @@
 
         <label for="Department">К кому вы хотите обратиться?</label>
 
-        <select class="form-control col" id="Department" v-on:change="ajaxGetReasonsByDepartment" v-model="departmentId" >
+        <select class="form-control col" id="Department" v-on:change="ajaxGetReasonsByDepartment" v-model="departmentId">
             @foreach (IndexType department in ViewBag.Departments)
             {
                 <option value="@department.Id">@department.Name</option>
@@ -27,14 +30,10 @@
 
         <label for="Reason">Выберите наиболее подходящую причину для обращения</label>
         <select class="form-control col" id="Reason" v-model="reasonId">
-         
 
-            @*@foreach (IndexType reason in ViewBag.Reasons)
-        {
-            <option>@reason.Name</option>
-        }*@
             <option v-for="reason in reasons" v-bind:value="reason.Id">{{reason.Name}} </option>
         </select>
+        <p>{{coordinates}}</p>
         
 
 
@@ -42,13 +41,13 @@
 
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
     </div>
-   @* <div id="map"></div>*@
+    <div id="map"></div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 
 
 </div>
 <script src="~/Scripts/Application/ApplicationValidate.js"></script>
-@*<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
-<script src="~/Scripts/Application/event_reverse_geocode.js"></script>*@
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
+<script src="~/Scripts/Application/event_reverse_geocode.js"></script>
 
