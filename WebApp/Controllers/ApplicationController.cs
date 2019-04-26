@@ -42,13 +42,6 @@ namespace WebApp.Controllers
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
-        //public JsonResult SubmitApplication(string uid, string text, bool isActive,
-        //                            int posCount, int negCount, int reasonId,
-        //                            float longitude, float latitude)
-        //{
-        //    return Json(ApplicationManager.SubmitApplication(uid, text, isActive, posCount, negCount, reasonId, longitude, latitude));
-        //}
-
         protected NewsManager NewsManager
         {
             get
