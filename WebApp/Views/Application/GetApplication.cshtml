@@ -13,12 +13,13 @@
         {
             <span> @newspiece.Text</span>
         }
+        <button type="button" class="btn btn-primary" v-on:click="test">ЗАПИСАТЬ КООРДИНАТЫ</button>
         <label for="Text">Опишите проблему</label>
-        <textarea type="text" class="form-control col" id="Text" placeholder="Описание проблемы..."></textarea>
+        <textarea class="form-control col" id="Text" placeholder="Описание проблемы..." v-model="Text"></textarea>
 
         <label for="Department">К кому вы хотите обратиться?</label>
 
-        <select class="form-control col" id="Department" v-on:change="ajaxGetReasonsByDepartment" v-model="departmentId" >
+        <select class="form-control col" id="Department" v-on:change="ajaxGetReasonsByDepartment" v-model="departmentId">
             @foreach (IndexType department in ViewBag.Departments)
             {
                 <option value="@department.Id">@department.Name</option>
@@ -27,24 +28,24 @@
 
         <label for="Reason">Выберите наиболее подходящую причину для обращения</label>
         <select class="form-control col" id="Reason" v-model="reasonId">
-         
 
-            @*@foreach (IndexType reason in ViewBag.Reasons)
-        {
-            <option>@reason.Name</option>
-        }*@
             <option v-for="reason in reasons" v-bind:value="reason.Id">{{reason.Name}} </option>
         </select>
-        
+        <p>Текст: {{Text}}</p>
+        <p>Министерство номер: {{departmentId}}</p>
+        <p>Причина номер: {{reasonId}}</p>
+        <p>Долгота: {{coordinates[1]}}</p>
+        <p>Широта: {{coordinates[0]}}</p>
 
 
-        <input type="file" id="Files" v-on:change="InputFileValidate()" accept=".jpg, .jpeg, .gif, .png" multiple />
+
+        <input type="file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" multiple />
 
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
+        <button type="submit" class="btn btn-primary" v-on:click="submit">Отправить</button>
     </div>
-   @* <div id="map"></div>*@
+    <div id="map"></div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
 
 
 </div>

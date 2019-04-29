@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,34 +22,26 @@ namespace WebApp.Controllers
 
             return View();
         }
-
-
-        public ActionResult SubmitApplication(ApplicationModel model)
+        protected ApplicationUserManager ApplicationUserManager
         {
-            if (ModelState.IsValid)
+
+            get
             {
-                //StringBuilder fileNames = new StringBuilder();
-                //fileNames.Append("<ul>");
-                //foreach (HttpPostedFileBase file in model.Files)
-                //{
-                //    //You can do something with the files here like save them to disk
-                //    fileNames.Append("<li>");
-                //    fileNames.Append(file.FileName);
-                //    fileNames.Append("</li>");
-                //}
-                //fileNames.Append("</ul>");
-                //TempData["FileNames"] = fileNames.ToString();
-                 return View();
+                return Request.GetOwinContext().Get<ApplicationUserManager>();
             }
-
-            return View();
-
+        }
+        [System.Web.Mvc.HttpPost]
+        public JsonResult SubmitApplication(ApplicationModel model)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            return Json(ApplicationManager.SubmitApplication(model, user.Id));
         }
 
         public JsonResult GetReasonsByDepartment(int Id)
         {
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
+
         protected NewsManager NewsManager
         {
             get
