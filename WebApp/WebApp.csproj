@@ -192,8 +192,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,6 +206,7 @@
     <Compile Include="Models\Managers\ApplicationManager.cs" />
     <Compile Include="Models\Managers\Manager.cs" />
     <Compile Include="Models\Managers\NewsManager.cs" />
+    <Compile Include="Models\Managers\ProfileManager.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\News\New.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -271,6 +274,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Application\GetApplication.cshtml" />
+    <Content Include="Views\Profile\UserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

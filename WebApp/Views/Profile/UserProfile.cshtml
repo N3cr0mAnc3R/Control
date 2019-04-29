@@ -1,0 +1,69 @@
+﻿@using WebApp.Models
+@model IEnumerable<WebApp.Models.ApplicationModel>
+@{
+	ViewBag.Title = "UserProfile";
+}
+
+<section id="main-section">
+	<section>
+		<div class="custom-container">
+			<div class="user-info">
+				<div class="left">
+					<div class="img-holder">
+						<img src="https://astrafarm.com/images/antoha.jpg" alt="Alternate Text" />
+					</div>
+				</div>
+				<div class="right">
+					<div class="custom-container">
+						<p class="title">Пользователь</p>
+						<ul>
+							<li>возраст: 25</li>
+							<li>mail: mail@mail.ru</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="custom-container">
+		<nav class="profile-menu">
+			<ul>
+				<li><a href="#">Мои обращения</a></li>
+				<li><a href="#">Создать обращение</a></li>
+			</ul>
+		</nav>
+	</div>
+	<section id="main-section">
+		<div class="custom-container">
+			<section id="applications">
+				@foreach (ApplicationModel app in Model)
+				{
+				<div class="application">
+					<div class="img-holder">
+						<img src="http://xn--80ajoghfjyj0a.xn--p1ai/uploads/media/illustration/4517/i605_6.jpg" alt="Alternate Text" />
+					</div>
+					<div class="application-body">
+						<div class="application-data">
+							<p class="title">@app.Title</p>
+							<p>
+								@app.Text 
+							</p>
+						</div>
+					</div>
+					<div class="application-control">
+						<div class="comment-button-holder">
+							<small> Показать комментарии...</small>
+						</div>
+						<div class="buttons">
+							<button class="button button-primary">Изменить</button>
+							<button class="button button-secondary">Удалить</button>
+						</div>
+					</div>
+				</div>
+				}
+			</section>
+		</div>
+	</section>
+</section>
+
