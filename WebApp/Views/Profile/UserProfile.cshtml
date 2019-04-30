@@ -39,31 +39,63 @@
 			<section id="applications">
 				@foreach (ApplicationModel app in Model)
 				{
-				<div class="application">
-					<div class="img-holder">
-						<img src="http://xn--80ajoghfjyj0a.xn--p1ai/uploads/media/illustration/4517/i605_6.jpg" alt="Alternate Text" />
-					</div>
-					<div class="application-body">
+					<div id="@app.Id"class="application">
 						<div class="application-data">
-							<p class="title">@app.Title</p>
-							<p>
-								@app.Text 
-							</p>
+							<div class="img-holder">
+								<img src="http://xn--80ajoghfjyj0a.xn--p1ai/uploads/media/illustration/4517/i605_6.jpg" alt="Alternate Text" />
+							</div>
+							<div class="application-body">
+
+								<p class="title">@app.Title</p>
+								<p>
+									@app.Text
+								</p>
+							</div>
+
+						</div>
+						<section class="comments"  v-bind:class="{ hidden: !isActive}">
+
+							<div class="comment">
+								<div class="custom-container">
+									<div class="img-holder">
+										<img src="https://cdn.fishki.net/upload/post/2018/04/19/2575367/tn/483dffd1599856089e91fa679bbc64df.jpg" alt="Alternate Text" />
+									</div>
+									<div class="comment-text">
+										<p class="comment-author">Автор</p>
+										<p>Равным образом дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании дальнейших направлений развития. Разнообразный и богатый опыт новая модель организационной деятельности играет важную роль в формировании существенных финансовых и административных условий.</p>
+										<p><small>30.04.19 19:00</small> <a href="#">ответить</a></p>
+									</div>
+								</div>
+							</div>
+							<div class="comment">
+								<div class="custom-container">
+									<div class="img-holder">
+										<img src="https://avatars.mds.yandex.net/get-kinopoisk-post-img/1101693/96589d960d3adbc206ef566350931333/960x540" alt="Alternate Text" />
+									</div>
+									<div class="comment-text">
+										<p class="comment-author">Автор</p>
+										<p>Равным образом дальнейшее направлений развития. Разнообразный и богатый опыт новая модель организационной деятельности играет важную роль в формировании существенных финансовых и административных условий.</p>
+										<p><small>30.04.19 19:00</small> <a href="#">ответить</a></p>
+									</div>
+								</div>
+							</div>
+
+						</section>
+						<div class="application-control">
+							<div class="comment-button-holder">
+								<small  v-bind:value="buttonText"  v-on:click="toggleComments">{{buttonText}}</small>
+							</div>
+							<div class="buttons">
+								<button class="button button-primary">Изменить</button>
+								<button class="button button-secondary">Удалить</button>
+							</div>
 						</div>
 					</div>
-					<div class="application-control">
-						<div class="comment-button-holder">
-							<small> Показать комментарии...</small>
-						</div>
-						<div class="buttons">
-							<button class="button button-primary">Изменить</button>
-							<button class="button button-secondary">Удалить</button>
-						</div>
-					</div>
-				</div>
 				}
 			</section>
 		</div>
 	</section>
 </section>
+<script src="~/Scripts/Profile/ProfileVue.js"></script>
+
 
