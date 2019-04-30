@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using WebApp.Models.Common;
 
 namespace WebApp.Models
 {
@@ -23,6 +24,6 @@ namespace WebApp.Models
 
 
 
-        public HttpPostedFileBase[] Files { get; set; }
+        public UploadFile[] Files { get; set; }
     }
 }

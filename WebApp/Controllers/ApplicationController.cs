@@ -2,12 +2,16 @@
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using WebApp.Models;
+using WebApp.Models.Common;
 using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
@@ -24,7 +28,6 @@ namespace WebApp.Controllers
         }
         protected ApplicationUserManager ApplicationUserManager
         {
-
             get
             {
                 return Request.GetOwinContext().Get<ApplicationUserManager>();
@@ -42,6 +45,19 @@ namespace WebApp.Controllers
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
+        public JsonResult FileUpload(UploadFile uploadFile, int applicationId )
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+                return Json(ApplicationManager.FileUpload(uploadFile.File.InputStream, uploadFile.File.ContentType, applicationId, Path.GetExtension(uploadFile.File.FileName), user.Id));
+            }
+            throw new ArgumentException();
+        }
+
+
+
+    
         protected NewsManager NewsManager
         {
             get

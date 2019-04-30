@@ -16,7 +16,22 @@
                     this.Errors.push('Загружено слишком много файлов. Допускается не более 5');
                     $("#Files")[0].value = "";
                 }
-                console.log(event.target.files);
+                var x = event.target.files;
+                var re = /(?:\.([^.]+))?$/;
+
+                for (i = 0; i < x.length; i++) {
+                    app.Files[i] =  {
+                        Extension: re.exec(x[i].name)[1],
+                        Size: x[i].size,
+                        UploadDate: new Date(),
+                        Name: x[i].name.substr(0, x[i].name.lastIndexOf('.')) 
+                    }
+                }
+
+                
+                
+
+   
             },
             init: function () {
                 $.ajax({
@@ -40,8 +55,7 @@
                     myPlacemark.geometry._coordinates.forEach(function (coord) {
                         app.coordinates.push(coord);
                     });
-
-                    //внутри nextTick???
+                    console.log(app.Files);
                     $.ajax({
                         url: "/application/SubmitApplication",
                         type: "POST",
@@ -50,10 +64,11 @@
                             Text: app.Text,
                             ReasonId: app.reasonId,
                             Longitude: app.coordinates[1], // сначала долгота... потому что
-                            Latitude: app.coordinates[0]
-
+                            Latitude: app.coordinates[0],
+                            Files: app.Files
                         }
                     });
+
                 });
 
             },

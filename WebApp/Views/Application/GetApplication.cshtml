@@ -13,7 +13,6 @@
         {
             <span> @newspiece.Text</span>
         }
-        <button type="button" class="btn btn-primary" v-on:click="test">ЗАПИСАТЬ КООРДИНАТЫ</button>
         <label for="Text">Опишите проблему</label>
         <textarea class="form-control col" id="Text" placeholder="Описание проблемы..." v-model="Text"></textarea>
 
@@ -31,11 +30,8 @@
 
             <option v-for="reason in reasons" v-bind:value="reason.Id">{{reason.Name}} </option>
         </select>
-        <p>Текст: {{Text}}</p>
-        <p>Министерство номер: {{departmentId}}</p>
-        <p>Причина номер: {{reasonId}}</p>
-        <p>Долгота: {{coordinates[1]}}</p>
-        <p>Широта: {{coordinates[0]}}</p>
+        
+
 
 
 
