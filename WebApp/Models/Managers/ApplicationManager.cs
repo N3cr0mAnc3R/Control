@@ -7,6 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using WebApp.Models;
+using System.Data.SqlTypes;
+using System.Web.Mvc;
+using System.IO;
+using WebApp.Models.Common;
 
 namespace WebApp.Models.Managers
 {
@@ -38,21 +42,72 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public IEnumerable<int> SubmitApplication(ApplicationModel application, string uid)
+        public int SubmitApplication(ApplicationModel application, string uid)
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<int>(
+
+                int Id =  (cnt.Query<int>(
                     sql: "dbo.AddApplication",
                     param: new { UserId = uid, application.Text, application.ReasonId, Longitude = double.Parse(application.Longitude.Replace('.', ',')), Latitude = double.Parse(application.Latitude.Replace('.', ',')) },
                     commandType: CommandType.StoredProcedure
-                );
+                )).First();
+
+                foreach (UploadFile file in application.Files)
+                {
+                    FileUpload(file.File.InputStream, file.File.ContentType, Id, Path.GetExtension(file.File.FileName), uid);
+                }
+                return Id;
 
             }
         }
 
+        public IEnumerable<FileStreamResult> FileUpload(Stream fileStream,  string contentType,int applicationId, string extension, string userId)
+        {
+
+            using (var cnt = Concrete.OpenConnection())
+            {
+                //try
+                //{
+                // IEnumerable<FileStreamResult> filestreamResult = cnt.Query<FileStreamResult>(
+                return cnt.Query<FileStreamResult>(
+                    sql: "UserFileSave",
+                    param: new
+                    {
+                        ApplicationId = applicationId,
+                        UserId = userId,
+                        contentType = contentType,
+                        extension = extension                      
+                    },
+                    commandType: CommandType.StoredProcedure
+                    );
+                    
+                
+                    
+                   
+                
+                    ////try 
+                    //{
+                    //    using (SqlFileStream sqlFilestream = new SqlFileStream(filestreamResult.FileStreamPath, filestreamResult.FileStreamContext, FileAccess.Write, FileOptions.SequentialScan, 0))
+                    //    {
+                    //        await fileStream.CopyToAsync(sqlFilestream, 2000);
+                    //    }
+                    //    trans.Commit();
+                    //}
+                    ////catch (Exception ex) 
+                    ////{ 
+                    //// return ex; 
+                    ////} 
+                    //return filestreamResult.Name;
+                //}
+                //catch (Exception ex)
+                //{
+                //    throw ex;
+                //};
+            }
+        }
     }
-
-
-
 }
+
+
+

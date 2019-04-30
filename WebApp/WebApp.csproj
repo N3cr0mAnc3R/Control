@@ -201,6 +201,8 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
+    <Compile Include="Models\Common\UploadFile.cs" />
+    <Compile Include="Models\FileTypesAttribute.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IndexType.cs" />
     <Compile Include="Models\Managers\ApplicationManager.cs" />
