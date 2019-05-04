@@ -210,6 +210,7 @@
     <Compile Include="Models\Managers\NewsManager.cs" />
     <Compile Include="Models\Managers\ProfileManager.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\News\New.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

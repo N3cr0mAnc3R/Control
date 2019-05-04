@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using WebApp.Models;
-
+using WebApp.Models.News;
 
 namespace WebApp.Models.Managers
 {
@@ -44,6 +44,40 @@ namespace WebApp.Models.Managers
                 ).ToList();
 
             }
+        }
+        public List<CommentModel> SelectCommentsByApplicationId(int ApplicationId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<CommentModel>(
+                    sql: "dbo.SelectCommentsByApplicationId",
+                    param: new
+                    {
+                        ApplicationId
+                    },
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+            }
+        }
+        public void AddComment( string UserId,int ApplicationId,string Text,int? ParentCommentId)
+        {
+
+            using (var cnt =  Concrete.OpenConnection())
+            {
+                 cnt.Execute(
+                     sql: "AddComment",
+                     commandType: CommandType.StoredProcedure,
+                      param: new
+                      {
+                          UserId,
+                          ApplicationId,
+                          Text,
+                          ParentCommentId
+                      }
+                     );
+            }
+
         }
 
     }

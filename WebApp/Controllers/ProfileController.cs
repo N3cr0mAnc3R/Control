@@ -14,7 +14,7 @@ namespace WebApp.Controllers
         // GET: Profile
         public ActionResult UserProfile()
         {
-            return View(SelectApplicationsByUserId());
+            return View();
         }
         public ActionResult Edit(int Id)
         {
@@ -26,11 +26,22 @@ namespace WebApp.Controllers
         }
         public bool CheckAccess(int Id)
         {
-                return ProfileManager.CheckAccess(Id, CurrentUser.Id);       
+            return ProfileManager.CheckAccess(Id, CurrentUser.Id);
         }
-       public List<ApplicationModel> SelectApplicationsByUserId ()
+        [HttpPost]
+        public JsonResult SelectApplicationsByUserId()
         {
-            return ProfileManager.SelectApplicationsByUserId(CurrentUser.Id);
+            return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
+        }
+        [HttpPost]
+        public JsonResult SelectCommentsByApplicationId (int ApplicationId)
+        {
+            return Json(ProfileManager.SelectCommentsByApplicationId(ApplicationId));
+        }
+        [HttpPost]
+        public void AddComment( int ApplicationId, string Text, int? ParentCommentId)
+        {
+            ProfileManager.AddComment(CurrentUser.Id, ApplicationId, Text, ParentCommentId);
         }
         protected ProfileManager ProfileManager
         {
