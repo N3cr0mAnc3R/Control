@@ -53,7 +53,7 @@
 						</div>
 						<section class="comments" v-if="app.IsOpened">
 
-							<div v-for="com in comments" class="comment">
+							<div v-for="com in app.comments" class="comment">
 								<div class="custom-container">
 									<div class="img-holder">
 										<img src="https://cdn.fishki.net/upload/post/2018/04/19/2575367/tn/483dffd1599856089e91fa679bbc64df.jpg" alt="Alternate Text" />
@@ -67,7 +67,7 @@
 							</div>
 							<div class="custom-container">
 								<textarea v-on:input="changeComment"></textarea>
-								<button v-on:click="addComment">Отправить</button>
+								<button v-on:click="addComment(app.Id)">Отправить</button>
 							</div>
 
 						</section>

@@ -3,8 +3,7 @@
 		el: "#applications",
 		data: {
 			applications: [],
-			comments: [],
-			comment:'re'
+			comment:''
 
 		},
 		methods: {
@@ -13,9 +12,8 @@
 				Vue.nextTick(function () {
 					appl.IsOpened = !appl.IsOpened;
 					if (appl.IsOpened) {
-						app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
-						console.log(app.comments);//!!!!!!!!!!!успеют ли прийти все комментарии
-						
+						app.SelectCommentsByApplicationId(appl.Id);
+						//appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
 						
 					}
 				});
@@ -23,12 +21,12 @@
 			changeComment: function (event) {
 				this.comment = event.target.value;
 			},
-			addComment: function () {
+			addComment: function (applicationId) {
 				$.ajax({
 					url: "/profile/AddComment",
 					type: "POST",
 					async: false,
-					data: { ApplicationId:2, Text:app.comment}
+					data: { ApplicationId: applicationId, Text:app.comment}
 					}
 				);
 			},
@@ -39,7 +37,7 @@
 					async: false,
 					success: function (applications) {
 						Vue.nextTick(function () {
-							//Просто я немного тупой. Всё работает....
+							
 							console.log(applications);
 							applications.forEach(function (application) {
 								application.IsOpened = false;
@@ -58,12 +56,14 @@
 					data: { ApplicationId: ApplicationId },
 					async: false,
 					success: function (comments) {
+						let appl = app.applications.find(a => a.Id === ApplicationId);//обращение из заполненного заранее массива 
 						Vue.nextTick(function () {		
-							app.comments = [];
+							let applicationComments = [];
 							comments.forEach(function (comment) {
-								app.comments.push(comment);
+								applicationComments.push(comment);
 							});
-
+							appl.comments = applicationComments;
+						
 						});
 
 					}
