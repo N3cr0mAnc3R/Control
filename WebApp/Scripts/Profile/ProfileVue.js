@@ -46,24 +46,28 @@
                 });
             },
             SelectCommentsByApplicationId: function (application) {
-                if (!application.IsOpened)
-                $.ajax({
-                    url: "/profile/SelectCommentsByApplicationId",
-                    type: "POST",
-                    data: { ApplicationId: application.Id },
-                    async: false,
-                    success: function (comments) {
-                        Vue.nextTick(function () {
-                            let applicationComments = [];
-                            comments.forEach(function (comment) {
-                                applicationComments.push(comment);
+                if (!application.IsOpened) {
+                    $.ajax({
+                        url: "/profile/SelectCommentsByApplicationId",
+                        type: "POST",
+                        data: { ApplicationId: application.Id },
+                        async: false,
+                        success: function (comments) {
+                            Vue.nextTick(function () {
+                                let applicationComments = [];
+                                comments.forEach(function (comment) {
+                                    applicationComments.push(comment);
+                                });
+                                application.comments = applicationComments;
+                                application.IsOpened = !application.IsOpened;
                             });
-                            appl.comments = applicationComments;
-                            application.IsOpened = !application.IsOpened;
-                        });
 
-                    }
-                });
+                        }
+                    });
+                }
+                else {
+                    application.IsOpened = !application.IsOpened;
+                }
             }
 
 
