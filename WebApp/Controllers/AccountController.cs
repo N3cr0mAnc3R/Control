@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -17,6 +18,7 @@ namespace WebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private object ConfgurationManager;
 
         public AccountController()
         {
@@ -422,6 +424,53 @@ namespace WebApp.Controllers
 
             base.Dispose(disposing);
         }
+
+        //СВОЁ
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetVkInfo")]
+        public async Task<JsonResult> getExternalVk()
+        {
+            string[] scope = new string[] { "email" };
+            string url = string.Format("https://oauth.vk.com/authorize?client_id={0}&redirect_uri={1}&display={2}&scope={3}&response_type=token&v={4}",
+                ConfigurationManager.AppSettings["vk:clientId"],
+                ConfigurationManager.AppSettings["vk:redirect_uri"],
+                ConfigurationManager.AppSettings["vk:display"],
+                ConfigurationManager.AppSettings["vk:version"]);
+            return Json(url);   
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("external/vk")]
+        public async Task<JsonResult> Login(string access_token, int expires_in, int user_id, string email)
+        {
+            ApplicationUser user = null;
+            if (email != "")
+            {
+                user = await UserManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    var result = UserManager.Create(new ApplicationUser() { Email = email, UserName = email });
+                    if (result.Succeeded)
+                    {
+                        user = UserManager.FindByEmail(email);
+                    }
+                    else return Json(result.Errors);
+                }
+            }
+            if (user == null)
+            {
+                return Json("Для корректной авторизации необходима электронная почта.");
+            }
+            ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            AuthenticationManager.SignOut();
+            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+            //  return Json(await CreateUserProfile(user));
+            return Json(""); // Это просто чтоб запускалось!!! Надо чтобы работала строчка выше!!
+        }
+
 
         #region Вспомогательные приложения
         // Используется для защиты от XSRF-атак при добавлении внешних имен входа

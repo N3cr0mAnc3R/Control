@@ -43,6 +43,14 @@ namespace Test
                 AllowInsecureHttp = true
             };
 
+            // СВОЁ
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //{
+            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+            //    LoginPath = new PathString("account/login")
+            //});
+            // КОНЕЦ СВОЕГО
+
             // Включение использования приложением маркера-носителя для аутентификации пользователей
             app.UseOAuthBearerTokens(OAuthOptions);
 
