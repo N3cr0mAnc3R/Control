@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using WebApp.Models;
 using WebApp.Models.Common;
@@ -16,7 +15,7 @@ using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
 {
-    public class ApplicationController : Controller
+    public class ApplicationController : BaseController
     {
         public ActionResult GetApplication()
         {
@@ -33,11 +32,19 @@ namespace WebApp.Controllers
                 return Request.GetOwinContext().Get<ApplicationUserManager>();
             }
         }
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public JsonResult SubmitApplication(ApplicationModel model)
         {
-            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
-            return Json(ApplicationManager.SubmitApplication(model, user.Id));
+            model.Files = new List<UploadFile>();
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                UploadFile file = new UploadFile();
+                file.File = Request.Files.Get(i);
+                model.Files.Add(file);
+            }
+             
+            //return Json(new { value = 10});
+            return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
         }
 
         public JsonResult GetReasonsByDepartment(int Id)

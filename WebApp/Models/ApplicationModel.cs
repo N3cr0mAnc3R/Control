@@ -30,6 +30,6 @@ namespace WebApp.Models
         public List<CommentModel> Comments { get; set; }
 
 
-        public UploadFile[] Files { get; set; }
+        public List<UploadFile> Files { get; set; }
     }
 }

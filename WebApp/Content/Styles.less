@@ -304,7 +304,13 @@ footer {
         .sk-create(@n, (@i + 1));
     }
 }
+.loading-controller{
+    display: none;
 
+    &.loaded{
+        display: block;
+    }
+}
 
 @keyframes sk-wave-stretch-delay {
     0%, 40%, 100% {

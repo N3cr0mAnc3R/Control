@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Web;
 using WebApp.Models;
 using System.Data.SqlTypes;
-using System.Web.Mvc;
 using System.IO;
 using WebApp.Models.Common;
 
@@ -61,49 +60,39 @@ namespace WebApp.Models.Managers
 
             }
         }
-
-        public IEnumerable<FileStreamResult> FileUpload(Stream fileStream,  string contentType,int applicationId, string extension, string userId)
+        public string FileUpload(Stream fileStream, string contentType, int applicationId, string extension, string userId)
         {
-
-            using (var cnt = Concrete.OpenConnection())
+            using (var conn = Concrete.OpenConnection())
             {
-                //try
-                //{
-                // IEnumerable<FileStreamResult> filestreamResult = cnt.Query<FileStreamResult>(
-                return cnt.Query<FileStreamResult>(
-                    sql: "UserFileSave",
-                    param: new
+                using (IDbTransaction trans = conn.BeginTransaction())
+                {
+                    try
                     {
-                        ApplicationId = applicationId,
-                        UserId = userId,
-                        contentType = contentType,
-                        extension = extension                      
-                    },
-                    commandType: CommandType.StoredProcedure
-                    );
-                    
-                
-                    
-                   
-                
-                    ////try 
-                    //{
-                    //    using (SqlFileStream sqlFilestream = new SqlFileStream(filestreamResult.FileStreamPath, filestreamResult.FileStreamContext, FileAccess.Write, FileOptions.SequentialScan, 0))
-                    //    {
-                    //        await fileStream.CopyToAsync(sqlFilestream, 2000);
-                    //    }
-                    //    trans.Commit();
-                    //}
-                    ////catch (Exception ex) 
-                    ////{ 
-                    //// return ex; 
-                    ////} 
-                    //return filestreamResult.Name;
-                //}
-                //catch (Exception ex)
-                //{
-                //    throw ex;
-                //};
+                        FileStreamResult filestreamResult = (conn.Query<FileStreamResult>("UserFileSave",
+                        new
+                        {
+                            ApplicationId = applicationId,
+                            UserId = userId,
+                            contentType = contentType,
+                            extension = extension
+                        }, trans,
+
+                        commandType: CommandType.StoredProcedure)).FirstOrDefault();
+
+                        {
+                            using (SqlFileStream sqlFilestream = new SqlFileStream(filestreamResult.FileStreamPath, filestreamResult.FileStreamContext, FileAccess.Write, FileOptions.SequentialScan, 0))
+                            {
+                                fileStream.CopyTo(sqlFilestream, 2000);
+                            }
+                            trans.Commit();
+                        }
+                        return filestreamResult.Name;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    };
+                }
             }
         }
     }

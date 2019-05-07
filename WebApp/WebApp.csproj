@@ -201,6 +201,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
+    <Compile Include="Models\Common\FileStreamResult.cs" />
     <Compile Include="Models\Common\UploadFile.cs" />
     <Compile Include="Models\FileTypesAttribute.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -230,7 +231,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\Application\event_reverse_geocode.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\Styles.less" />
