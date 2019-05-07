@@ -1,4 +1,45 @@
 ﻿window.onload = function () {
+
+    Vue.directive('loading', {
+        bind: function (el, binding, vnode) {
+            console.log(binding);
+            vnode.context.$watch(binding.expression, function (object) {
+
+                if (object.loading === undefined || object.loaded === undefined) {
+                    element.addClass("loaded");
+                    return;
+                }
+
+                if (object.loading === true) {
+                    $loader = $('<div class="loader-wrapper"><div class="loader"><span>{</span><span>}</span></div></div>');
+                    element.after($loader);
+                }
+                else if ($loader !== undefined) {
+                    $loader.fadeOut(400, function () {
+                        element.addClass("loaded");
+                        element.css("display", "block");
+                        $loader.remove();
+                        $loader = undefined;
+                    });
+                }
+
+                if (object.loaded) {
+                    element.addClass("loaded");
+                }
+            }, { deep: true });
+        },
+        twoWay: true,
+        params: ['obj'],
+        paramWatchers: {
+            obj: function (val, old) {
+                console.log(val, old);
+            }
+        },
+        inserted: function () { },
+        update: function (el) { console.log(el); },
+        componentUpdated: function (el) { console.log(el); },
+        unbind: function () { }
+    });
     const app = new Vue({
         el: "#form",
         data: {
