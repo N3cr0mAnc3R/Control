@@ -2,7 +2,7 @@
     el: "#socialLoginForm",
     data: {
         Text: "",
-        vkinfo: "",
+        vkinfo: ""
     },
     methods: {
 
@@ -17,15 +17,22 @@
                         app.vkinfo = info;
                         console.log(app.vkinfo);
 
-                    })
+                    });
                 }
             });
         }
     },
     beforeMount() {
-
-        this.GetVkVnfo();
-
+        var str = window.location.href;
+        console.log();
+        if (str.indexOf('AuthVk') === -1) {
+            this.GetVkVnfo();
+        }
+        else {
+            var newstr = str.replace('#', '?');
+            console.log(newstr);
+            window.open(newstr, '_self');
+        }
     }
 
 
