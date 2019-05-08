@@ -57,7 +57,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
-                return Json(ApplicationManager.FileUpload(uploadFile.File.InputStream, uploadFile.File.ContentType, applicationId, Path.GetExtension(uploadFile.File.FileName), user.Id));
+                return Json(ApplicationManager.FileUpload(uploadFile.File.InputStream, uploadFile.File.ContentType, applicationId, Path.GetExtension(uploadFile.File.FileName), user.Id, uploadFile.File.FileName));
             }
             throw new ArgumentException();
         }

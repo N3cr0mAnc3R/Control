@@ -54,13 +54,13 @@ namespace WebApp.Models.Managers
 
                 foreach (UploadFile file in application.Files)
                 {
-                    FileUpload(file.File.InputStream, file.File.ContentType, Id, Path.GetExtension(file.File.FileName), uid);
+                    FileUpload(file.File.InputStream, file.File.ContentType, Id, Path.GetExtension(file.File.FileName), uid, file.File.FileName);
                 }
                 return Id;
 
             }
         }
-        public string FileUpload(Stream fileStream, string contentType, int applicationId, string extension, string userId)
+        public string FileUpload(Stream fileStream, string contentType, int applicationId, string extension, string userId, string fileName)
         {
             using (var conn = Concrete.OpenConnection())
             {
@@ -74,7 +74,8 @@ namespace WebApp.Models.Managers
                             ApplicationId = applicationId,
                             UserId = userId,
                             contentType = contentType,
-                            extension = extension
+                            extension = extension,
+                            fileName = fileName
                         }, trans,
 
                         commandType: CommandType.StoredProcedure)).FirstOrDefault();
