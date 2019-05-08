@@ -58,7 +58,7 @@
                             comments.forEach(function (comment) {
                                 applicationComments.push(comment);
                             });
-                            appl.comments = applicationComments;
+							application.comments = applicationComments;
                             application.IsOpened = !application.IsOpened;
                         });
 
