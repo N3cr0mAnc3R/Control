@@ -5,22 +5,29 @@
         vkinfo: "",
     },
     methods: {
-        vklogin: function () {
 
-        },
-
-        GetVkVnfo() {
+        GetVkVnfo: function () {
             $.ajax({
                 url: "/Account/GetVkInfo",
-                type: "GET",
+                type: "POST",
                 async: false,
-               
+
                 success: function (info) {
-                    vkinfo = info;
-                    });
+                    Vue.nextTick(function () {
+                        app.vkinfo = info;
+                        console.log(app.vkinfo);
+
+                    })
                 }
             });
         }
+    },
+    beforeMount() {
+
+        this.GetVkVnfo();
+
+    }
+
 
 
 });
