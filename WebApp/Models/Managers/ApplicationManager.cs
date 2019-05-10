@@ -28,6 +28,19 @@ namespace WebApp.Models.Managers
             }
         }
 
+        public void AddNewUser(string id)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "dbo.AddNewUser",
+                    param: new { UserId = id },
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+        }
+
         public IEnumerable<IndexType> GetReasonsByDepartment(int id)
         {
             using (var cnt = Concrete.OpenConnection())
@@ -46,7 +59,7 @@ namespace WebApp.Models.Managers
             using (var cnt = Concrete.OpenConnection())
             {
 
-                int Id =  (cnt.Query<int>(
+                int Id = (cnt.Query<int>(
                     sql: "dbo.AddApplication",
                     param: new { UserId = uid, application.Text, application.ReasonId, Longitude = double.Parse(application.Longitude.Replace('.', ',')), Latitude = double.Parse(application.Latitude.Replace('.', ',')) },
                     commandType: CommandType.StoredProcedure
