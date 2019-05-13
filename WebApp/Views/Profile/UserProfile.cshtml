@@ -65,9 +65,18 @@
 									</div>
 								</div>
 							</div>
-							<div class="custom-container">
-								<textarea v-on:input="changeComment"></textarea>
-								<button v-on:click="addComment(app.Id)">Отправить</button>
+							<div class="custom-container ">
+								<div class="form-inline form-group mt-4" >
+									
+									<textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
+									
+									<button  v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top:  23.5px ; padding-bottom:23px">></button>
+								</div>
+
+								@*<div class="custom-container ">
+									<textarea class="w-75 p-2 ml-2" v-on:input="changeComment" ></textarea>
+									<button v-on:click="addComment(app.Id)">Отправить</button>
+								</div>*@
 							</div>
 
 						</section>

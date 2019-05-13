@@ -12,20 +12,30 @@
                 Vue.nextTick(function () {
                     app.SelectCommentsByApplicationId(appl);
                     //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
-
+				
                 });
             },
-            changeComment: function (event) {
+            changeComment: function (event) {//байндинг комментария с vue 
                 this.comment = event.target.value;
             },
             addComment: function (applicationId) {
-                $.ajax({
-                    url: "/profile/AddComment",
-                    type: "POST",
-                    async: false,
-                    data: { ApplicationId: applicationId, Text: app.comment }
-                }
-                );
+				$.ajax({
+					url: "/profile/AddComment",
+					type: "POST",
+					async: false,
+					data: { ApplicationId: applicationId, Text: app.comment },
+					success: function () {
+					let appl = app.applications.find(a => a.Id === applicationId);
+					appl.IsOpened = false;//немного костыля  
+					app.SelectCommentsByApplicationId(appl);
+					}
+				}
+					
+				);
+
+				
+				
+			
             },
             selectApplicationsByUserId: function () {
                 $.ajax({
@@ -59,7 +69,8 @@
                                 applicationComments.push(comment);
                             });
 							application.comments = applicationComments;
-                            application.IsOpened = !application.IsOpened;
+							application.IsOpened = !application.IsOpened;
+							console.log(application.comments);
                         });
 
                     }
