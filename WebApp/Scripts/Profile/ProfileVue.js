@@ -73,8 +73,12 @@
 							console.log(application.comments);
                         });
 
-                    }
-                });
+                        }
+                    });
+                }
+                else {
+                    application.IsOpened = !application.IsOpened;
+                }
             }
 
 

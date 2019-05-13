@@ -23,10 +23,12 @@ namespace WebApp
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/vue").Include(
-                      "~/Scripts/vue.js"));
+                      "~/Scripts/vue.js",
+                      "~/Scripts/Directives/loader.js"
+                      ));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/styles.css"));
         }
     }
 }

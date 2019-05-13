@@ -1,14 +1,15 @@
-﻿using System;
-using System.Globalization;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
+using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using WebApp.Models;
+using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
 {
@@ -17,12 +18,13 @@ namespace WebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private object ConfgurationManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +36,9 @@ namespace WebApp.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -120,7 +122,7 @@ namespace WebApp.Controllers
             // Если пользователь введет неправильные коды за указанное время, его учетная запись 
             // будет заблокирована на заданный период. 
             // Параметры блокирования учетных записей можно настроить в IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -155,8 +157,9 @@ namespace WebApp.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    ApplicationManager.AddNewUser(user.Id);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // Дополнительные сведения о включении подтверждения учетной записи и сброса пароля см. на странице https://go.microsoft.com/fwlink/?LinkID=320771.
                     // Отправка сообщения электронной почты с этой ссылкой
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -423,6 +426,80 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }
 
+        //СВОЁ
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<JsonResult> GetVkInfo()
+        {
+            string[] scope = new string[] { "email" };
+            string url = string.Format("https://oauth.vk.com/authorize?client_id={0}&redirect_uri={1}&display={2}&scope={3}&response_type=token&v={4}",
+                ConfigurationManager.AppSettings["vk:clientId"],
+                ConfigurationManager.AppSettings["vk:redirect_uri"],
+                ConfigurationManager.AppSettings["vk:display"], String.Join(",", scope),
+                ConfigurationManager.AppSettings["vk:version"]);
+            return Json(url);
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult AuthVk(string access_token, int? expires_in, int? user_id, string email)
+        {
+            if (user_id != null)
+            {
+                ApplicationUser user = UserManager.FindByEmail(email);
+                if (user == null)
+                {
+                    user = new ApplicationUser()
+                    {
+                        Email = email,
+                        UserName = email
+                    };
+
+                    IdentityResult result = UserManager.Create(user);
+                    if (!result.Succeeded)
+                    {
+                        return Redirect("/account/login");
+                    }
+                }
+                ApplicationManager.AddNewUser(user.Id);
+                ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+                AuthenticationManager.SignOut();
+                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                return Redirect("/application/getapplication");
+            }
+            return View();
+        }
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public async Task<JsonResult> Login(string access_token, int expires_in, int user_id, string email)
+        //{
+        //    ApplicationUser user = null;
+        //    if (email != "")
+        //    {
+        //        user = await UserManager.FindByEmailAsync(email);
+        //        if (user == null)
+        //        {
+        //            var result = UserManager.Create(new ApplicationUser() { Email = email, UserName = email });
+        //            if (result.Succeeded)
+        //            {
+        //                user = UserManager.FindByEmail(email);
+        //            }
+        //            else return Json(result.Errors);
+        //        }
+        //    }
+        //    if (user == null)
+        //    {
+        //        return Json("Для корректной авторизации необходима электронная почта.");
+        //    }
+        //    ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+        //    AuthenticationManager.SignOut();
+        //    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+        //    //  return Json(await CreateUserProfile(user));
+        //    return Json(""); // Это просто чтоб запускалось!!! Надо чтобы работала строчка выше!!
+        //}
+
+
         #region Вспомогательные приложения
         // Используется для защиты от XSRF-атак при добавлении внешних имен входа
         private const string XsrfKey = "XsrfId";
@@ -481,5 +558,14 @@ namespace WebApp.Controllers
             }
         }
         #endregion
+
+
+        protected ApplicationManager ApplicationManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<ApplicationManager>();
+            }
+        }
     }
 }
