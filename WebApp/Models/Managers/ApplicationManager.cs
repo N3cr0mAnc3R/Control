@@ -81,7 +81,7 @@ namespace WebApp.Models.Managers
                 {
                     try
                     {
-                        FileStreamResult filestreamResult = (conn.Query<FileStreamResult>("UserFileSave",
+                        FileStreamResult filestreamResult = (conn.Query<FileStreamResult>("ApplicationFileSave",
                         new
                         {
                             ApplicationId = applicationId,
