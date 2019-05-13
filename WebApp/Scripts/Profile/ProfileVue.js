@@ -56,7 +56,7 @@
                 });
             },
             SelectCommentsByApplicationId: function (application) {
-                if (!application.IsOpened)
+				if (!application.IsOpened) {
                 $.ajax({
                     url: "/profile/SelectCommentsByApplicationId",
                     type: "POST",
