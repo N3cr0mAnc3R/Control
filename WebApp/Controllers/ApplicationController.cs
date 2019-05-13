@@ -52,6 +52,22 @@ namespace WebApp.Controllers
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
+        public IEnumerable<FileResult> GetApplicationImages(int Id)
+        {
+
+            IEnumerable<Models.FileStreamDownload> fsrCollection = ApplicationManager.GetFileStream(Id);
+            List<System.Web.Mvc.FileStreamResult> listofFSR = new List<System.Web.Mvc.FileStreamResult>();
+            foreach (Models.FileStreamDownload fsd in fsrCollection)
+            {
+                listofFSR.Add( new System.Web.Mvc.FileStreamResult(fsd.Stream, fsd.ContentType)
+                {
+                    FileDownloadName = fsd.Name
+                });
+            }
+            return listofFSR;
+
+        }
+
         public JsonResult FileUpload(UploadFile uploadFile, int applicationId )
         {
             if (ModelState.IsValid)

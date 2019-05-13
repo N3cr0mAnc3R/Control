@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebApp.Models.Common
 {
-    public class FileStreamResult
+    public class FileStreamResult : FileDescription
     {
         public string FileStreamPath { get; set; }
         public byte[] FileStreamContext { get; set; }
