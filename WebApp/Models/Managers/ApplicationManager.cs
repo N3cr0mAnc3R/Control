@@ -128,7 +128,14 @@ namespace WebApp.Models.Managers
 
                 int Id = (cnt.Query<int>(
                     sql: "dbo.AddApplication",
-                    param: new { UserId = uid, application.Text, application.ReasonId, Longitude = double.Parse(application.Longitude.Replace('.', ',')), Latitude = double.Parse(application.Latitude.Replace('.', ',')) },
+                    param: new {
+                                UserId = uid,
+                                Text = application.Text,
+                                ReasonId = application.ReasonId,
+                                Longitude = double.Parse(application.Longitude.Replace('.', ',')),
+                                Latitude = double.Parse(application.Latitude.Replace('.', ',')),
+                                Title = application.Title
+                                },
                     commandType: CommandType.StoredProcedure
                 )).First();
 
