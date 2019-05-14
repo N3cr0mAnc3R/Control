@@ -61,17 +61,16 @@
                     $.ajax({
                         url: "/application/GetApplicationImages",
                         type: "POST",
-                        data: { ApplicationId: application.Id },
+                        data: { Id: application.Id },
                         async: false,
                         success: function (imgs) {
                             Vue.nextTick(function () {
                                 let applicationImgs = [];
                                 imgs.forEach(function (img) {
-                                    applicationImgs.push(img);
+                                    applicationImgs.push('data:image/png;base64, ' + img);
                                 });
                                 application.imgs = applicationImgs;
                                 application.IsOpened = !application.IsOpened;
-                                console.log(application.imgs);
                             });
 
                         }

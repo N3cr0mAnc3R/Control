@@ -66,7 +66,7 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public IEnumerable<FileStreamDownload> GetFileStream(int applicationId)
+        public List<string> GetFileStream(int applicationId)
         {
 
             //Используется более оптимальный по быстродействию, но пока костыльный подход 
@@ -77,17 +77,18 @@ namespace WebApp.Models.Managers
             {
 
 
-                    IDbTransaction trn = cnt.BeginTransaction();
-                    try
-                    {
+                IDbTransaction trn = cnt.BeginTransaction();
+                try
+                {
                     //Может быть залезть внутрь и вообще биндинг еще сделать для MvcResultSqlFileStream 
                     IEnumerable<FileStreamDownload> filestreams = cnt.Query<FileStreamDownload>(
                         "dbo.GetApplicationImages",
                         new { ApplicationId = applicationId },
                         trn,
                         commandType: CommandType.StoredProcedure);
+                    List<string> imgs = new List<string>();
                     List<MvcResultSqlFileStream> listOfSreams = new List<MvcResultSqlFileStream>();
-                    foreach(FileStreamDownload fileStream in filestreams)
+                    foreach (FileStreamDownload fileStream in filestreams)
                     {
                         MvcResultSqlFileStream stream = new MvcResultSqlFileStream()
                         {
@@ -95,12 +96,15 @@ namespace WebApp.Models.Managers
                             SqlStream = new SqlFileStream(fileStream.FileStreamPath, fileStream.FileStreamContext, FileAccess.Read),
                             Transaction = trn
                         };
+                        byte[] data = new byte[(int)stream.Length];
+                        stream.Read(data, 0, data.Length);
+                        imgs.Add(Convert.ToBase64String(data));
                         fileStream.Stream = stream;
 
-                        
+
                     }
                     trn = null;
-                    return filestreams;
+                    return imgs;
                 }
                 finally
                 {
