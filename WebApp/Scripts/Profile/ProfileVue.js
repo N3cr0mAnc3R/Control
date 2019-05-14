@@ -51,7 +51,7 @@
 								app.GetApplicationImages(application);
 								application.IsOpened = false;
 								app.applications.push(application);
-
+								console.log(application)
 							});
 						});
 
