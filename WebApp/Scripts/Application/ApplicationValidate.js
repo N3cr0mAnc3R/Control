@@ -2,6 +2,7 @@
     el: "#form",
     data: {
         Text: "",
+        Title: "",
         Files: [],
         Errors: [],
         departmentId: 1,
@@ -55,6 +56,7 @@
                 console.log(app.Files);
                 var ajaxData = new FormData();
                 ajaxData.append('Text', app.Text);
+                ajaxData.append('Title', app.Title);
                 ajaxData.append('ReasonId', app.reasonId);
                 ajaxData.append('Longitude', app.coordinates[1]);
                 ajaxData.append('Latitude', app.coordinates[0]);
