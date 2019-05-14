@@ -15,13 +15,14 @@ namespace WebApp.Models.Managers
     {
         public ProfileManager(Concrete concrete) : base(concrete) { }
 
-        public bool CheckAccess(int Id,string UserId)
+        public bool CheckAccess(int Id, string UserId)
         {
             using (var cnt = Concrete.OpenConnection())
             {
                 return cnt.Query<bool>(
                     sql: "dbo.CheckAccess",
-                    param: new {
+                    param: new
+                    {
                         Id,
                         UserId
                     },
@@ -45,37 +46,49 @@ namespace WebApp.Models.Managers
 
             }
         }
-        public List<CommentModel> SelectCommentsByApplicationId(int ApplicationId)
+        public dynamic SelectCommentsByApplicationId(int ApplicationId, int Offset)
         {
+
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<CommentModel>(
-                    sql: "dbo.SelectCommentsByApplicationId",
-                    param: new
-                    {
-                        ApplicationId
-                    },
-                    commandType: CommandType.StoredProcedure
-                ).ToList();
-
-            }
-        }
-        public void AddComment( string UserId,int ApplicationId,string Text,int? ParentCommentId)
-        {
-
-            using (var cnt =  Concrete.OpenConnection())
-            {
-                 cnt.Execute(
-                     sql: "AddComment",
-                     commandType: CommandType.StoredProcedure,
+                List<CommentModel> comments;
+                int commentNumber;
+                using (var multi = cnt.QueryMultiple(
+                      sql: "dbo.Select10CommentsByApplicationId",
                       param: new
                       {
-                          UserId,
                           ApplicationId,
-                          Text,
-                          ParentCommentId
-                      }
-                     );
+                          Offset 
+                      },
+                      commandType: CommandType.StoredProcedure
+                  ))
+                {
+                    comments = multi.Read<CommentModel>().ToList();
+                    commentNumber = multi.Read<int>().First();
+                }
+                return new
+                {
+                    Comments = comments,
+                    CommentNumber = commentNumber
+                };
+            }
+        }
+        public void AddComment(string UserId, int ApplicationId, string Text, int? ParentCommentId)
+        {
+
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "AddComment",
+                    commandType: CommandType.StoredProcedure,
+                     param: new
+                     {
+                         UserId,
+                         ApplicationId,
+                         Text,
+                         ParentCommentId
+                     }
+                    );
             }
 
         }

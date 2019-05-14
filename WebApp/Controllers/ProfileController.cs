@@ -34,9 +34,9 @@ namespace WebApp.Controllers
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
         }
         [HttpPost]
-        public JsonResult SelectCommentsByApplicationId (int ApplicationId)
+        public JsonResult SelectCommentsByApplicationId (int ApplicationId, int Offset=1)
         {
-            return Json(ProfileManager.SelectCommentsByApplicationId(ApplicationId));
+            return Json(ProfileManager.SelectCommentsByApplicationId(ApplicationId, Offset));
         }
         [HttpPost]
         public void AddComment( int ApplicationId, string Text, int? ParentCommentId)
