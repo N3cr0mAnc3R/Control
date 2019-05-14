@@ -51,7 +51,7 @@
 								app.GetApplicationImages(application);
 								application.IsOpened = false;
 								app.applications.push(application);
-								console.log(application)
+								console.log(application);
 							});
 						});
 
@@ -96,7 +96,7 @@
 								console.log(obj.CommentNumber);
 
 								application.commentPagesNumber = parseInt(obj.CommentNumber / 10);
-
+								console.log("SelectCommentsByApplicationId");
 							});
 
 						}
