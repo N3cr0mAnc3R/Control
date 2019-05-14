@@ -51,7 +51,7 @@
 								app.GetApplicationImages(application);
 								application.IsOpened = false;
 								app.applications.push(application);
-
+								console.log(application)
 							});
 						});
 
@@ -59,7 +59,6 @@
 				});
 			},
 			GetApplicationImages: function (application) {
-				if (!application.IsOpened) {
 					$.ajax({
 						url: "/application/GetApplicationImages",
 						type: "POST",
@@ -72,15 +71,11 @@
 									applicationImgs.push('data:image/png;base64, ' + img);
 								});
 								application.imgs = applicationImgs;
-								application.IsOpened = !application.IsOpened;
+								
 							});
 
 						}
 					});
-				}
-				else {
-					application.IsOpened = !application.IsOpened;
-				}
 			},
 
 			SelectCommentsByApplicationId: function (application, offset = 1) {
