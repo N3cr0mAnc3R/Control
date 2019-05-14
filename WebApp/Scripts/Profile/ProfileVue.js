@@ -48,8 +48,10 @@
 
 							console.log(applications);
 							applications.forEach(function (application) {
+								app.GetApplicationImages(application);
 								application.IsOpened = false;
 								app.applications.push(application);
+
 							});
 						});
 
@@ -81,22 +83,25 @@
 				}
 			},
 
-			SelectCommentsByApplicationId: function (application) {
+			SelectCommentsByApplicationId: function (application, offset = 1) {
 				if (!application.IsOpened) {
 					$.ajax({
 						url: "/profile/SelectCommentsByApplicationId",
 						type: "POST",
-						data: { ApplicationId: application.Id },
+						data: { ApplicationId: application.Id, Offset: offset },
 						async: false,
-						success: function (comments) {
+						success: function (obj) {
 							Vue.nextTick(function () {
 								let applicationComments = [];
-								comments.forEach(function (comment) {
+								obj.Comments.forEach(function (comment) {
 									applicationComments.push(comment);
 								});
 								application.comments = applicationComments;
 								application.IsOpened = !application.IsOpened;
-								console.log(application.comments);
+								console.log(obj.CommentNumber);
+
+								application.commentPagesNumber = parseInt(obj.CommentNumber / 10);
+
 							});
 
 						}
@@ -107,9 +112,12 @@
 				}
 			}
 
+
 		},
+
 		beforeMount() {
 			this.selectApplicationsByUserId();
+		
 		}
 
 
