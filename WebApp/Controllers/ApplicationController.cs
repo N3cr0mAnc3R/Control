@@ -52,6 +52,12 @@ namespace WebApp.Controllers
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
+        public JsonResult GetApplicationImages(int Id)
+        {
+            return Json(ApplicationManager.GetFileStream(Id));
+
+        }
+
         public JsonResult FileUpload(UploadFile uploadFile, int applicationId )
         {
             if (ModelState.IsValid)
