@@ -469,35 +469,35 @@ namespace WebApp.Controllers
             }
             return View();
         }
-        //public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id, string email, string username, string phineNumber, string provider)
-        //{
-        //    if (user_id != null)
-        //    {
-        //        ApplicationUser user = UserManager.FindByEmail(email);
-        //        if (user == null)
-        //        {
-        //            user = new ApplicationUser()
-        //            {
-        //                Email = email,
-        //                UserName = email,
+        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id, string email, string username, string phineNumber, string provider)
+        {
+            if (user_id != null)
+            {
+                ApplicationUser user = UserManager.FindById(ApplicationManager.GetUserIdFromThirdPartyAuth((int)user_id, provider));
+                //    if (user == null)
+                //    {
+                //        user = new ApplicationUser()
+                //        {
+                //            Email = email,
+                //            UserName = email,
 
-        //            };
+                //        };
 
-        //            IdentityResult result = UserManager.Create(user);
-        //            if (!result.Succeeded)
-        //            {
-        //                return Redirect("/account/login");
-        //            }
-        //        }
-        //        ApplicationManager.AddNewUser(user.Id);
-        //        ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                //        IdentityResult result = UserManager.Create(user);
+                //        if (!result.Succeeded)
+                //        {
+                //            return Redirect("/account/login");
+                //        }
+                //    }
+                //    ApplicationManager.AddNewUser(user.Id);
+                //    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-        //        AuthenticationManager.SignOut();
-        //        AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
-        //        return Redirect("/application/getapplication");
-        //    }
-        //    return View();
-        //}
+                //    AuthenticationManager.SignOut();
+                //    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                return Redirect("/application/getapplication");
+            }
+            return View();
+        }
         //[AllowAnonymous]
         //[HttpGet]
         //public async Task<JsonResult> Login(string access_token, int expires_in, int user_id, string email)
