@@ -440,6 +440,19 @@ namespace WebApp.Controllers
                 ConfigurationManager.AppSettings["vk:version"]);
             return Json(url);
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<JsonResult> GetOkInfo()
+        {
+            string[] scope = new string[] { "email" };
+            string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
+                ConfigurationManager.AppSettings["ok:clientId"],
+                String.Join(",", scope),
+                ConfigurationManager.AppSettings["ok:redirect_uri"]);
+            return Json(url);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AuthVk(string access_token, int? expires_in, int? user_id, string email)
@@ -470,6 +483,9 @@ namespace WebApp.Controllers
             }
             return View();
         }
+
+        [AllowAnonymous]
+        [HttpGet]
         public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id,
                                            string email, string provider)
         {
