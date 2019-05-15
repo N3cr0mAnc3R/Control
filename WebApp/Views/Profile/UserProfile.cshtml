@@ -1,23 +1,23 @@
 ﻿
 @{
-    ViewBag.Title = "UserProfile";
+	ViewBag.Title = "UserProfile";
 }
 
 <section id="main-section" v-loader="objForLoading">
-    <section>
-        <div class="custom-container">
-            <div class="user-info">
-                <div class="left">
-                    <div class="img-holder">
-                        <img src="https://astrafarm.com/images/antoha.jpg" alt="Alternate Text" />
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="custom-container">
-                        <p class="title">Пользователь</p>
-                        <ul>
-                            <li>возраст: 25</li>
-                            <li>mail: mail@mail.ru</li>
+	<section>
+		<div class="custom-container">
+			<div class="user-info">
+				<div class="left">
+					<div class="img-holder">
+						<img src="https://astrafarm.com/images/antoha.jpg" alt="Alternate Text" />
+					</div>
+				</div>
+				<div class="right">
+					<div class="custom-container">
+						<p class="title">Пользователь</p>
+						<ul>
+							<li>возраст: 25</li>
+							<li>mail: mail@mail.ru</li>
 
 						</ul>
 					</div>
@@ -33,12 +33,12 @@
 			</ul>
 		</nav>
 	</div>
-	<section >
+	<section>
 		<div class="custom-container">
 
-            <section id="applications">
-                <div v-for="app in applications">
-                    <div class="application">
+			<section id="applications">
+				<div v-for="app in applications">
+					<div class="application">
 
 
 
@@ -80,50 +80,57 @@
 							</div>
 
 						</div>
-                        <section class="comments" v-if="app.IsOpened">
-                            <div v-for="com in app.comments" class="comment">
-                                <div class="custom-container">
-                                    <div class="img-holder">
-                                        <img src="https://cdn.fishki.net/upload/post/2018/04/19/2575367/tn/483dffd1599856089e91fa679bbc64df.jpg" alt="Alternate Text" />
-                                    </div>
-                                    <div class="comment-text">
-                                        <p class="comment-author">Автор</p>
-                                        <p>{{com.Text}}</p>
-                                        <p><small>30.04.19 19:00</small> <a href="#">ответить</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="custom-container ">
-                                <div class="form-inline form-group mt-4">
+						<section class="comments" v-if="app.IsOpened">
+							<div v-for="com in app.comments" class="comment">
+								<div class="custom-container">
+									<div class="img-holder">
+										<img src="https://cdn.fishki.net/upload/post/2018/04/19/2575367/tn/483dffd1599856089e91fa679bbc64df.jpg" alt="Alternate Text" />
+									</div>
+									<div class="comment-text">
+										<p class="comment-author">Автор</p>
+										<p>{{com.Text}}</p>
+										<p><small>30.04.19 19:00</small> <a href="#">ответить</a></p>
+									</div>
+								</div>
+							</div>
+							<div class="custom-container ">
+								<div class="form-inline form-group mt-4">
 
-                                    <textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
+									<textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
 
-                                    <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top:  23.5px ; padding-bottom:23px">></button>
-                                </div>
-								
-                                <span v-if=" app.commentPagesNumber>1" v-for="number in app.commentPagesNumber"  v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
-                                @*<span v-if=" app.commentPagesNumber>5&&app.commentPagesNumber<10" v-for="number in app.commentPagesNumber"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>*@
+									<button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top:  23.5px ; padding-bottom:23px">></button>
+								</div>
 
-                            </div>
+								<span v-if=" app.commentPagesNumber>1 && app.commentPagesNumber<7" v-for="number in app.commentPagesNumber" v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
+								@* больше 6 страниц и выбрана 1 или последняя *@
+								<div v-if =" app.commentPagesNumber>6 ">
+									<span v-if=" (app.currentCommentPageNumber <=3 ||app.currentCommentPageNumber===app.commentPagesNumber) && number<=3"
+										  v-for="number in app.commentPagesNumber" v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
+									<span>...</span>
+									<span v-if="number>=app.commentPagesNumber-2"
+										  v-for="number in app.commentPagesNumber" v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
+							</div>
 
-                        </section>
-                        <div class="application-control">
-                            <div class="comment-button-holder">
-                                <small v-on:click="toggleComments(app.Id)">
-                                    <span v-if="!app.IsOpened">показать комментарии</span>
-                                    <span v-if="app.IsOpened">скрыть комментарии</span>
-                                </small>
-                            </div>
-                            <div class="buttons">
-                                <button class="button button-primary">Изменить</button>
-                                <button class="button button-secondary">Удалить</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </section>
+					</div>
+
+			</section>
+			<div class="application-control">
+				<div class="comment-button-holder">
+					<small v-on:click="toggleComments(app.Id)">
+						<span v-if="!app.IsOpened">показать комментарии</span>
+						<span v-if="app.IsOpened">скрыть комментарии</span>
+					</small>
+				</div>
+				<div class="buttons">
+					<button class="button button-primary">Изменить</button>
+					<button class="button button-secondary">Удалить</button>
+				</div>
+			</div>
+		</div>
+		</div>
+	</section>
+	</div>
+</section>
 </section>
 <script src="~/Scripts/Profile/ProfileVue.js"></script>
 @*<script>$('.carousel').carousel()</script>*@
