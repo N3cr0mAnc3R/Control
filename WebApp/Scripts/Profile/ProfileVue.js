@@ -73,9 +73,28 @@
                         self.$set(application, 'imgs', applicationImgs);
                     }
                 });
-            },
-
-            SelectCommentsByApplicationId: function (application, offset = 1) {
+			},
+			ChangePageNumber: function (appId, offset) {
+				
+				let appl = app.applications.find(a => a.Id === appId);
+				appl.comments = [];
+				$.ajax({
+					url: "/profile/SelectCommentsByApplicationId",
+					type: "POST",
+					data: { ApplicationId: appl.Id, Offset: offset },
+					async: false,
+					success: function (obj) {
+						let applicationComments = [];
+						obj.Comments.forEach(function (comment) {
+							applicationComments.push(comment);
+						});
+						app.$set(appl, 'comments', applicationComments);
+						//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+					
+					}
+				});
+			},
+			SelectCommentsByApplicationId: function (application, offset) {
                 if (!application.IsOpened) {
                     $.ajax({
                         url: "/profile/SelectCommentsByApplicationId",
@@ -89,10 +108,10 @@
                             });
                             app.$set(application, 'comments', applicationComments);
                             application.IsOpened = !application.IsOpened;
-                            console.log(obj.CommentNumber);
+                            
 
                             app.$set(application, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
-                            console.log("SelectCommentsByApplicationId");
+                           
                         }
                     });
                 }
