@@ -469,31 +469,44 @@ namespace WebApp.Controllers
             }
             return View();
         }
-        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id, string email, string username, string phineNumber, string provider)
+        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id, string email, string username, string phoneNumber, string provider)
         {
             if (user_id != null)
             {
                 ApplicationUser user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth((int)user_id, provider));
-                //    if (user == null)
-                //    {
-                //        user = new ApplicationUser()
-                //        {
-                //            Email = email,
-                //            UserName = email,
+                if (user == null)
+                {
+                    if (email != "")
+                    {
+                        user = new ApplicationUser()
+                        {
+                            Email = email,
+                            UserName = phoneNumber,
+                            PhoneNumber = phoneNumber
+                        };
+                    }
+                    else
+                    {
+                        user = new ApplicationUser()
+                        {
+                            Email = email,
+                            UserName = email,
+                            PhoneNumber = phoneNumber
+                        };
+                    }
+                    
+                    IdentityResult result = UserManager.Create(user);
+                    if (!result.Succeeded)
+                    {
+                        return Redirect("/account/login");
+                    }
+                }
+                AccountManager.AddNewUser(user.Id);
+                AccountManager.AddThirdPartyAuth(user.Id, (int)user_id, provider);
+                ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-                //        };
-
-                //        IdentityResult result = UserManager.Create(user);
-                //        if (!result.Succeeded)
-                //        {
-                //            return Redirect("/account/login");
-                //        }
-                //    }
-                //    ApplicationManager.AddNewUser(user.Id);
-                //    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-
-                //    AuthenticationManager.SignOut();
-                //    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                AuthenticationManager.SignOut();
+                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
                 return Redirect("/application/getapplication");
             }
             return View();
