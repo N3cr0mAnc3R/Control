@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WebApp.Models;
 using WebApp.Models.Managers;
 
@@ -469,7 +470,8 @@ namespace WebApp.Controllers
             }
             return View();
         }
-        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id, string email, string username, string phoneNumber, string provider)
+        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id,
+                                           string email, string provider)
         {
             if (user_id != null)
             {
@@ -481,17 +483,15 @@ namespace WebApp.Controllers
                         user = new ApplicationUser()
                         {
                             Email = email,
-                            UserName = phoneNumber,
-                            PhoneNumber = phoneNumber
+                            UserName = email,
+                            
                         };
                     }
                     else
                     {
                         user = new ApplicationUser()
                         {
-                            Email = email,
-                            UserName = email,
-                            PhoneNumber = phoneNumber
+                            UserName = Membership.GeneratePassword(8,0)
                         };
                     }
                     
