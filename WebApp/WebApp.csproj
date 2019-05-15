@@ -211,6 +211,7 @@
     <Compile Include="Models\FileTypesAttribute.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IndexType.cs" />
+    <Compile Include="Models\Managers\AccountManager.cs" />
     <Compile Include="Models\Managers\ApplicationManager.cs" />
     <Compile Include="Models\Managers\Manager.cs" />
     <Compile Include="Models\Managers\NewsManager.cs" />

@@ -30,10 +30,7 @@ namespace WebApp
             });
 
 
-            //app.CreatePerOwinContext<AccountManager>((IdentityFactoryOptions<AccountManager> options, IOwinContext context) =>
-            //{
-            //    return new AccountManager(context.Get<Concrete>());
-            //});
+
 
 
         }

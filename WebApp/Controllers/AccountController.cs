@@ -157,7 +157,7 @@ namespace WebApp.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    ApplicationManager.AddNewUser(user.Id);
+                    AccountManager.AddNewUser(user.Id);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // Дополнительные сведения о включении подтверждения учетной записи и сброса пароля см. на странице https://go.microsoft.com/fwlink/?LinkID=320771.
@@ -460,7 +460,7 @@ namespace WebApp.Controllers
                         return Redirect("/account/login");
                     }
                 }
-                ApplicationManager.AddNewUser(user.Id);
+                AccountManager.AddNewUser(user.Id);
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                 AuthenticationManager.SignOut();
@@ -594,6 +594,13 @@ namespace WebApp.Controllers
             get
             {
                 return Request.GetOwinContext().Get<ApplicationManager>();
+            }
+        }
+        protected AccountManager AccountManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<AccountManager>();
             }
         }
     }

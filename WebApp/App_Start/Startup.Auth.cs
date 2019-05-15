@@ -1,4 +1,5 @@
 ﻿using System;
+using DarkSide;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -6,6 +7,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using WebApp.Models;
+using WebApp.Models.Managers;
 
 namespace WebApp
 {
@@ -34,7 +36,11 @@ namespace WebApp
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
+            app.CreatePerOwinContext<AccountManager>((IdentityFactoryOptions<AccountManager> options, IOwinContext context) =>
+            {
+                return new AccountManager(context.Get<Concrete>());
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Позволяет приложению временно хранить информацию о пользователе, пока проверяется второй фактор двухфакторной проверки подлинности.

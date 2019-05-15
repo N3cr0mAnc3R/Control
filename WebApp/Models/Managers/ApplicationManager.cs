@@ -28,44 +28,6 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public void AddNewUser(string id)
-        {
-            using (var cnt = Concrete.OpenConnection())
-            {
-                cnt.Execute(
-                    sql: "dbo.AddNewUser",
-                    param: new { UserId = id },
-                    commandType: CommandType.StoredProcedure
-                );
-
-            }
-        }
-
-        public void AddThirdPartyAuth( string userId,string thirdPartyId, string provider)
-        {
-            using (var cnt = Concrete.OpenConnection())
-            {
-                cnt.Execute(
-                    sql: "dbo.AddThirdPartyAuth",
-                    param: new { ThirdPartyId = thirdPartyId, UserId = userId, Provider = provider },
-                    commandType: CommandType.StoredProcedure
-                );
-
-            }
-        }
-
-        public string GetUserIdFromThirdPartyAuth(int id)
-        {
-            using (var cnt = Concrete.OpenConnection())
-            {
-                return cnt.Query<string>(
-                    sql: "dbo.GetUserIdFromThirdPartyAuth",
-                    param: new { DepartmentId = id },
-                    commandType: CommandType.StoredProcedure
-                ).First();
-
-            }
-        }
 
         public IEnumerable<IndexType> GetReasonsByDepartment(int id)
         {
