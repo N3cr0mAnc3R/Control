@@ -29,7 +29,8 @@
                     data: { ApplicationId: applicationId, Text: app.comment },
                     success: function () {
                         let appl = app.applications.find(a => a.Id === applicationId);
-                        appl.IsOpened = false;//немного костыля  
+						appl.IsOpened = false;//немного костыля  
+						appl.currentCommentPageNumber = 1;//немного костыля  
                         app.SelectCommentsByApplicationId(appl);
                     }
                 }
@@ -49,10 +50,12 @@
                     success: function (applications) {
                             applications.forEach(function (application) {
                                 self.GetApplicationImages(application);
-                                application.IsOpened = false;
+								application.IsOpened = false;
+								application.currentCommentPageNumber = 1;
                                 self.applications.push(application);
-                                console.log(application);
-                            });
+                                
+						});
+
                         self.objForLoading.loading = false;
                         self.objForLoading.loaded = true;
                     }
@@ -89,6 +92,7 @@
 							applicationComments.push(comment);
 						});
 						app.$set(appl, 'comments', applicationComments);
+						app.$set(appl, 'currentCommentPageNumber', offset);
 						//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
 					
 					}
@@ -110,7 +114,7 @@
                             application.IsOpened = !application.IsOpened;
                             
 
-                            app.$set(application, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+							app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 10));
                            
                         }
                     });

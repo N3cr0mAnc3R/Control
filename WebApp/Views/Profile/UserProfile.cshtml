@@ -100,8 +100,10 @@
 
                                     <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top:  23.5px ; padding-bottom:23px">></button>
                                 </div>
+								
+                                <span v-if=" app.commentPagesNumber>1" v-for="number in app.commentPagesNumber"  v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
+                                @*<span v-if=" app.commentPagesNumber>5&&app.commentPagesNumber<10" v-for="number in app.commentPagesNumber"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>*@
 
-                                <span v-for="number in app.commentPagesNumber"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
                             </div>
 
                         </section>

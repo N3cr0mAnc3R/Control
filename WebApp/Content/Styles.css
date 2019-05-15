@@ -256,6 +256,9 @@ nav li {
   cursor: pointer;
 }
 /************/
+.currentCommentPageNumber {
+  color: #3aa0fe;
+}
 /****************/
 footer {
   padding: 20px;
