@@ -81,9 +81,6 @@
 
 						</div>
                         <section class="comments" v-if="app.IsOpened">
-                            <div v-for="img in app.imgs">
-                                <img v-bind:src="img" alt="Red dot" width="100" height="100" />
-                            </div>
                             <div v-for="com in app.comments" class="comment">
                                 <div class="custom-container">
                                     <div class="img-holder">
@@ -103,8 +100,10 @@
 
                                     <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top:  23.5px ; padding-bottom:23px">></button>
                                 </div>
+								
+                                <span v-if=" app.commentPagesNumber>1" v-for="number in app.commentPagesNumber"  v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
+                                @*<span v-if=" app.commentPagesNumber>5&&app.commentPagesNumber<10" v-for="number in app.commentPagesNumber"  v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>*@
 
-                                <span v-for="number in app.commentPagesNumber">{{number}}</span>
                             </div>
 
                         </section>

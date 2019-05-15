@@ -29,7 +29,8 @@
                     data: { ApplicationId: applicationId, Text: app.comment },
                     success: function () {
                         let appl = app.applications.find(a => a.Id === applicationId);
-                        appl.IsOpened = false;//немного костыля  
+						appl.IsOpened = false;//немного костыля  
+						appl.currentCommentPageNumber = 1;//немного костыля  
                         app.SelectCommentsByApplicationId(appl);
                     }
                 }
@@ -49,10 +50,12 @@
                     success: function (applications) {
                             applications.forEach(function (application) {
                                 self.GetApplicationImages(application);
-                                application.IsOpened = false;
+								application.IsOpened = false;
+								application.currentCommentPageNumber = 1;
                                 self.applications.push(application);
-                                console.log(application);
-                            });
+                                
+						});
+
                         self.objForLoading.loading = false;
                         self.objForLoading.loaded = true;
                     }
@@ -73,9 +76,29 @@
                         self.$set(application, 'imgs', applicationImgs);
                     }
                 });
-            },
-
-            SelectCommentsByApplicationId: function (application, offset = 1) {
+			},
+			ChangePageNumber: function (appId, offset) {
+				
+				let appl = app.applications.find(a => a.Id === appId);
+				appl.comments = [];
+				$.ajax({
+					url: "/profile/SelectCommentsByApplicationId",
+					type: "POST",
+					data: { ApplicationId: appl.Id, Offset: offset },
+					async: false,
+					success: function (obj) {
+						let applicationComments = [];
+						obj.Comments.forEach(function (comment) {
+							applicationComments.push(comment);
+						});
+						app.$set(appl, 'comments', applicationComments);
+						app.$set(appl, 'currentCommentPageNumber', offset);
+						//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+					
+					}
+				});
+			},
+			SelectCommentsByApplicationId: function (application, offset) {
                 if (!application.IsOpened) {
                     $.ajax({
                         url: "/profile/SelectCommentsByApplicationId",
@@ -89,10 +112,10 @@
                             });
                             app.$set(application, 'comments', applicationComments);
                             application.IsOpened = !application.IsOpened;
-                            console.log(obj.CommentNumber);
+                            
 
-                            app.$set(application, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
-                            console.log("SelectCommentsByApplicationId");
+							app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 10));
+                           
                         }
                     });
                 }
