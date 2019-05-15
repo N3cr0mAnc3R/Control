@@ -28,18 +28,6 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public void AddNewUser(string id)
-        {
-            using (var cnt = Concrete.OpenConnection())
-            {
-                cnt.Execute(
-                    sql: "dbo.AddNewUser",
-                    param: new { UserId = id },
-                    commandType: CommandType.StoredProcedure
-                );
-
-            }
-        }
 
         public IEnumerable<IndexType> GetReasonsByDepartment(int id)
         {
