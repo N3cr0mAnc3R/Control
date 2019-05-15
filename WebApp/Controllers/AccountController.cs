@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WebApp.Models;
 using WebApp.Models.Managers;
 
@@ -439,6 +440,19 @@ namespace WebApp.Controllers
                 ConfigurationManager.AppSettings["vk:version"]);
             return Json(url);
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<JsonResult> GetOkInfo()
+        {
+            string[] scope = new string[] { "email" };
+            string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
+                ConfigurationManager.AppSettings["ok:clientId"],
+                String.Join(",", scope),
+                ConfigurationManager.AppSettings["ok:redirect_uri"]);
+            return Json(url);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AuthVk(string access_token, int? expires_in, int? user_id, string email)
@@ -469,31 +483,46 @@ namespace WebApp.Controllers
             }
             return View();
         }
-        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id, string email, string username, string phineNumber, string provider)
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id,
+                                           string email, string provider)
         {
             if (user_id != null)
             {
                 ApplicationUser user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth((int)user_id, provider));
-                //    if (user == null)
-                //    {
-                //        user = new ApplicationUser()
-                //        {
-                //            Email = email,
-                //            UserName = email,
+                if (user == null)
+                {
+                    if (email != "")
+                    {
+                        user = new ApplicationUser()
+                        {
+                            Email = email,
+                            UserName = email,
+                            
+                        };
+                    }
+                    else
+                    {
+                        user = new ApplicationUser()
+                        {
+                            UserName = Membership.GeneratePassword(8,0)
+                        };
+                    }
+                    
+                    IdentityResult result = UserManager.Create(user);
+                    if (!result.Succeeded)
+                    {
+                        return Redirect("/account/login");
+                    }
+                }
+                AccountManager.AddNewUser(user.Id);
+                AccountManager.AddThirdPartyAuth(user.Id, (int)user_id, provider);
+                ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-                //        };
-
-                //        IdentityResult result = UserManager.Create(user);
-                //        if (!result.Succeeded)
-                //        {
-                //            return Redirect("/account/login");
-                //        }
-                //    }
-                //    ApplicationManager.AddNewUser(user.Id);
-                //    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-
-                //    AuthenticationManager.SignOut();
-                //    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                AuthenticationManager.SignOut();
+                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
                 return Redirect("/application/getapplication");
             }
             return View();

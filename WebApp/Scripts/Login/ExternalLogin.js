@@ -2,7 +2,8 @@
     el: "#socialLoginForm",
     data: {
         Text: "",
-        vkinfo: ""
+        vkinfo: "",
+        okinfo: ""
     },
     methods: {
 
@@ -21,6 +22,23 @@
                 }
             });
         }
+
+    GetOkVnfo: function () {
+            $.ajax({
+                url: "/Account/GetOkInfo",
+                type: "POST",
+                async: false,
+
+                success: function (info) {
+                    Vue.nextTick(function () {
+                        app.okinfo = info;
+                        console.log(app.okinfo);
+
+                    });
+                }
+            });
+        }
+     
     },
     beforeMount() {
         var str = window.location.href;
