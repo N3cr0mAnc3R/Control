@@ -103,13 +103,14 @@
 
 								<span v-if=" app.commentPagesNumber>1 && app.commentPagesNumber<7" v-for="number in app.commentPagesNumber" v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
 								@* больше 6 страниц и выбрана 1 или последняя *@
-								<div v-if =" app.commentPagesNumber>6 ">
-									<span v-if=" (app.currentCommentPageNumber <=3 ||app.currentCommentPageNumber===app.commentPagesNumber) && number<=3"
+								<div v-if=" app.commentPagesNumber>6 ">
+									@* текущая страница больше totalколичества-1 и текущая страница меньше totalколичества +1  *@
+									<span v-if=" ((app.currentCommentPageNumber >= app.commentPagesNumber-1 && app.currentCommentPageNumber <= app.commentPagesNumber+1) "
 										  v-for="number in app.commentPagesNumber" v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
 									<span>...</span>
 									<span v-if="number>=app.commentPagesNumber-2"
 										  v-for="number in app.commentPagesNumber" v-bind:class="{ 'currentCommentPageNumber': number ===app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</span>
-							</div>
+								</div>
 
 					</div>
 
