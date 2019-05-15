@@ -38,13 +38,13 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public string GetUserIdFromThirdPartyAuth(int id)
+        public string GetUserIdFromThirdPartyAuth(int thirdPartyId, string provider)
         {
             using (var cnt = Concrete.OpenConnection())
             {
                 return cnt.Query<string>(
                     sql: "dbo.GetUserIdFromThirdPartyAuth",
-                    param: new { DepartmentId = id },
+                    param: new { ThirdPartyId = thirdPartyId, Provider = provider },
                     commandType: CommandType.StoredProcedure
                 ).First();
 

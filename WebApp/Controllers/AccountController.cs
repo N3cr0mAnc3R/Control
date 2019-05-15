@@ -473,7 +473,7 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
-                ApplicationUser user = UserManager.FindById(ApplicationManager.GetUserIdFromThirdPartyAuth((int)user_id, provider));
+                ApplicationUser user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth((int)user_id, provider));
                 //    if (user == null)
                 //    {
                 //        user = new ApplicationUser()
