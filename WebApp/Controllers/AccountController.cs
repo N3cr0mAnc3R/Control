@@ -435,7 +435,7 @@ namespace WebApp.Controllers
             string[] scope = new string[] { "email" };
             string url = string.Format("https://oauth.vk.com/authorize?client_id={0}&redirect_uri={1}&display={2}&scope={3}&response_type=token&v={4}",
                 ConfigurationManager.AppSettings["vk:clientId"],
-                ConfigurationManager.AppSettings["vk:redirect_uri"],
+                ConfigurationManager.AppSettings["vk:redirect_uri1"],
                 ConfigurationManager.AppSettings["vk:display"], String.Join(",", scope),
                 ConfigurationManager.AppSettings["vk:version"]);
             return Json(url);
@@ -443,7 +443,7 @@ namespace WebApp.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<JsonResult> GetOkInfo()
+        public JsonResult GetOkInfo()
         {
             string[] scope = new string[] { "GET_EMAIL" };
             string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
@@ -452,6 +452,28 @@ namespace WebApp.Controllers
                 ConfigurationManager.AppSettings["ok:redirect_uri"]);
             return Json(url);
         }
+        public JsonResult GetOkToken(string code)
+        {
+            string[] scope = new string[] { "GET_EMAIL" };
+            string url = string.Format("https://api.ok.ru/oauth/token.do?code={0}&client_id={1}&client_secret={2}&redirect_uri={3}&grant_type=refresh_token",
+                code,
+                ConfigurationManager.AppSettings["ok:clientId"],
+                ConfigurationManager.AppSettings["ok:clientSecret"],
+                 ConfigurationManager.AppSettings["ok:redirect_uri"]);
+            return Json(url);
+        }
+        public JsonResult RedirectOk(string code = "")
+        {
+            if (code == "")
+            {
+                return GetOkInfo();
+            }
+            else
+            {
+                return GetOkToken(code);
+            }
+        } 
+
 
         [AllowAnonymous]
         [HttpGet]

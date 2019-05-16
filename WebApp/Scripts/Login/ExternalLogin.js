@@ -25,10 +25,10 @@
 
         GetOkInfo: function () {
             $.ajax({
-                url: "/Account/GetOkInfo",
+                url: "/Account/RedirectOk",
                 type: "POST",
                 async: false,
-
+                //data: { code: "" },
                 success: function (info) {
                     Vue.nextTick(function () {
                         app.okinfo = info;
