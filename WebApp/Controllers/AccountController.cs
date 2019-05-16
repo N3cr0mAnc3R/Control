@@ -450,7 +450,7 @@ namespace WebApp.Controllers
                 ConfigurationManager.AppSettings["ok:clientId"],
                 String.Join(",", scope),
                 ConfigurationManager.AppSettings["ok:redirect_uri"]);
-            return Json(url);
+            return Json(url, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetOkToken(string code)
         {
@@ -460,8 +460,9 @@ namespace WebApp.Controllers
                 ConfigurationManager.AppSettings["ok:clientId"],
                 ConfigurationManager.AppSettings["ok:clientSecret"],
                  ConfigurationManager.AppSettings["ok:redirect_uri"]);
-            return Json(url);
+            return Json(url, JsonRequestBehavior.AllowGet);
         }
+        [AllowAnonymous]
         public JsonResult RedirectOk(string code = "")
         {
             if (code == "")

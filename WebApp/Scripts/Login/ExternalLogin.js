@@ -26,7 +26,7 @@
         GetOkInfo: function () {
             $.ajax({
                 url: "/Account/RedirectOk",
-                type: "POST",
+                type: "get",
                 async: false,
                 //data: { code: "" },
                 success: function (info) {
