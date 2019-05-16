@@ -445,7 +445,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<JsonResult> GetOkInfo()
         {
-            string[] scope = new string[] { "email" };
+            string[] scope = new string[] { "GET_EMAIL" };
             string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
                 ConfigurationManager.AppSettings["ok:clientId"],
                 String.Join(",", scope),
