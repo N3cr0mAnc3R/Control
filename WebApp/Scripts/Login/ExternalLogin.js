@@ -26,7 +26,7 @@
         GetOkInfo: function () {
             $.ajax({
                 url: "/Account/GetOkInfo",
-                type: "post",
+                type: "POST",
                 async: false,
                 //data: { code: "" },
                 success: function (info) {

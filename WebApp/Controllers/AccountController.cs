@@ -437,7 +437,7 @@ namespace WebApp.Controllers
             string[] scope = new string[] { "email" };
             string url = string.Format("https://oauth.vk.com/authorize?client_id={0}&redirect_uri={1}&display={2}&scope={3}&response_type=token&v={4}",
                 ConfigurationManager.AppSettings["vk:clientId"],
-                ConfigurationManager.AppSettings["vk:redirect_uri1"],
+                ConfigurationManager.AppSettings["vk:redirect_uri"],
                 ConfigurationManager.AppSettings["vk:display"], String.Join(",", scope),
                 ConfigurationManager.AppSettings["vk:version"]);
             return Json(url);
@@ -445,14 +445,14 @@ namespace WebApp.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public JsonResult GetOkInfo()
+        public async Task<JsonResult> GetOkInfo()
         {
             string[] scope = new string[] { "VALUABLE_ACCESS" };
             string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
                 ConfigurationManager.AppSettings["ok:clientId"],
                 String.Join(",", scope),
                 ConfigurationManager.AppSettings["ok:redirect_uri"]);
-            return Json(url, JsonRequestBehavior.AllowGet);
+            return Json(url);
         }
         [AllowAnonymous]
         public ActionResult RedirectOk(string code, string access_token)
