@@ -301,6 +301,7 @@
     <Content Include="Views\Profile\UserProfile.cshtml" />
     <Content Include="Views\Account\AuthVk.cshtml" />
     <Content Include="Views\Account\AuthThirdParty.cshtml" />
+    <Content Include="Views\Account\RedirectOk.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

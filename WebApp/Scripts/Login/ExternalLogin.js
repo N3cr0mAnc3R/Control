@@ -25,8 +25,8 @@
 
         GetOkInfo: function () {
             $.ajax({
-                url: "/Account/RedirectOk",
-                type: "get",
+                url: "/Account/GetOkInfo",
+                type: "post",
                 async: false,
                 //data: { code: "" },
                 success: function (info) {
@@ -42,8 +42,59 @@
     },
     beforeMount() {
         var str = window.location.href;
-        console.log();
-        if (str.indexOf('AuthVk') === -1) {
+        console.log(str.indexOf('token.do'));
+        if (str.indexOf('code') > -1) {
+            console.log(13);
+            var code = str.substring(str.lastIndexOf('code') + 5);
+            $.ajax({
+                url: "/Account/GetOKTokenUrl",
+                type: "post",
+                async: false,
+                data: { code: code },
+                success: function (url) {
+                    Vue.nextTick(function () {
+                        console.log(url);
+                        $.ajax({
+                            url: url,
+                            type: "post",
+                            async: false,
+                            success: function (text) {
+                                Vue.nextTick(function () {
+                                    console.log(text);
+
+                                    $.ajax({
+                                        url: '/account/GetOKUserInfo',
+                                        type: "post",
+                                        async: false,
+                                        data: { access_token: text.access_token },
+                                        success: function (finalUrl) {
+                                            Vue.nextTick(function () {
+
+                                                $.ajax({
+                                                    url: finalUrl,
+                                                    type: "post",
+                                                    async: false,
+                                                    success: function (values) {
+                                                        Vue.nextTick(function () {
+
+                                                            console.log(values);
+
+                                                        });
+                                                    }
+                                                });
+
+                                            });
+                                        }
+                                    });
+
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        }
+        else if (str.indexOf('AuthVk') === -1) {
             this.GetVkInfo();
             this.GetOkInfo();
         }

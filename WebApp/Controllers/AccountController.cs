@@ -5,6 +5,8 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -445,35 +447,55 @@ namespace WebApp.Controllers
         [HttpPost]
         public JsonResult GetOkInfo()
         {
-            string[] scope = new string[] { "GET_EMAIL" };
+            string[] scope = new string[] { "VALUABLE_ACCESS" };
             string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
                 ConfigurationManager.AppSettings["ok:clientId"],
                 String.Join(",", scope),
                 ConfigurationManager.AppSettings["ok:redirect_uri"]);
             return Json(url, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetOkToken(string code)
+        [AllowAnonymous]
+        public ActionResult RedirectOk(string code, string access_token)
         {
-            string[] scope = new string[] { "GET_EMAIL" };
-            string url = string.Format("https://api.ok.ru/oauth/token.do?code={0}&client_id={1}&client_secret={2}&redirect_uri={3}&grant_type=refresh_token",
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult GetOKTokenUrl(string code)
+        {
+            string url = string.Format("https://api.ok.ru/oauth/token.do?code={0}&client_id={1}&client_secret={2}&redirect_uri={3}&grant_type=authorization_code",
                 code,
                 ConfigurationManager.AppSettings["ok:clientId"],
                 ConfigurationManager.AppSettings["ok:clientSecret"],
                  ConfigurationManager.AppSettings["ok:redirect_uri"]);
-            return Json(url, JsonRequestBehavior.AllowGet);
+            return Json(url);
         }
         [AllowAnonymous]
-        public JsonResult RedirectOk(string code = "")
+        [HttpPost]
+        public JsonResult GetOKUserInfo(string access_token)
         {
-            if (code == "")
+            using (MD5 md5Hash = MD5.Create())
             {
-                return GetOkInfo();
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(access_token + ConfigurationManager.AppSettings["ok:clientSecret"]));
+                StringBuilder sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+                string another = String.Format("application_key={0}format=Jsonmethod=users.getInfo{1}", ConfigurationManager.AppSettings["ok:clientOpen"], sBuilder.ToString());
+                data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(another));
+                sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+                string url = string.Format("https://api.ok.ru/fb.do?application_key={0}&format=Json&method=users.getInfo&sig={1}&access_token={2}",
+                    ConfigurationManager.AppSettings["ok:clientOpen"],
+                    sBuilder.ToString(),
+                     access_token);
+                return Json(url);
             }
-            else
-            {
-                return GetOkToken(code);
-            }
-        } 
+        }
 
 
         [AllowAnonymous]
