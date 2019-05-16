@@ -473,8 +473,8 @@ namespace WebApp.Controllers
                     {
                         return Redirect("/account/login");
                     }
+                    AccountManager.AddNewUser(user.Id);
                 }
-                AccountManager.AddNewUser(user.Id);
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                 AuthenticationManager.SignOut();
@@ -500,17 +500,17 @@ namespace WebApp.Controllers
                         {
                             Email = email,
                             UserName = email,
-                            
+
                         };
                     }
                     else
                     {
                         user = new ApplicationUser()
                         {
-                            UserName = Membership.GeneratePassword(8,0)
+                            UserName = Membership.GeneratePassword(8, 0)
                         };
                     }
-                    
+
                     IdentityResult result = UserManager.Create(user);
                     if (!result.Succeeded)
                     {

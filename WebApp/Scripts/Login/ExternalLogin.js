@@ -7,7 +7,7 @@
     },
     methods: {
 
-        GetVkVnfo: function () {
+        GetVkInfo: function () {
             $.ajax({
                 url: "/Account/GetVkInfo",
                 type: "POST",
@@ -21,9 +21,9 @@
                     });
                 }
             });
-        }
+        },
 
-    GetOkVnfo: function () {
+        GetOkInfo: function () {
             $.ajax({
                 url: "/Account/GetOkInfo",
                 type: "POST",
@@ -38,13 +38,14 @@
                 }
             });
         }
-     
+
     },
     beforeMount() {
         var str = window.location.href;
         console.log();
         if (str.indexOf('AuthVk') === -1) {
-            this.GetVkVnfo();
+            this.GetVkInfo();
+            this.GetOkInfo();
         }
         else {
             var newstr = str.replace('#', '?');
