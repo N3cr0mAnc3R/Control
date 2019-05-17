@@ -120,7 +120,7 @@
                             application.IsOpened = !application.IsOpened;
                             
 
-							app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 10));
+							app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 5));
                            
                         }
                     });
