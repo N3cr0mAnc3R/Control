@@ -98,6 +98,12 @@
 					}
 				});
 			},
+			isShowAsPage: function (number, current, max) {
+				if (number > current - 2 && number < current + 2 && number < max && number > 1) {
+					return true;
+				}
+				else return false;
+			},
 			SelectCommentsByApplicationId: function (application, offset) {
                 if (!application.IsOpened) {
                     $.ajax({

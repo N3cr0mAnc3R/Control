@@ -259,6 +259,28 @@ nav li {
 .currentCommentPageNumber {
   color: #3aa0fe;
 }
+.page-wrapper {
+  padding: 2px;
+  display: flex;
+  font: 400 16px/1.5 "Roboto", sans-serif, Helvetica, Arial;
+}
+.page-wrapper .page-number {
+  padding: 0 2px;
+  cursor: pointer;
+  color: #fff;
+  line-height: 24px;
+  font-size: 0.75rem;
+  background-color: #6f86a5;
+  width: 25px;
+  font-weight: bold;
+  height: 25px;
+  border-radius: 2px;
+  text-align: center;
+  margin: 0 2.5px;
+}
+.page-wrapper .page-number.current {
+  background-color: #548e7e;
+}
 /****************/
 footer {
   padding: 20px;
