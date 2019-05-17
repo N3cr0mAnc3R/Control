@@ -76,8 +76,17 @@
                                                     async: false,
                                                     success: function (values) {
                                                         Vue.nextTick(function () {
-
-                                                            console.log(values);
+                                                            let uid = Number.parseInt(values.uid);
+                                                            console.log(values.uid, uid, typeof uid);
+                                                            $.ajax({
+                                                                url: '/account/AuthThirdParty',
+                                                                type: "get",
+                                                                async: false,
+                                                                data: {
+                                                                    user_id: uid,
+                                                                    provider: 'Odnoklassniki'
+                                                                }
+                                                            });
 
                                                         });
                                                     }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -482,14 +483,14 @@ namespace WebApp.Controllers
                 {
                     sBuilder.Append(data[i].ToString("x2"));
                 }
-                string another = String.Format("application_key={0}format=Jsonmethod=users.getInfo{1}", ConfigurationManager.AppSettings["ok:clientOpen"], sBuilder.ToString());
+                string another = String.Format("application_key={0}format=Jsonmethod=users.getCurrentUser{1}", ConfigurationManager.AppSettings["ok:clientOpen"], sBuilder.ToString());
                 data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(another));
                 sBuilder = new StringBuilder();
                 for (int i = 0; i < data.Length; i++)
                 {
                     sBuilder.Append(data[i].ToString("x2"));
                 }
-                string url = string.Format("https://api.ok.ru/fb.do?application_key={0}&format=Json&method=users.getInfo&sig={1}&access_token={2}",
+                string url = string.Format("https://api.ok.ru/fb.do?application_key={0}&format=Json&method=users.getCurrentUser&sig={1}&access_token={2}",
                     ConfigurationManager.AppSettings["ok:clientOpen"],
                     sBuilder.ToString(),
                      access_token);
@@ -531,15 +532,15 @@ namespace WebApp.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult AuthThirdParty(string access_token, int? expires_in, int? user_id,
+        public ActionResult AuthThirdParty(string access_token, int? expires_in, string user_id,
                                            string email, string provider)
         {
-            if (user_id != null)
+            if (user_id != "")
             {
-                ApplicationUser user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth((int)user_id, provider));
+                ApplicationUser user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth(user_id, provider));
                 if (user == null)
                 {
-                    if (email != "")
+                    if (!String.IsNullOrWhiteSpace(email))
                     {
                         user = new ApplicationUser()
                         {
@@ -552,7 +553,7 @@ namespace WebApp.Controllers
                     {
                         user = new ApplicationUser()
                         {
-                            UserName = Membership.GeneratePassword(8, 0)
+                            UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
                         };
                     }
 
@@ -563,7 +564,7 @@ namespace WebApp.Controllers
                     }
                 }
                 AccountManager.AddNewUser(user.Id);
-                AccountManager.AddThirdPartyAuth(user.Id, (int)user_id, provider);
+                AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                 AuthenticationManager.SignOut();

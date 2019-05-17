@@ -25,7 +25,7 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public void AddThirdPartyAuth(string userId, int thirdPartyId, string provider)
+        public void AddThirdPartyAuth(string userId, string thirdPartyId, string provider)
         {
             using (var cnt = Concrete.OpenConnection())
             {
@@ -38,7 +38,7 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public string GetUserIdFromThirdPartyAuth(int thirdPartyId, string provider)
+        public string GetUserIdFromThirdPartyAuth(string thirdPartyId, string provider)
         {
             using (var cnt = Concrete.OpenConnection())
             {
@@ -46,7 +46,7 @@ namespace WebApp.Models.Managers
                     sql: "dbo.GetUserIdFromThirdPartyAuth",
                     param: new { ThirdPartyId = thirdPartyId, Provider = provider },
                     commandType: CommandType.StoredProcedure
-                ).First();
+                ).FirstOrDefault();
 
             }
         }
