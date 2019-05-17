@@ -1,11 +1,11 @@
 ﻿const app = new Vue({
-    el: "#socialLoginForm",
-    data: {
-        Text: "",
-        vkinfo: "",
-        okinfo: ""
-    },
-    methods: {
+	el: "#socialLoginForm",
+	data: {
+		Text: "",
+		vkinfo: "",
+		okinfo: ""
+	},
+	methods: {
 
         GetVkInfo: function () {
             $.ajax({
@@ -13,15 +13,15 @@
                 type: "POST",
                 async: false,
 
-                success: function (info) {
-                    Vue.nextTick(function () {
-                        app.vkinfo = info;
-                        console.log(app.vkinfo);
+				success: function (info) {
+					Vue.nextTick(function () {
+						app.vkinfo = info;
+						console.log(app.vkinfo);
 
-                    });
-                }
-            });
-        },
+					});
+				}
+			});
+		},
 
         GetOkInfo: function () {
             $.ajax({
