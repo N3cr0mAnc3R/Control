@@ -54,7 +54,7 @@ namespace WebApp.Models.Managers
                 List<CommentModel> comments;
                 int commentNumber;
                 using (var multi = cnt.QueryMultiple(
-                      sql: "dbo.Select10CommentsByApplicationId",
+                      sql: "dbo.Select5CommentsByApplicationId",
                       param: new
                       {
                           ApplicationId,
