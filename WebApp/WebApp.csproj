@@ -245,6 +245,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Content\SocialButtons.css" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Application\ApplicationValidate.js" />
     <Content Include="Scripts\Directives\loader.js" />

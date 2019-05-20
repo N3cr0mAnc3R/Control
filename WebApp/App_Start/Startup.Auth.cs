@@ -60,14 +60,14 @@ namespace WebApp
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "297392017804204",
+               appSecret: "2b46856256c4c540b9f3d1149e9507db");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
-            //    ClientId = "",
-            //    ClientSecret = ""
+            //    ClientId = "662359730750-3395ini7kh2imkvf4tni5shvcdi634nr.apps.googleusercontent.com",
+            //    ClientSecret = "YzJwaoa6GnGiBN_4uya2cu2B"
             //});
         }
     }
