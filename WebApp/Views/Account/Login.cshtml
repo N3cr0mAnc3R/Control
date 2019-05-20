@@ -63,19 +63,16 @@
                 <ul class="social-icons">
                     <li><a v-bind:href="vkinfo" class="social-icon"><i class="fa fa-vk"></i></a></li>
                     <li><a v-bind:href="okinfo" class="social-icon"><i class="fa fa-odnoklassniki"></i></a></li>
-                    <li><a href="" class="social-icon"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="" class="social-icon"><i class="fa fa-twitter"></i></a></li>
-                    <li>@Html.BeginForm("ExternalLogin", "Account", FormMethod.Post, new { provider = "Facebook" })@*<a href="/Account/ExternalLogin?provider=Facebook" class="social-icon">*@<i class="fa fa-google"></i>@*</a>*@</li>
                     <li>
                         @using (Html.BeginForm("ExternalLogin", "Account"))
                         {
                             @Html.AntiForgeryToken()
 
-                            <button type="submit" class="social-icon" id="Facebook" name="provider" value="Facebook" ><i class="fa fa-facebook"></i></button>
+                            <button type="submit" class="social-icon" id="Facebook" name="provider" value="Facebook"><i class="fa fa-facebook"></i></button>
 
                         }
                     </li>
-
+                    <li><a href="" class="social-icon"><i class="fa fa-twitter"></i></a></li>
                 </ul>
             </div>
         </section>

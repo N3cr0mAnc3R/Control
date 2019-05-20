@@ -61,6 +61,7 @@ ul {
 
 ul.social-icons {
     margin-top: 10px;
+    display: flex;
 }
 
 .social-icons li {
@@ -72,6 +73,12 @@ ul.social-icons {
 .social-icons a {
     color: #fff;
     text-decoration: none;
+}
+.social-icons button {
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    background-color: inherit;
 }
 
 .fa-facebook {
