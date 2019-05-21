@@ -85,11 +85,32 @@
                     type: "POST",
                     data: { applicationId: application.Id },
                     async: false,
-                    success: function (contribution) {
-                        
+                    success: function (contribution) {                       
                         application.likeStatus = contribution;
-                        console.log(application);
-
+                    }
+                });
+            },
+            Like: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/Like",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (contribution) {
+                        //DO SOMETHING???
+                    }
+                });
+            },
+            Dislike: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/Dislike",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (contribution) {
+                        //DO SOMETHING???
                     }
                 });
             },
