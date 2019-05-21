@@ -242,7 +242,11 @@ button:focus {
   padding-left: 15px;
   margin: auto;
   max-width: 80%;
-  overflow: auto;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.comment-text {
+  display: block;
 }
 .commentInputArea {
   width: 80%;
@@ -321,18 +325,22 @@ footer {
   header li {
     width: 100%;
   }
-  header nav {
+  #right-menu {
+    padding-bottom: 10px;
+  }
+  #main-nav {
     display: none;
   }
   header li {
     margin-top: 5px;
     margin-bottom: 5px;
   }
-  #toggle:checked + header nav {
+  #toggle:checked + #main-nav {
     display: block;
+    padding-bottom: 20px;
   }
   #toggle:checked + header nav #right-menu {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
 }
 .hidden {
@@ -476,8 +484,8 @@ footer {
     position: relative;
   }
 }
-/*.button-secondary {
-	background-color: rgba(0,0,0,0);
-	border: 1.5px solid #3aa0fe;
-	color: #3aa0fe;
-}*/
+.button-secondary {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1.5px solid #3aa0fe;
+  color: #3aa0fe;
+}

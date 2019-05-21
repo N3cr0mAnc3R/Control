@@ -280,7 +280,12 @@ button:focus {
 	padding-left:15px;
 	margin: auto;
 	max-width:80%;
-	overflow:auto
+	overflow-wrap:break-word;
+	hyphens:auto;
+}
+
+.comment-text{
+	display:block;
 }
 
 .commentInputArea {
@@ -368,8 +373,10 @@ footer {
 	#left-menu, #right-menu, header li {
 		width: 100%
 	}
-
-	header nav {
+	#right-menu{
+		padding-bottom:10px;
+	}
+	#main-nav {
 		display: none
 	}
 
@@ -378,12 +385,14 @@ footer {
 		margin-bottom: 5px;
 	}
 
-	#toggle:checked + header nav {
+	#toggle:checked + #main-nav {
 		display: block;
+		padding-bottom: 20px;
 	}
+	
 
 	#toggle:checked + header nav #right-menu {
-		padding-bottom: 10px;
+		padding-bottom: 20px;
 	}
 }
 
@@ -560,8 +569,8 @@ footer {
 	}
 }
 
-/*.button-secondary {
+.button-secondary {
 	background-color: rgba(0,0,0,0);
 	border: 1.5px solid #3aa0fe;
 	color: #3aa0fe;
-}*/
+}
