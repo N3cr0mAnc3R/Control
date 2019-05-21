@@ -171,6 +171,54 @@ namespace WebApp.Models.Managers
                 }
             }
         }
+
+        public int GetLikeDislike(string userId, int applicationId )
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<int>(
+                    sql: "dbo.GetLikeDislike",
+                    param: new { UserId = userId, ApplicationId = applicationId },
+                    commandType: CommandType.StoredProcedure
+                ).First();
+
+            }
+        }
+        public int SetLikeDislike(string userId, int applicationId, int contribution)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<int>(
+                    sql: "dbo.SetLikeDislike",
+                    param: new { UserId = userId, ApplicationId = applicationId, Contribution = contribution },
+                    commandType: CommandType.StoredProcedure
+                ).First();
+            }
+        }
+
+        public int ChangeNegCount(int applicationId, int changeNeg)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<int>(
+                    sql: "dbo.ChangeNegCount",
+                    param: new { ApplicationId = applicationId, ChangeNeg = changeNeg },
+                    commandType: CommandType.StoredProcedure
+                ).First();
+            }
+        }
+
+        public int ChangePosCount(int applicationId, int changePos)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<int>(
+                    sql: "dbo.ChangePosCount",
+                    param: new { ApplicationId = applicationId, ChangePos = changePos },
+                    commandType: CommandType.StoredProcedure
+                ).First();
+            }
+        }
     }
 }
 

@@ -67,10 +67,61 @@ namespace WebApp.Controllers
             }
             throw new ArgumentException();
         }
+        #region Like/dislike
+        public JsonResult GetLikeDislike(int applicationId)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            int contribution = ApplicationManager.GetLikeDislike(user.Id, applicationId);
+            
+            return Json(contribution);
+        }
+        public void Like(int applicationId)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            int contribution =  ApplicationManager.GetLikeDislike(user.Id, applicationId);
+            if (contribution == 0) // Поставь лайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 1);
+                ApplicationManager.ChangePosCount(applicationId, 1);
+            }
+            else if (contribution < 0) // Убери дизлайк и поставь лайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 1);
+                ApplicationManager.ChangePosCount(applicationId, 1);
+                ApplicationManager.ChangeNegCount(applicationId, -1);
+            }
+            else // Убери лайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 0);
+                ApplicationManager.ChangePosCount(applicationId, -1);
+            }
+           
+        }
+        public void Dislike(int applicationId)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            int contribution = ApplicationManager.GetLikeDislike(user.Id, applicationId);
+            if (contribution == 0) // Поставь дизлайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, -1);
+                ApplicationManager.ChangeNegCount(applicationId, 1);
+            }
+            else if (contribution < 0) // Убери дизлайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 0);
+                ApplicationManager.ChangeNegCount(applicationId, -1);
+            }
+            else // Убери лайк и поставь дизлайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, -1);
+                ApplicationManager.ChangePosCount(applicationId, -1);
+                ApplicationManager.ChangeNegCount(applicationId, 1);
+            }
+            
+        }
+        #endregion
 
 
-
-    
         protected NewsManager NewsManager
         {
             get
@@ -85,6 +136,7 @@ namespace WebApp.Controllers
                 return Request.GetOwinContext().Get<ApplicationManager>();
             }
         }
+
 
 
     }
