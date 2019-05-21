@@ -55,6 +55,7 @@ namespace WebApp.Controllers
             ProfileManager.AddComment(CurrentUser.Id, ApplicationId, Text, ParentCommentId);
             SelectCommentsByApplicationId( ApplicationId);
         }
+
         protected ProfileManager ProfileManager
         {
             get

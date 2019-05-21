@@ -17,6 +17,7 @@ namespace WebApp.Controllers
 {
     public class ApplicationController : BaseController
     {
+        [AllowAnonymous]
         public ActionResult GetApplication()
         {
             ViewBag.News = NewsManager.ShowFreshNews(DateTime.Now);
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
             }
         }
         [HttpPost]
-        public JsonResult SubmitApplication(ApplicationModel model)
+        public ActionResult SubmitApplication(ApplicationModel model)
         {
             model.Files = new List<UploadFile>();
             for (int i = 0; i < Request.Files.Count; i++)
@@ -42,16 +43,40 @@ namespace WebApp.Controllers
                 file.File = Request.Files.Get(i);
                 model.Files.Add(file);
             }
-             
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["application"] = model;
+            }
             //return Json(new { value = 10});
-            return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
+            ApplicationManager.SubmitApplication(model, CurrentUser.Id);
+            return Redirect("/profile/userprofile");
+            //return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
         }
-
+        //[HttpPost]
+        //[Authorize]
+        //public JsonResult SubmitApplication(ApplicationModel model)
+        //{
+        //    model.Files = new List<UploadFile>();
+        //    for (int i = 0; i < Request.Files.Count; i++)
+        //    {
+        //        UploadFile file = new UploadFile();
+        //        file.File = Request.Files.Get(i);
+        //        model.Files.Add(file);
+        //    }
+        //    if (!User.Identity.IsAuthenticated)
+        //    {
+        //        TempData["application"] = model;
+        //    }
+        //    //return Json(new { value = 10});
+        //    return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
+        //}
+        [AllowAnonymous]
         public JsonResult GetReasonsByDepartment(int Id)
         {
             return Json(ApplicationManager.GetReasonsByDepartment(Id));
         }
 
+        [AllowAnonymous]
         public JsonResult GetApplicationImages(int Id)
         {
             return Json(ApplicationManager.GetFileStream(Id));
@@ -67,10 +92,61 @@ namespace WebApp.Controllers
             }
             throw new ArgumentException();
         }
+        #region Like/dislike
+        public JsonResult GetLikeDislike(int applicationId)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            int contribution = ApplicationManager.GetLikeDislike(user.Id, applicationId);
+            
+            return Json(contribution);
+        }
+        public void Like(int applicationId)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            int contribution =  ApplicationManager.GetLikeDislike(user.Id, applicationId);
+            if (contribution == 0) // Поставь лайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 1);
+                ApplicationManager.ChangePosCount(applicationId, 1);
+            }
+            else if (contribution < 0) // Убери дизлайк и поставь лайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 1);
+                ApplicationManager.ChangePosCount(applicationId, 1);
+                ApplicationManager.ChangeNegCount(applicationId, -1);
+            }
+            else // Убери лайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 0);
+                ApplicationManager.ChangePosCount(applicationId, -1);
+            }
+           
+        }
+        public void Dislike(int applicationId)
+        {
+            ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+            int contribution = ApplicationManager.GetLikeDislike(user.Id, applicationId);
+            if (contribution == 0) // Поставь дизлайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, -1);
+                ApplicationManager.ChangeNegCount(applicationId, 1);
+            }
+            else if (contribution < 0) // Убери дизлайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, 0);
+                ApplicationManager.ChangeNegCount(applicationId, -1);
+            }
+            else // Убери лайк и поставь дизлайк
+            {
+                ApplicationManager.SetLikeDislike(user.Id, applicationId, -1);
+                ApplicationManager.ChangePosCount(applicationId, -1);
+                ApplicationManager.ChangeNegCount(applicationId, 1);
+            }
+            
+        }
+        #endregion
 
 
-
-    
         protected NewsManager NewsManager
         {
             get
@@ -85,6 +161,7 @@ namespace WebApp.Controllers
                 return Request.GetOwinContext().Get<ApplicationManager>();
             }
         }
+
 
 
     }
