@@ -562,9 +562,9 @@ namespace WebApp.Controllers
                     {
                         return Redirect("/account/login");
                     }
+                    AccountManager.AddNewUser(user.Id);
+                    AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                 }
-                AccountManager.AddNewUser(user.Id);
-                AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                 AuthenticationManager.SignOut();

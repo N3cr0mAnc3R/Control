@@ -1,0 +1,155 @@
+﻿
+/* VVV Social Buttons VVV*/
+/*@import url(https://fonts.googleapis.com/css?family=Lato);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css);*/
+
+/*body {
+    font-family: 'Lato', sans-serif;
+    color: #FFF;
+    background: #322f30;
+    -webkit-font-smoothing: antialiased;
+}*/
+@import url('font-awesome.css');
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+p > a:hover {
+    color: #d9d9d9;
+    text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 1% 0 1% 0;
+}
+
+._12 {
+    font-size: 1.2em;
+}
+
+._14 {
+    font-size: 1.4em;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+.fa {
+    color: #404040; /*darkgrey*/
+    background-color: #f2f2f2;
+}
+.fa:hover {
+    color: white;
+}
+
+.footer-social-icons {
+    width: 350px;
+    display: block;
+    margin: 0 auto;
+}
+
+.social-icon {
+    color: #fff;
+}
+
+ul.social-icons {
+    margin-top: 10px;
+    display: flex;
+}
+
+.social-icons li {
+    vertical-align: top;
+    display: inline;
+    height: 100px;
+}
+
+.social-icons a {
+    color: #fff;
+    text-decoration: none;
+}
+.social-icons button {
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    background-color: inherit;
+}
+
+.fa-facebook {
+    padding: 10px 14px;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+
+}
+
+    .fa-facebook:hover {
+        background-color: #3b5998;
+    }
+
+.fa-twitter {
+    padding: 10px 12px;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+    background-color: #f2f2f2;
+}
+
+    .fa-twitter:hover {
+        background-color: #1da1f2;
+    }
+
+
+.fa-odnoklassniki {
+    padding: 10px 14px;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+    background-color: #f2f2f2;
+}
+
+    .fa-odnoklassniki:hover {
+        background-color: #ed812b;
+    }
+
+.fa-vk {
+    padding: 10px 14px;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+    background-color: #f2f2f2;
+}
+
+    .fa-vk:hover {
+        background-color: #45668e;
+    }
+
+.fa-google {
+    padding: 10px 9px;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+    background-color: #f2f2f2;
+}
+
+    .fa-google:hover {
+        background-color: #ea4335;
+    }
+/* ^^^ End of Social Buttons ^^^ */

@@ -42,11 +42,11 @@ namespace WebApp.Models.Managers
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<string>(
+                return cnt.Query<Guid>(
                     sql: "dbo.GetUserIdFromThirdPartyAuth",
                     param: new { ThirdPartyId = thirdPartyId, Provider = provider },
                     commandType: CommandType.StoredProcedure
-                ).FirstOrDefault();
+                ).FirstOrDefault().ToString();
 
             }
         }

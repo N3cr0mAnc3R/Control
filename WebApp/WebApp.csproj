@@ -224,10 +224,17 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fontawesome-webfont.svg" />
     <Content Include="Content\Styles.css">
       <DependentUpon>Styles.less</DependentUpon>
     </Content>
@@ -235,6 +242,7 @@
       <DependentUpon>Styles.css</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -245,6 +253,49 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Content\SocialButtons.css" />
+    <Content Include="Content\animated.less" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bordered-pulled.less" />
+    <Content Include="Content\core.less" />
+    <Content Include="Content\fixed-width.less" />
+    <Content Include="Content\font-awesome.less" />
+    <Content Include="Content\font-awesome.scss" />
+    <Content Include="Content\fontawesome-webfont.eot" />
+    <Content Include="Content\fontawesome-webfont.ttf" />
+    <Content Include="Content\fontawesome-webfont.woff" />
+    <Content Include="Content\fontawesome-webfont.woff2" />
+    <Content Include="Content\FontAwesome.otf" />
+    <Content Include="Content\icons.less" />
+    <Content Include="Content\larger.less" />
+    <Content Include="Content\list.less" />
+    <Content Include="Content\mixins.less" />
+    <Content Include="Content\path.less" />
+    <Content Include="Content\rotated-flipped.less" />
+    <Content Include="Content\screen-reader.less" />
+    <Content Include="Content\stacked.less" />
+    <Content Include="Content\variables.less" />
+    <Content Include="Content\_animated.scss" />
+    <Content Include="Content\_bordered-pulled.scss" />
+    <Content Include="Content\_core.scss" />
+    <Content Include="Content\_fixed-width.scss" />
+    <Content Include="Content\_icons.scss" />
+    <Content Include="Content\_larger.scss" />
+    <Content Include="Content\_list.scss" />
+    <Content Include="Content\_mixins.scss" />
+    <Content Include="Content\_path.scss" />
+    <Content Include="Content\_rotated-flipped.scss" />
+    <Content Include="Content\_screen-reader.scss" />
+    <Content Include="Content\_stacked.scss" />
+    <Content Include="Content\_variables.scss" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Application\ApplicationValidate.js" />
     <Content Include="Scripts\Directives\loader.js" />

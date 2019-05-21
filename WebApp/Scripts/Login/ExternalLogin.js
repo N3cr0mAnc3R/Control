@@ -85,6 +85,9 @@
                                                                 data: {
                                                                     user_id: uid,
                                                                     provider: 'Odnoklassniki'
+                                                                },
+                                                                success: function () {
+                                                                    window.open('/application/getapplication', '_self');
                                                                 }
                                                             });
 
