@@ -2,7 +2,7 @@
 @{
 	ViewBag.Title = "UserProfile";
 }
-
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
 <section id="main-section" v-loader="objForLoading">
 	<section>
 		<div class="custom-container">
@@ -33,6 +33,10 @@
 				<li><a href="#">Создать обращение</a></li>
 			</ul>
 		</nav>
+		@*<button>все</button>
+		<button>принятые</button>
+		<button>непринятые</button>*@
+
 	</div>
 	<section>
 		<div class="custom-container">
@@ -121,13 +125,13 @@
 
 
 								</div>
-								</div>
-
-								
+							</div>
 
 
 
-</section>
+
+
+						</section>
 						<div class="application-control">
 							<div class="comment-button-holder">
 								<small v-on:click="toggleComments(app.Id)">
@@ -136,6 +140,8 @@
 								</small>
 							</div>
 							<div class="buttons">
+								<i class="fas fa-thumbs-up">0</i>
+								<i class="fas fa-thumbs-down">gf</i>
 								<button class="button button-primary">Изменить</button>
 								<button class="button button-secondary">Удалить</button>
 							</div>
@@ -144,6 +150,7 @@
 				</div>
 			</section>
 		</div>
+		
 	</section>
 </section>
 <script src="~/Scripts/Profile/ProfileVue.js"></script>
