@@ -50,6 +50,7 @@
                     success: function (applications) {
                             applications.forEach(function (application) {
                                 self.GetApplicationImages(application);
+                                self.GetApplicationLikeStatus(application);
 								application.IsOpened = false;
 								application.currentCommentPageNumber = 1;
                                 self.applications.push(application);
@@ -76,7 +77,22 @@
                         self.$set(application, 'imgs', applicationImgs);
                     }
                 });
-			},
+            },
+            GetApplicationLikeStatus: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/GetLikeDislike",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (contribution) {
+                        
+                        application.likeStatus = contribution;
+                        console.log(application);
+
+                    }
+                });
+            },
 			ChangePageNumber: function (appId, offset) {
 				
 				let appl = app.applications.find(a => a.Id === appId);
