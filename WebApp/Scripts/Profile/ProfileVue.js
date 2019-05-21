@@ -40,9 +40,21 @@
 
 
 
-            },
+			},
+			deleteApplication: function (applicationId) {
+				$.ajax({
+					url: "/profile/DeleteApplication",
+					type: "POST",
+					data: { ApplicationId: applicationId },
+					async: false,
+					success: function () {
+						app.selectApplicationsByUserId();	
+					}
+				});
+			},
             selectApplicationsByUserId: function () {
-                var self = this;
+				var self = this;
+				self.applications = [];
                 $.ajax({
                     url: "/profile/SelectApplicationsByUserId",
                     type: "POST",

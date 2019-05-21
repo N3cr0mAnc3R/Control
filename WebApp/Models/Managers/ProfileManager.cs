@@ -93,5 +93,18 @@ namespace WebApp.Models.Managers
 
         }
 
+        public void DeleteApplication(int ApplicationId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "dbo.DeleteApplication",
+                    param: new { ApplicationId },
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+        }
+
     }
 }
