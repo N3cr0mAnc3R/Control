@@ -33,6 +33,17 @@ namespace WebApp.Controllers
         {
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
         }
+
+        [HttpPost]
+        public void ChangeApplication()
+        {
+            //в работе 
+        }
+        [HttpPost]
+        public void DeleteApplication()
+        {
+            //в работе 
+        }
         [HttpPost]
         public JsonResult SelectCommentsByApplicationId (int ApplicationId, int Offset=1)
         {
@@ -44,6 +55,7 @@ namespace WebApp.Controllers
             ProfileManager.AddComment(CurrentUser.Id, ApplicationId, Text, ParentCommentId);
             SelectCommentsByApplicationId( ApplicationId);
         }
+
         protected ProfileManager ProfileManager
         {
             get

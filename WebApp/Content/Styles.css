@@ -1,7 +1,4 @@
-﻿.form-wrapper {
-  width: 600px;
-}
-/* Set padding to keep content from hitting the edges */
+﻿/* Set padding to keep content from hitting the edges */
 .body-content {
   padding-top: 20px;
   /*^*/
@@ -78,15 +75,28 @@ nav li {
   box-sizing: border-box;
   border-radius: 3px;
 }
+button,
+button:active,
+button:focus {
+  outline: none;
+}
 .button-primary {
   color: #ffffff;
   background: #52dc93;
   margin-right: 10px;
 }
-.button-secondary {
+.button-third {
   background-color: rgba(0, 0, 0, 0);
-  border: 1.5px solid #3aa0fe;
+  border: none;
   color: #3aa0fe;
+  font-weight: bold;
+}
+.button-third {
+  background-color: rgba(0, 0, 0, 0);
+  color: #3aa0fe;
+  padding: 0 0;
+  font-weight: normal;
+  min-height: 15px;
 }
 .button-primary:hover {
   background-color: #5bec9f;
@@ -94,6 +104,9 @@ nav li {
 .button-secondary:hover {
   background-color: #3aa0fe;
   color: #fff;
+}
+.button-third:hover {
+  font-weight: bold;
 }
 /*адаптивность меню*/
 #toggle-icon {
@@ -143,6 +156,7 @@ nav li {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  margin-right: 20px;
 }
 .user-info .img-holder img {
   float: left;
@@ -151,6 +165,10 @@ nav li {
   object-fit: cover;
   border: 3px solid #fafafa;
   border-radius: 50%;
+}
+.user-info .info-holder {
+  float: left;
+  margin-left: 10px;
 }
 .custom-container .comments .img-holder {
   float: left;
@@ -198,6 +216,8 @@ nav li {
   box-sizing: border-box;
   padding: 15px 20px;
   width: 60%;
+  max-height: 200px;
+  overflow-y: auto;
 }
 .comments {
   min-height: 200px;
@@ -218,9 +238,15 @@ nav li {
   margin-bottom: 5px;
 }
 .comment-text {
-  float: right;
-  width: 75%;
+  float: left;
+  padding-left: 15px;
   margin: auto;
+  max-width: 80%;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.comment-text {
+  display: block;
 }
 .commentInputArea {
   width: 80%;
@@ -232,13 +258,13 @@ nav li {
   clear: both;
 }
 .application-control {
-  position: absolute;
-  bottom: 0;
+  /*position: absolute;
+	bottom: 0;*/
   background-color: #fbfcfb;
   border-top: 1px solid #f2f2f2;
   padding-left: 30px;
   padding-right: 30px;
-  height: 60px;
+  min-height: 60px;
   width: 100%;
 }
 .buttons {
@@ -299,18 +325,22 @@ footer {
   header li {
     width: 100%;
   }
-  header nav {
+  #right-menu {
+    padding-bottom: 10px;
+  }
+  #main-nav {
     display: none;
   }
   header li {
     margin-top: 5px;
     margin-bottom: 5px;
   }
-  #toggle:checked + header nav {
+  #toggle:checked + #main-nav {
     display: block;
+    padding-bottom: 20px;
   }
   #toggle:checked + header nav #right-menu {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
 }
 .hidden {
@@ -326,49 +356,136 @@ footer {
 .loader-wrapper .loader {
   background: #000;
 }
-.sk-wave {
-  width: 6em;
-  height: 4em;
-  margin: auto;
-  text-align: center;
-  font-size: 1em;
-}
-.sk-wave .sk-rect {
-  background-color: #337ab7;
-  height: 100%;
-  width: 0.5em;
-  display: inline-block;
-  animation: sk-wave-stretch-delay 1.2s infinite ease-in-out;
-  margin-right: 3px;
-}
-.sk-wave .sk-rect-1 {
-  animation-delay: -1.2s;
-}
-.sk-wave .sk-rect-2 {
-  animation-delay: -1.1s;
-}
-.sk-wave .sk-rect-3 {
-  animation-delay: -1s;
-}
-.sk-wave .sk-rect-4 {
-  animation-delay: -0.9s;
-}
-.sk-wave .sk-rect-5 {
-  animation-delay: -0.8s;
-}
-.loading-controller {
-  display: none;
-}
-.loading-controller.loaded {
-  display: block;
-}
-@keyframes sk-wave-stretch-delay {
-  0%,
-  40%,
-  100% {
-    transform: scaleY(0.4);
+@media (max-width: 992px) {
+  .user-info {
+    width: 70%;
   }
-  20% {
-    transform: scaleY(1);
+  .custom-container {
+    width: 85%;
   }
+}
+@media (max-width: 768px) {
+  .user-info {
+    width: 80%;
+  }
+  .custom-container {
+    width: 96%;
+  }
+  .application {
+    width: 98%;
+  }
+  .sk-wave {
+    width: 6em;
+    height: 4em;
+    margin: auto;
+    text-align: center;
+    font-size: 1em;
+  }
+  .sk-wave .sk-rect {
+    background-color: #337ab7;
+    height: 100%;
+    width: 0.5em;
+    display: inline-block;
+    animation: sk-wave-stretch-delay 1.2s infinite ease-in-out;
+    margin-right: 3px;
+  }
+  .sk-wave .sk-rect-1 {
+    animation-delay: -1.2s;
+  }
+  .sk-wave .sk-rect-2 {
+    animation-delay: -1.1s;
+  }
+  .sk-wave .sk-rect-3 {
+    animation-delay: -1s;
+  }
+  .sk-wave .sk-rect-4 {
+    animation-delay: -0.9s;
+  }
+  .sk-wave .sk-rect-5 {
+    animation-delay: -0.8s;
+  }
+  .loading-controller {
+    display: none;
+  }
+  .loading-controller.loaded {
+    display: block;
+  }
+  @keyframes sk-wave-stretch-delay {
+    0%,
+    40%,
+    100% {
+      transform: scaleY(0.4);
+    }
+    20% {
+      transform: scaleY(1);
+    }
+  }
+}
+@media (max-width: 768px) and (max-width: 504px) {
+  .user-info {
+    text-align: center;
+  }
+  .user-info .img-holder img,
+  .user-info .img-holder {
+    float: none;
+    margin: auto;
+  }
+  .user-info .info-holder {
+    float: none;
+  }
+  .info-holder ul {
+    display: none;
+  }
+  .application .img-holder,
+  .application .img-holder img {
+    float: none;
+    width: 100%;
+    height: 60%;
+  }
+  .application .application-body {
+    float: none;
+    width: 100%;
+    max-height: unset;
+  }
+  .comment-button-holder {
+    float: none;
+    width: 100%;
+  }
+  .application-control .buttons {
+    float: none;
+    width: 100%;
+    text-align: center;
+  }
+  .application .comments {
+    padding: 20px 0 20px 0;
+  }
+  .application-control {
+    padding-bottom: 15px;
+    position: relative;
+  }
+  .custom-container .comments .img-holder {
+    width: 65px;
+    height: 65px;
+  }
+  .custom-container .comments .img-holder img {
+    height: 65px;
+    width: 65px;
+  }
+}
+@media (max-width: 768px) and (max-width: 305px) {
+  .application-control .button-primary,
+  .application-control .button-secondary {
+    margin: 0 0 10px 0;
+  }
+  .application .application-body {
+    /*padding-bottom: 140px //*/
+  }
+  .application-control {
+    position: relative;
+  }
+}
+.button-secondary {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1.5px solid #3aa0fe;
+  color: #3aa0fe;
 }
