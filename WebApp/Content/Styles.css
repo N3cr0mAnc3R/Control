@@ -495,8 +495,17 @@ footer {
     position: relative;
   }
 }
-.thumb-link .active {
-  color: aqua;
+.likesContainer {
+  font-size: 16px;
+}
+.likesContainer .active-like {
+  color: #52dc93;
+}
+.likesContainer .link-dislike {
+  color: black;
+}
+.likesContainer .link-dislike .active-dislike {
+  color: darkred;
 }
 .button-secondary {
   background-color: rgba(0, 0, 0, 0);

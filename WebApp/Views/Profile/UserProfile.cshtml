@@ -151,8 +151,8 @@
 								<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
 							</div>
                             <div class="likesContainer">
-                                <a class="thumb-link" v-on:click="Like(app.Id)"><i v-bind:class="{'active': app.likeStatus === 1}" class="fa fa-thumbs-up">{{app.PosCount}}</i></a>
-                                <a class="thumb-link" v-on:click="Dislike(app.Id)"><i v-bind:class="{'active': app.likeStatus === -1}" class="fa fa-thumbs-down">{{app.NegCount}}</i></a>
+                                <a class="link-like" v-on:click="Like(app.Id)"><i v-bind:class="{'active-like': app.likeStatus === 1}" class="fa fa-thumbs-up">{{app.PosCount}}</i></a>
+                                <a class="link-dislike" v-on:click="Dislike(app.Id)"><i v-bind:class="{'active-dislike': app.likeStatus === -1}" class="fa fa-thumbs-down">{{app.NegCount}}</i></a>
                             </div>
 
 
