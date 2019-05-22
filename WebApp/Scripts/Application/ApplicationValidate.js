@@ -70,7 +70,16 @@
                     async: false,
                     contentType: false,
                     processData: false,
-                    data: ajaxData
+                    data: ajaxData,
+                    success: function (uri) {
+                        console.log(uri);
+                        if (uri === 'auth') {
+                            window.open('/account/login', '_self');
+                        }
+                        else {
+                            window.open('/profile/userprofile', '_self');
+                        }
+                    }
                 });
 
             });
