@@ -140,7 +140,7 @@
 								</small>
 							</div>
 							<div class="buttons">
-								<i class="fa fa-thumbs-up">10</i>
+                                <a v-on:click="Like(app.Id)"><i class="fa fa-thumbs-up">10</i></a>
 								<i class="fa fa-thumbs-down">5</i>
 								<button class="button button-primary">Изменить</button>
 								<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>

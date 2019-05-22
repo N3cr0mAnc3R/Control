@@ -87,6 +87,7 @@
                             applicationImgs.push('data:image/png;base64, ' + img);
                         });
                         self.$set(application, 'imgs', applicationImgs);
+                        
                     }
                 });
             },
@@ -102,15 +103,18 @@
                     }
                 });
             },
-            Like: function (application) {
+            Like: function (Id) {
+                let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+                console.log(application);
                 var self = this;
                 $.ajax({
                     url: "/application/Like",
                     type: "POST",
                     data: { applicationId: application.Id },
-                    async: false,
-                    success: function (contribution) {
+                    async: true,
+                    success: function (something) {
                         //DO SOMETHING???
+                        
                     }
                 });
             },
@@ -121,7 +125,7 @@
                     type: "POST",
                     data: { applicationId: application.Id },
                     async: false,
-                    success: function (contribution) {
+                    success: function (something) {
                         //DO SOMETHING???
                     }
                 });
