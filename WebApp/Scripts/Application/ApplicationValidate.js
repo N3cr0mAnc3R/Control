@@ -9,6 +9,7 @@
         reasons: [],
         reasonId: 0,
         coordinates: [],
+        isMap: false,
         myPlacemark: undefined,
         myMap: {},
         objForLoading: {
@@ -93,7 +94,6 @@
             else {
                 coords = coordinates;
             }
-
             // Если метка уже создана – просто передвигаем ее.
             if (app.myPlacemark) {
                 app.myPlacemark.geometry.setCoordinates(coords);
@@ -104,7 +104,7 @@
                 this.myMap.geoObjects.add(app.myPlacemark);
                 // Слушаем событие окончания перетаскивания на метке.
                 app.myPlacemark.events.add('dragend', function () {
-                    getAddress(app.myPlacemark.geometry.getCoordinates());
+                    app.getAddress(app.myPlacemark.geometry.getCoordinates());
                 });
             }
             this.getAddress(coords);
@@ -134,13 +134,14 @@
                         // В качестве контента балуна задаем строку с адресом объекта.
                         balloonContent: firstGeoObject.getAddressLine()
                     });
+                console.log(app.myPlacemark);
             });
         },
         initYmaps: function () {
             //var myPlacemark, //Перемещена выше для видимости в Vue
             this.myMap = new ymaps.Map('map', {
                 center: [45.043515, 41.961798],
-                zoom: 9
+                zoom: 15
             },
                 { searchControlProvider: 'yandex#search' });
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -219,16 +220,26 @@
                     });
                 }
             });
+        },
+        toggleMap: function () {
+            if (this.myMap.events) {
+                this.myMap.events.remove('click', this.changeAddress);
+            }
+            app.isMap = !app.isMap;
+            if (app.isMap) {
+                ymaps.ready(this.initYmaps);
+            }
+
+
+        },
+        mounted() {
+            this.objForLoading.loading = true;
+            this.objForLoading.loaded = false;
+            this.init();
+
+
         }
 
-    },
-    mounted() {
-        this.objForLoading.loading = true;
-        this.objForLoading.loaded = false;
-        this.init();
-        ymaps.ready(this.initYmaps);
-
     }
-
 });
 

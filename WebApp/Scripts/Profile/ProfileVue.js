@@ -4,7 +4,8 @@
         data: {
 			applications: [],
             comment: '',
-			img: '',
+            img: '',
+            
 			
             objForLoading: {
                 loading: false,
@@ -170,12 +171,7 @@
                     }
                 });
             },
-            //getLikeClass: function () {
-            //    return {
-            //        'active-like': this.likeStatus == 1,
-            //        'inactive-like': !this.likeStatus == 1
-            //    }
-            //},
+
 
 			ChangePageNumber: function (appId, offset) {
 				
