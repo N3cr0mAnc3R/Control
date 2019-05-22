@@ -34,7 +34,7 @@ namespace WebApp.Controllers
             }
         }
         [HttpPost]
-        public ActionResult SubmitApplication(ApplicationModel model)
+        public async Task<JsonResult> SubmitApplication(ApplicationModel model)
         {
             model.Files = new List<UploadFile>();
             for (int i = 0; i < Request.Files.Count; i++)
@@ -46,10 +46,12 @@ namespace WebApp.Controllers
             if (!User.Identity.IsAuthenticated)
             {
                 TempData["application"] = model;
+                return Json("auth");
             }
+
             //return Json(new { value = 10});
-            ApplicationManager.SubmitApplication(model, CurrentUser.Id);
-            return Redirect("/profile/userprofile");
+            await ApplicationManager.SubmitApplication(model, CurrentUser.Id);
+            return Json("");
             //return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
         }
         //[HttpPost]
