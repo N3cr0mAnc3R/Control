@@ -24,22 +24,34 @@
 				}
 			},
 			saveProfileChanges: function () {
-				console.log('1');
+
 				var ajaxData = new FormData();
-				$.each(app.Files, function (i, file) {
-					ajaxData.append('Files[' + i + ']', file);
-					console.log(app.Files);
-				});
-			},
+console.log($("#Files")[0].files);
+				ajaxData.append('Files', $("#Files")[0].files[0]);
+				
+				$.ajax({
+					url: "/profile/FileUpload",
+					type: "POST",
+					async: false,
+					data:  ajaxData ,
+					success: function () {
 
-			beforeMount() {
-				this.objForLoading.loading = true;
-				this.objForLoading.loaded = false;
+					}
+				}
 
+				);
 
 			}
+		},
+
+		beforeMount() {
+			this.objForLoading.loading = true;
+			this.objForLoading.loaded = false;
 
 
 		}
+
+
+	
 	});
 };
