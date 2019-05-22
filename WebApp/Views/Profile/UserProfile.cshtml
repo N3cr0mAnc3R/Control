@@ -79,9 +79,10 @@
 							<div class="application-body">
 
 								<p class="title">{{app.Title}}</p>
-								<p>
+								<p v-if="app.isEditing===false">
 									{{app.Text}}
 								</p>
+								<textarea   v-if="app.isEditing===true" class="" v-model="app.Text"> </textarea>	
 							</div>
 
 						</div>
@@ -140,10 +141,17 @@
 								</small>
 							</div>
 							<div class="buttons">
-								<i class="fa fa-thumbs-up">10</i>
-								<i class="fa fa-thumbs-down">5</i>
-								<button class="button button-primary">Изменить</button>
-								<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
+								<i class="fas fa-thumbs-up">0</i>
+								<i class="fas fa-thumbs-down">gf</i>
+								<div v-if="app.isEditing===false">
+									<button class="button button-primary" v-on:click="changeEditingState(app.Id,true)">Изменить</button>
+									<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
+								</div>
+								<div v-if="app.isEditing===true">
+									<button class="button button-primary" v-on:click="changeApplicationText(app.Id,app.Text)">Сохранить</button>
+									<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
+								</div>
+								
 							</div>
 						</div>
 					</div>

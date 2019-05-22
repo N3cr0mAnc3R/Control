@@ -49,6 +49,15 @@ namespace WebApp.Controllers
             }
         }
         [HttpPost]
+        public void ChangeApplicationText(int ApplicationId, string Text)
+        {
+            //!проверить доступ
+            if (CheckAccess(ApplicationId))
+            {
+                ProfileManager.ChangeApplicationText(ApplicationId, Text);
+            }
+        }
+        [HttpPost]
         public JsonResult SelectCommentsByApplicationId (int ApplicationId, int Offset=1)
         {
             return Json(ProfileManager.SelectCommentsByApplicationId(ApplicationId, Offset));

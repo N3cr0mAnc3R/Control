@@ -2,9 +2,10 @@
     const app = new Vue({
         el: "#applications",
         data: {
-            applications: [],
+			applications: [],
             comment: '',
-            img: '',
+			img: '',
+			
             objForLoading: {
                 loading: false,
                 loaded: true
@@ -20,7 +21,8 @@
             },
             changeComment: function (event) {//байндинг комментария с vue 
                 this.comment = event.target.value;
-            },
+			},
+		
             addComment: function (applicationId) {
                 $.ajax({
                     url: "/profile/AddComment",
@@ -52,6 +54,24 @@
 					}
 				});
 			},
+			changeApplicationText: function (applicationId, text) {
+				$.ajax({
+					url: "/profile/ChangeApplicationText",
+					type: "POST",
+					data: { ApplicationId: applicationId, Text:text },
+					async: false,
+					success: function () {
+						//app.selectApplicationsByUserId();
+					}
+				});
+			},
+			changeEditingState: function (applicationId, state) {
+				let appl = app.applications.find(a => a.Id === applicationId);
+				this.applicationText = appl.Text;
+				console.log(this.applicationText);
+				app.$set(appl, 'isEditing', state);
+				
+			},
             selectApplicationsByUserId: function () {
 				var self = this;
 				self.applications = [];
@@ -62,8 +82,8 @@
                     success: function (applications) {
                             applications.forEach(function (application) {
                                 self.GetApplicationImages(application);
-                                self.GetApplicationLikeStatus(application);
 								application.IsOpened = false;
+								application.isEditing = false;
 								application.currentCommentPageNumber = 1;
                                 self.applications.push(application);
                                 
@@ -89,43 +109,7 @@
                         self.$set(application, 'imgs', applicationImgs);
                     }
                 });
-            },
-            GetApplicationLikeStatus: function (application) {
-                var self = this;
-                $.ajax({
-                    url: "/application/GetLikeDislike",
-                    type: "POST",
-                    data: { applicationId: application.Id },
-                    async: false,
-                    success: function (contribution) {                       
-                        application.likeStatus = contribution;
-                    }
-                });
-            },
-            Like: function (application) {
-                var self = this;
-                $.ajax({
-                    url: "/application/Like",
-                    type: "POST",
-                    data: { applicationId: application.Id },
-                    async: false,
-                    success: function (contribution) {
-                        //DO SOMETHING???
-                    }
-                });
-            },
-            Dislike: function (application) {
-                var self = this;
-                $.ajax({
-                    url: "/application/Dislike",
-                    type: "POST",
-                    data: { applicationId: application.Id },
-                    async: false,
-                    success: function (contribution) {
-                        //DO SOMETHING???
-                    }
-                });
-            },
+			},
 			ChangePageNumber: function (appId, offset) {
 				
 				let appl = app.applications.find(a => a.Id === appId);
