@@ -96,10 +96,12 @@
             }
             // Если метка уже создана – просто передвигаем ее.
             if (app.myPlacemark) {
+                console.log('old');
                 app.myPlacemark.geometry.setCoordinates(coords);
             }
             // Если нет – создаем.
             else {
+                console.log('new');
                 app.myPlacemark = this.createPlacemark(coords);
                 this.myMap.geoObjects.add(app.myPlacemark);
                 // Слушаем событие окончания перетаскивания на метке.
@@ -223,7 +225,7 @@
         },
         toggleMap: function () {
             if (this.myMap.events) {
-                this.myMap.events.remove('click', this.changeAddress);
+                app.myPlacemark = undefined;
             }
             app.isMap = !app.isMap;
             if (app.isMap) {
