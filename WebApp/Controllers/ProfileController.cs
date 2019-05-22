@@ -40,9 +40,22 @@ namespace WebApp.Controllers
             //в работе 
         }
         [HttpPost]
-        public void DeleteApplication()
+        public void DeleteApplication(int ApplicationId)
         {
-            //в работе 
+            //!проверить доступ
+            if(CheckAccess(ApplicationId))
+            { 
+            ProfileManager.DeleteApplication(ApplicationId);
+            }
+        }
+        [HttpPost]
+        public void ChangeApplicationText(int ApplicationId, string Text)
+        {
+            //!проверить доступ
+            if (CheckAccess(ApplicationId))
+            {
+                ProfileManager.ChangeApplicationText(ApplicationId, Text);
+            }
         }
         [HttpPost]
         public JsonResult SelectCommentsByApplicationId (int ApplicationId, int Offset=1)

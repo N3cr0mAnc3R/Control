@@ -271,6 +271,11 @@ button:focus {
   padding-top: 15px;
   float: right;
 }
+.likesContainer {
+  padding-top: 15px;
+  padding-right: 10px;
+  float: right;
+}
 .comment-button-holder {
   text-align: center;
   float: left;
@@ -456,6 +461,12 @@ footer {
     width: 100%;
     text-align: center;
   }
+  .likesContainer {
+    float: none;
+    width: 100%;
+    text-align: center;
+    padding-right: 0;
+  }
   .application .comments {
     padding: 20px 0 20px 0;
   }
@@ -483,6 +494,18 @@ footer {
   .application-control {
     position: relative;
   }
+}
+.likesContainer {
+  font-size: 16px;
+}
+.likesContainer .active-like {
+  color: #52dc93;
+}
+.likesContainer .link-dislike {
+  color: black;
+}
+.likesContainer .link-dislike .active-dislike {
+  color: darkred;
 }
 .button-secondary {
   background-color: rgba(0, 0, 0, 0);

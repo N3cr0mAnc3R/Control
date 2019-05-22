@@ -102,7 +102,12 @@ namespace WebApp.Controllers
             
             return Json(contribution);
         }
-        public void Like(int applicationId)
+        public JsonResult GetPosNegCount(int applicationId)
+        {
+            PosNegCount pnc = ApplicationManager.GetPosNegCount(applicationId);
+            return Json(pnc);
+        }
+        public JsonResult Like(int applicationId)
         {
             ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
             int contribution =  ApplicationManager.GetLikeDislike(user.Id, applicationId);
@@ -122,9 +127,11 @@ namespace WebApp.Controllers
                 ApplicationManager.SetLikeDislike(user.Id, applicationId, 0);
                 ApplicationManager.ChangePosCount(applicationId, -1);
             }
+            
+            return Json(ApplicationManager.GetPosNegCount(applicationId));
            
         }
-        public void Dislike(int applicationId)
+        public JsonResult Dislike(int applicationId)
         {
             ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
             int contribution = ApplicationManager.GetLikeDislike(user.Id, applicationId);
@@ -144,7 +151,7 @@ namespace WebApp.Controllers
                 ApplicationManager.ChangePosCount(applicationId, -1);
                 ApplicationManager.ChangeNegCount(applicationId, 1);
             }
-            
+            return Json(ApplicationManager.GetPosNegCount(applicationId));
         }
         #endregion
 

@@ -170,7 +170,7 @@ namespace WebApp.Models.Managers
                 }
             }
         }
-
+        #region Like/dislike
         public int GetLikeDislike(string userId, int applicationId )
         {
             using (var cnt = Concrete.OpenConnection())
@@ -183,41 +183,54 @@ namespace WebApp.Models.Managers
 
             }
         }
-        public int SetLikeDislike(string userId, int applicationId, int contribution)
+        public void SetLikeDislike(string userId, int applicationId, int contribution)
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<int>(
+                 cnt.Execute(
                     sql: "dbo.SetLikeDislike",
                     param: new { UserId = userId, ApplicationId = applicationId, Contribution = contribution },
                     commandType: CommandType.StoredProcedure
-                ).First();
+                );
             }
         }
 
-        public int ChangeNegCount(int applicationId, int changeNeg)
+        public void ChangeNegCount(int applicationId, int changeNeg)
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<int>(
+                cnt.Execute(
                     sql: "dbo.ChangeNegCount",
                     param: new { ApplicationId = applicationId, ChangeNeg = changeNeg },
                     commandType: CommandType.StoredProcedure
-                ).First();
+                );
             }
         }
 
-        public int ChangePosCount(int applicationId, int changePos)
+        public void ChangePosCount(int applicationId, int changePos)
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<int>(
+                 cnt.Execute(
                     sql: "dbo.ChangePosCount",
                     param: new { ApplicationId = applicationId, ChangePos = changePos },
                     commandType: CommandType.StoredProcedure
-                ).First();
+                );
             }
         }
+        public PosNegCount GetPosNegCount(int applicationId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<PosNegCount>(
+                   sql: "dbo.GetPosNegCount",
+                   param: new { ApplicationId = applicationId },
+                   commandType: CommandType.StoredProcedure
+               ).First();
+            }
+        }
+
+        #endregion
     }
 }
 
