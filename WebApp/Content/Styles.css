@@ -271,6 +271,11 @@ button:focus {
   padding-top: 15px;
   float: right;
 }
+.likesContainer {
+  padding-top: 15px;
+  padding-right: 10px;
+  float: right;
+}
 .comment-button-holder {
   text-align: center;
   float: left;

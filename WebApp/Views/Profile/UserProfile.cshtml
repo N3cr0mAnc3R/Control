@@ -50,13 +50,13 @@
 						<div class="application-data">
 
 							<div v-if="app.imgs.length<1" class="img-holder">
-								<img class="d-block w-100" src="https://static.price.ru/-/510401-digma-plane-7565n-3g/59069d6a10d480316034bc1e7498f59c/https_24-bt.ru/product_images/300/441/q_402486.jpg">
+								<img class="d-block w-100" src="~/Content/Images/noImage.png">
 							</div>
 							<div v-else-if="app.imgs.length===1" class="img-holder">
 								<img v-bind:src="app.imgs[0]" alt="Alternate Text" />
 							</div>
 							<div v-else-if="app.imgs.length>1" class="img-holder">
-								@*<img src="http://xn--80ajoghfjyj0a.xn--p1ai/uploads/media/illustration/4517/i605_6.jpg" alt="Alternate Text" />*@
+								
 								<div v-bind:id="'app-' + app.Id" class="carousel slide" data-ride="carousel">
 									<ol class="carousel-indicators">
 										<li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
@@ -140,19 +140,22 @@
 									<span v-if="app.IsOpened">скрыть комментарии</span>
 								</small>
 							</div>
-							<div class="buttons">
+
+
+							<div class="buttons" v-if="app.isEditing===false">
+								<button class="button button-primary" v-on:click="changeEditingState(app.Id,true)">Изменить</button>
+								<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
+							</div>
+							<div class="buttons" v-if="app.isEditing===true">
+								<button class="button button-primary" v-on:click="changeApplicationText(app.Id,app.Text)">Сохранить</button>
+								<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
+							</div>
+							<div class="likesContainer">
 								<i class="fas fa-thumbs-up">0</i>
 								<i class="fas fa-thumbs-down">gf</i>
-								<div v-if="app.isEditing===false">
-									<button class="button button-primary" v-on:click="changeEditingState(app.Id,true)">Изменить</button>
-									<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
-								</div>
-								<div v-if="app.isEditing===true">
-									<button class="button button-primary" v-on:click="changeApplicationText(app.Id,app.Text)">Сохранить</button>
-									<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
-								</div>
-								
 							</div>
+
+
 						</div>
 					</div>
 				</div>
