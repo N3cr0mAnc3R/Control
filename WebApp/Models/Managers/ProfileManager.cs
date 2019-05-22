@@ -106,5 +106,18 @@ namespace WebApp.Models.Managers
             }
         }
 
+        public void ChangeApplicationText(int ApplicationId, string Text)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "dbo.ChangeApplicationText",
+                    param: new { ApplicationId, Text },
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+        }
+
     }
 }
