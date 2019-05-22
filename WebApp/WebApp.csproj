@@ -312,7 +312,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Login\ExternalLogin.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Profile\LikeDislike.js" />
+    <Content Include="Scripts\Profile\EditProfileInfoVue.js" />
     <Content Include="Scripts\Profile\ProfileVue.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Web.config">
@@ -356,6 +356,7 @@
     <Content Include="Views\Account\AuthVk.cshtml" />
     <Content Include="Views\Account\AuthThirdParty.cshtml" />
     <Content Include="Views\Account\RedirectOk.cshtml" />
+    <Content Include="Views\Profile\EditProfileInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

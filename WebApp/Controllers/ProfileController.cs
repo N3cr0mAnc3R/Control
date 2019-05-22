@@ -1,10 +1,26 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿//using Microsoft.AspNet.Identity.Owin;
+//using System;
+//using System.Collections.Generic;
+//using System.IO;
+//using System.Linq;
+//using System.Web;
+//using System.Web.Mvc;
+//using WebApp.Models;
+//using WebApp.Models.Common;
+//using WebApp.Models.Managers;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
+using WebApp.Models.Common;
 using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
@@ -24,6 +40,14 @@ namespace WebApp.Controllers
             }
             return Redirect("/");
         }
+        public ActionResult EditProfileInfo()
+        {
+           //проверить, есть ли  доступ у пользователя к профилю
+                return View();
+            
+            //return Redirect("/");
+        }
+
         public bool CheckAccess(int Id)
         {
             return ProfileManager.CheckAccess(Id, CurrentUser.Id);
@@ -68,12 +92,29 @@ namespace WebApp.Controllers
             ProfileManager.AddComment(CurrentUser.Id, ApplicationId, Text, ParentCommentId);
             SelectCommentsByApplicationId( ApplicationId);
         }
+        [HttpPost]
+        public JsonResult FileUpload(UploadFile uploadFile)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
+                return Json(ProfileManager.FileUpload(uploadFile.File.InputStream, uploadFile.File.ContentType, Path.GetExtension(uploadFile.File.FileName), user.Id, uploadFile.File.FileName));
+            }
+            throw new ArgumentException();
+        }
 
         protected ProfileManager ProfileManager
         {
             get
             {
                 return Request.GetOwinContext().Get<ProfileManager>();
+            }
+        }
+        protected ApplicationUserManager ApplicationUserManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<ApplicationUserManager>();
             }
         }
     }

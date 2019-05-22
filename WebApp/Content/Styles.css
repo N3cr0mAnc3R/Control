@@ -17,6 +17,9 @@ select,
 textarea {
   /*max-width: 280px;*/
 }
+.application .application-body textarea {
+  font-size: 12px;
+}
 /* mega style*/
 body {
   font: 14px/1.5 'Source Sans Pro', sans-serif;
@@ -502,4 +505,8 @@ footer {
   background-color: rgba(0, 0, 0, 0);
   border: 1.5px solid #3aa0fe;
   color: #3aa0fe;
+}
+.avatar-picture {
+  width: 200px;
+  margin: auto;
 }

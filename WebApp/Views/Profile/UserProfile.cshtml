@@ -6,24 +6,23 @@
 <section id="main-section" v-loader="objForLoading">
 	<section>
 		<div class="custom-container">
-			<div class="user-info">
-				
+				<div class="user-info">
+
 					<div class="img-holder">
 						<img src="https://astrafarm.com/images/antoha.jpg" alt="Alternate Text" />
 					</div>
-				
-				
+
+
 					<div class="info-holder">
 						<p class="title">Пользователь</p>
 						<ul>
 							<li>возраст: 25</li>
 							<li>mail: mail@mail.ru</li>
-
 						</ul>
-						<button class="button-third">Изменить</button>
+						<a class="button-third" href="/Profile/EditProfileInfo">Изменить</a>
 					</div>
-				
-			</div>
+
+				</div>
 		</div>
 	</section>
 	<div class="custom-container">
@@ -82,7 +81,7 @@
 								<p v-if="app.isEditing===false">
 									{{app.Text}}
 								</p>
-								<textarea   v-if="app.isEditing===true" class="" v-model="app.Text"> </textarea>	
+								<textarea   v-if="app.isEditing===true" class="form-control" rows="6" v-model="app.Text"> </textarea>	
 							</div>
 
 						</div>
