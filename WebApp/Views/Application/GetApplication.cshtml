@@ -15,7 +15,7 @@
         }
         <label for="Title">Придумайте заголовок для вашей заявки</label>
         <input class="form-control col" id="Title" placeholder="Заголовок..." v-model="Title">
-        
+
 
         <label for="Text">Опишите проблему</label>
         <textarea class="form-control col" id="Text" placeholder="Описание проблемы..." v-model="Text"></textarea>
@@ -35,20 +35,21 @@
             <option v-for="reason in reasons" v-bind:value="reason.Id">{{reason.Name}} </option>
         </select>
 
-
-
-
-
         <input type="file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" multiple />
-
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
+
+        <label v-if="!isMap"  for="Address">Введите адрес</label>
+        <input v-if="!isMap" class="form-control col" id="Address" placeholder="Адрес..." v-model="Title">
+        <button type="button" class="btn btn-primary" v-on:click="toggleMap()">Карта/Адрес</button>
+        <div v-if="isMap" id="map">Я КАРТА!</div>
+
         <button type="submit" class="btn btn-primary" v-on:click="submit">Отправить</button>
-        <div id="map"></div>
+
     </div>
 
 
 
 </div>
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
+<script  src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
 <script src="~/Scripts/Application/ApplicationValidate.js"></script>
 

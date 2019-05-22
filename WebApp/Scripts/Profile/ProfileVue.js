@@ -91,85 +91,87 @@
 							console.log(application)
 						});
 
-						self.objForLoading.loading = false;
-						self.objForLoading.loaded = true;
-					}
-				});
-			},
-			GetApplicationImages: function (application) {
-				var self = this;
-				$.ajax({
-					url: "/application/GetApplicationImages",
-					type: "POST",
-					data: { Id: application.Id },
-					async: false,
-					success: function (imgs) {
-						let applicationImgs = [];
-						imgs.forEach(function (img) {
-							applicationImgs.push('data:image/png;base64, ' + img);
-						});
-						self.$set(application, 'imgs', applicationImgs);
+                        self.objForLoading.loading = false;
+                        self.objForLoading.loaded = true;
+                    }
+                });
+            },
+            GetApplicationImages: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/GetApplicationImages",
+                    type: "POST",
+                    data: { Id: application.Id },
+                    async: false,
+                    success: function (imgs) {
+                        let applicationImgs = [];
+                        imgs.forEach(function (img) {
+                            applicationImgs.push('data:image/png;base64, ' + img);
+                        });
+                        self.$set(application, 'imgs', applicationImgs);
+                        
+                    }
+                });
+            },
+            GetApplicationLikeStatus: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/GetLikeDislike",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (contribution) {                       
+                        application.likeStatus = contribution;
+                    }
+                });
+            },
+            GetPosNegCount: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/GetPosNegCount",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (PosNegCount) {                        
+                        application.PosCount = PosNegCount.PosCount;
+                        application.NegCount = PosNegCount.NegCount;
+                    }
+                });
+            },
+            Like: function (Id) {
+                let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+                
+                var self = this;
+                $.ajax({
+                    url: "/application/Like",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: true,
+                    success: function (PosNegCount) {
+                        application.likeStatus = (application.likeStatus == 1) ? 0 : 1;
+                        application.PosCount = PosNegCount.PosCount;
+                        application.NegCount = PosNegCount.NegCount;
+                        
+                    }
+                });
+            },
+            Dislike: function (Id) {
+                let application = this.applications.find(a => a.Id === Id);
+                var self = this;
+                $.ajax({
+                    url: "/application/Dislike",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (PosNegCount) {
+                        application.likeStatus = (application.likeStatus == -1) ? 0 : -1;
+                        application.PosCount = PosNegCount.PosCount;
+                        application.NegCount = PosNegCount.NegCount;
+                    }
+                });
+            },
 
-					}
-				});
-			},
-			GetApplicationLikeStatus: function (application) {
-				var self = this;
-				$.ajax({
-					url: "/application/GetLikeDislike",
-					type: "POST",
-					data: { applicationId: application.Id },
-					async: false,
-					success: function (contribution) {
-						application.likeStatus = contribution;
-					}
-				});
-			},
-			GetPosNegCount: function (application) {
-				var self = this;
-				$.ajax({
-					url: "/application/GetPosNegCount",
-					type: "POST",
-					data: { applicationId: application.Id },
-					async: false,
-					success: function (PosNegCount) {
-						application.PosCount = PosNegCount.PosCount;
-						application.NegCount = PosNegCount.NegCount;
-					}
-				});
-			},
-			Like: function (Id) {
-				let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
 
-				var self = this;
-				$.ajax({
-					url: "/application/Like",
-					type: "POST",
-					data: { applicationId: application.Id },
-					async: true,
-					success: function (PosNegCount) {
-						application.likeStatus = (application.likeStatus == 1) ? 0 : 1;
-						application.PosCount = PosNegCount.PosCount;
-						application.NegCount = PosNegCount.NegCount;
-
-					}
-				});
-			},
-			Dislike: function (Id) {
-				let application = this.applications.find(a => a.Id === Id);
-				var self = this;
-				$.ajax({
-					url: "/application/Dislike",
-					type: "POST",
-					data: { applicationId: application.Id },
-					async: false,
-					success: function (PosNegCount) {
-						application.likeStatus = (application.likeStatus == -1) ? 0 : -1;
-						application.PosCount = PosNegCount.PosCount;
-						application.NegCount = PosNegCount.NegCount;
-					}
-				});
-			},
 			ChangePageNumber: function (appId, offset) {
 
 				let appl = app.applications.find(a => a.Id === appId);

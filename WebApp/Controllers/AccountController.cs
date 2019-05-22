@@ -18,7 +18,7 @@ using WebApp.Models.Managers;
 namespace WebApp.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -85,6 +85,13 @@ namespace WebApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    ApplicationModel md = (ApplicationModel)TempData["application"];
+                    if (md != null)
+                    {
+                        ApplicationUser user = UserManager.FindByEmail(model.Email);
+                        await ApplicationManager.SubmitApplication(md, user.Id);
+                        return RedirectToLocal("profile/userprofile");
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

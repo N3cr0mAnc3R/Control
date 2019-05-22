@@ -109,7 +109,7 @@ namespace WebApp.Models.Managers
             }
         }
 
-        public int SubmitApplication(ApplicationModel application, string uid)
+        public async Task SubmitApplication(ApplicationModel application, string uid)
         {
             using (var cnt = Concrete.OpenConnection())
             {
@@ -131,7 +131,6 @@ namespace WebApp.Models.Managers
                 {
                     FileUpload(file.File.InputStream, file.File.ContentType, Id, Path.GetExtension(file.File.FileName), uid, file.File.FileName);
                 }
-                return Id;
 
             }
         }
