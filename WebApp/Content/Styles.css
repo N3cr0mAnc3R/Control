@@ -461,6 +461,12 @@ footer {
     width: 100%;
     text-align: center;
   }
+  .likesContainer {
+    float: none;
+    width: 100%;
+    text-align: center;
+    padding-right: 0;
+  }
   .application .comments {
     padding: 20px 0 20px 0;
   }
