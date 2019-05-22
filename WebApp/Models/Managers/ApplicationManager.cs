@@ -171,7 +171,7 @@ namespace WebApp.Models.Managers
                 }
             }
         }
-
+        #region Like/dislike
         public int GetLikeDislike(string userId, int applicationId )
         {
             using (var cnt = Concrete.OpenConnection())
@@ -219,6 +219,19 @@ namespace WebApp.Models.Managers
                 );
             }
         }
+        public PosNegCount GetPosNegCount(int applicationId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<PosNegCount>(
+                   sql: "dbo.GetPosNegCount",
+                   param: new { ApplicationId = applicationId },
+                   commandType: CommandType.StoredProcedure
+               ).First();
+            }
+        }
+
+        #endregion
     }
 }
 
