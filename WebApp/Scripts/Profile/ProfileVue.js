@@ -170,6 +170,13 @@
                     }
                 });
             },
+            //getLikeClass: function () {
+            //    return {
+            //        'active-like': this.likeStatus == 1,
+            //        'inactive-like': !this.likeStatus == 1
+            //    }
+            //},
+
 			ChangePageNumber: function (appId, offset) {
 				
 				let appl = app.applications.find(a => a.Id === appId);
