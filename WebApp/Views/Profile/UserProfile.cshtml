@@ -139,12 +139,12 @@
 									<span v-if="app.IsOpened">скрыть комментарии</span>
 								</small>
 							</div>
-							<div class="buttons">
-                                <a v-on:click="Like(app.Id)"><i class="fa fa-thumbs-up">10</i></a>
-								<i class="fa fa-thumbs-down">5</i>
-								<button class="button button-primary">Изменить</button>
-								<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
-							</div>
+                            <div class="buttons">
+                                <a class="thumb-link" v-on:click="Like(app.Id)"><i v-bind:class="{'active': app.likeStatus === 1}" class="fa fa-thumbs-up">{{app.PosCount}}</i></a>
+                                <a class="thumb-link" v-on:click="Dislike(app.Id)"><i v-bind:class="{'active': app.likeStatus === -1}" class="fa fa-thumbs-down">{{app.NegCount}}</i></a>
+                                <button class="button button-primary">Изменить</button>
+                                <button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
+                            </div>
 						</div>
 					</div>
 				</div>

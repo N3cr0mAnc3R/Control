@@ -63,10 +63,11 @@
                             applications.forEach(function (application) {
                                 self.GetApplicationImages(application);
                                 self.GetApplicationLikeStatus(application);
+                                self.GetPosNegCount(application);                                
 								application.IsOpened = false;
 								application.currentCommentPageNumber = 1;
                                 self.applications.push(application);
-                                
+                                console.log(application)
 						});
 
                         self.objForLoading.loading = false;
@@ -103,30 +104,48 @@
                     }
                 });
             },
+            GetPosNegCount: function (application) {
+                var self = this;
+                $.ajax({
+                    url: "/application/GetPosNegCount",
+                    type: "POST",
+                    data: { applicationId: application.Id },
+                    async: false,
+                    success: function (PosNegCount) {                        
+                        application.PosCount = PosNegCount.PosCount;
+                        application.NegCount = PosNegCount.NegCount;
+                    }
+                });
+            },
             Like: function (Id) {
                 let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
-                console.log(application);
+                
                 var self = this;
                 $.ajax({
                     url: "/application/Like",
                     type: "POST",
                     data: { applicationId: application.Id },
                     async: true,
-                    success: function (something) {
-                        //DO SOMETHING???
+                    success: function (PosNegCount) {
+                        application.likeStatus = (application.likeStatus == 1) ? 0 : 1;
+                        application.PosCount = PosNegCount.PosCount;
+                        application.NegCount = PosNegCount.NegCount;
                         
                     }
                 });
             },
-            Dislike: function (application) {
+            Dislike: function (Id) {
+                let application = this.applications.find(a => a.Id === Id);
                 var self = this;
                 $.ajax({
                     url: "/application/Dislike",
                     type: "POST",
                     data: { applicationId: application.Id },
                     async: false,
-                    success: function (something) {
-                        //DO SOMETHING???
+                    success: function (PosNegCount) {
+                        application.likeStatus = (application.likeStatus == -1) ? 0 : -1;
+                        application.PosCount = PosNegCount.PosCount;
+                        application.NegCount = PosNegCount.NegCount;
                     }
                 });
             },
