@@ -45,33 +45,17 @@ namespace WebApp.Controllers
             }
             if (!User.Identity.IsAuthenticated)
             {
+                foreach (UploadFile file in model.Files)
+                {
+                    file.FileId = ApplicationManager.UploadFileWithoutSecurity(file.File.InputStream, file.File.ContentType, Path.GetExtension(file.File.FileName), file.File.FileName);
+                }
+
                 TempData["application"] = model;
                 return Json("auth");
             }
-
-            //return Json(new { value = 10});
             await ApplicationManager.SubmitApplication(model, CurrentUser.Id);
             return Json("");
-            //return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
         }
-        //[HttpPost]
-        //[Authorize]
-        //public JsonResult SubmitApplication(ApplicationModel model)
-        //{
-        //    model.Files = new List<UploadFile>();
-        //    for (int i = 0; i < Request.Files.Count; i++)
-        //    {
-        //        UploadFile file = new UploadFile();
-        //        file.File = Request.Files.Get(i);
-        //        model.Files.Add(file);
-        //    }
-        //    if (!User.Identity.IsAuthenticated)
-        //    {
-        //        TempData["application"] = model;
-        //    }
-        //    //return Json(new { value = 10});
-        //    return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
-        //}
         [AllowAnonymous]
         public JsonResult GetReasonsByDepartment(int Id)
         {
