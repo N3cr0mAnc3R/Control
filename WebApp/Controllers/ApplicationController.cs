@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -53,6 +54,37 @@ namespace WebApp.Controllers
             await ApplicationManager.SubmitApplication(model, CurrentUser.Id);
             return Json("");
             //return Json(ApplicationManager.SubmitApplication(model, CurrentUser.Id));
+        }
+        public double[] YMapsTextToCoordinates(string textAddress)
+        {
+            // http://localhost:60483/application/YMapsTextToCoordinates
+            string geocode = (textAddress.Trim()).Replace(' ', ('+'));
+            double[] coords = new double[2];
+            string site = "https://geocode-maps.yandex.ru/1.x/?apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7&geocode="+geocode;
+
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(site);
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+            using (StreamReader stream = new StreamReader(
+                 resp.GetResponseStream(), Encoding.UTF8))
+            {
+                string Text = stream.ReadToEnd();
+                string bothCoords = "";
+                if (Text.Contains("<pos>") && Text.Contains("</pos>"))
+                {
+                    int Start = Text.IndexOf("<pos>", 0) + "<pos>".Length;
+                    int End = Text.IndexOf("</pos>", Start);
+                    bothCoords = (Text.Substring(Start, End - Start)).Replace('.',',');
+                }
+
+                string[] stringCoords = bothCoords.Split(' ');
+                for (int i = 0; i < 2; i++)
+                {
+                    coords[i] = Convert.ToDouble(stringCoords[1 - i]);
+                }
+
+                return coords;
+            }
         }
         //[HttpPost]
         //[Authorize]
