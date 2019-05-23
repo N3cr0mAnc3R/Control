@@ -354,6 +354,14 @@ namespace WebApp.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
+                    ApplicationUser user = UserManager.FindByEmail(loginInfo.Email);
+                    if (user != null)
+                    {
+                        ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                        AuthenticationManager.SignOut();
+                        AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                        return Redirect("/");
+                    }
                     // Если у пользователя нет учетной записи, то ему предлагается создать ее
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
@@ -455,10 +463,10 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<JsonResult> GetOkInfo()
         {
-            string[] scope = new string[] { "VALUABLE_ACCESS" };
+            string[] scope = new string[] { "VALUABLE_ACCESS", "get_email" };
             string url = string.Format("https://connect.ok.ru/oauth/authorize?client_id={0}&scope={1}&response_type=code&redirect_uri={2}",
                 ConfigurationManager.AppSettings["ok:clientId"],
-                String.Join(",", scope),
+                String.Join(";", scope),
                 ConfigurationManager.AppSettings["ok:redirect_uri"]);
             return Json(url);
         }
@@ -542,40 +550,50 @@ namespace WebApp.Controllers
         public ActionResult AuthThirdParty(string access_token, int? expires_in, string user_id,
                                            string email, string provider)
         {
+
             if (user_id != "")
             {
-                ApplicationUser user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth(user_id, provider));
-                if (user == null)
+                // Пред тем, как лезть в таблицу ThirdPartyAuth, проверь email
+                ApplicationUser user = UserManager.FindByEmail(email);
+
+                if(user == null)
                 {
-                    if (!String.IsNullOrWhiteSpace(email))
-                    {
-                        user = new ApplicationUser()
-                        {
-                            Email = email,
-                            UserName = email,
 
-                        };
-                    }
-                    else
+                    user = UserManager.FindById(AccountManager.GetUserIdFromThirdPartyAuth(user_id, provider));
+                    if (user == null)
                     {
-                        user = new ApplicationUser()
+                        if (!String.IsNullOrWhiteSpace(email))
                         {
-                            UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
-                        };
-                    }
+                            user = new ApplicationUser()
+                            {
+                                Email = email,
+                                UserName = email,
 
-                    IdentityResult result = UserManager.Create(user);
-                    if (!result.Succeeded)
-                    {
-                        return Redirect("/account/login");
+                            };
+                        }
+                        else
+                        {
+                            user = new ApplicationUser()
+                            {
+                                UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
+                            };
+                        }
+
+                        IdentityResult result = UserManager.Create(user);
+
+                        if (!result.Succeeded)
+                        {
+                            return Redirect("/account/login");
+                        }
+                        AccountManager.AddNewUser(user.Id);
+                        AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                     }
-                    AccountManager.AddNewUser(user.Id);
-                    AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                 }
+                // авторизует 3 строчки
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-
                 AuthenticationManager.SignOut();
                 AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+
                 return Redirect("/application/getapplication");
             }
             return View();
