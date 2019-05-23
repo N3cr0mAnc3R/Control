@@ -68,7 +68,6 @@
 			changeEditingState: function (applicationId, state) {
 				let appl = app.applications.find(a => a.Id === applicationId);
 				this.applicationText = appl.Text;
-				console.log(this.applicationText);
 				app.$set(appl, 'isEditing', state);
 
 			},
@@ -88,7 +87,6 @@
 							application.isEditing = false;
 							application.currentCommentPageNumber = 1;
 							self.applications.push(application);
-							console.log(application)
 						});
 
                         self.objForLoading.loading = false;
@@ -239,10 +237,8 @@
 			}
 		},
 		saveProfileChanges: function () {
-			console.log('1');
 			$.each(app.Files, function (i, file) {
 				ajaxData.append('Files[' + i + ']', file);
-				console.log(app.Files);
 			});
 		},
 

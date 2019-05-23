@@ -4,7 +4,7 @@
 }
 
 <div class="container" id="app">
-	<img class="avatar-picture" src="~/Content/Images/noImage.png" />
+	<img class="avatar-picture" v-bind:src="img" />
 	<input type="file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" />
 	<form>
 		<div class="form-group">
@@ -21,6 +21,7 @@
 		</div>
 	</form>
 	<button v-on:click="saveProfileChanges">Сохранить</button>
+	<button  v-on:click="GetUserImage"></button>
 </div>
 
 

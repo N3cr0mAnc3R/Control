@@ -93,16 +93,22 @@ namespace WebApp.Controllers
             SelectCommentsByApplicationId( ApplicationId);
         }
         [HttpPost]
-        public JsonResult FileUpload(UploadFile uploadFile)
+        public JsonResult FileUpload()
         {
             if (ModelState.IsValid)
             {
+                UploadFile File = new UploadFile() { File = Request.Files.Get(0)} ; 
                 ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
-                return Json(ProfileManager.FileUpload(uploadFile.File.InputStream, uploadFile.File.ContentType, Path.GetExtension(uploadFile.File.FileName), user.Id, uploadFile.File.FileName));
+                return Json(ProfileManager.FileUpload(File.File.InputStream, File.File.ContentType, Path.GetExtension(File.File.FileName), user.Id, File.File.FileName));
             }
             throw new ArgumentException();
         }
+        [AllowAnonymous]
+        public JsonResult GetUserImage()
+        {
+            return Json(ProfileManager.GetUserFileStream(CurrentUser.Id));
 
+        }
         protected ProfileManager ProfileManager
         {
             get

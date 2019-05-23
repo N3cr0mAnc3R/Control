@@ -56,7 +56,6 @@
                 app.myPlacemark.geometry._coordinates.forEach(function (coord) {
                     app.coordinates.push(coord);
                 });
-                console.log(app.Files);
                 var ajaxData = new FormData();
                 ajaxData.append('Text', app.Text);
                 ajaxData.append('Title', app.Title);
@@ -74,7 +73,6 @@
                     processData: false,
                     data: ajaxData,
                     success: function (uri) {
-                        console.log(uri);
                         if (uri === 'auth') {
                             window.open('/account/login', '_self');
                         }
@@ -97,12 +95,11 @@
             }
             // Если метка уже создана – просто передвигаем ее.
             if (app.myPlacemark) {
-                console.log('old');
                 app.myPlacemark.geometry.setCoordinates(coords);
+                
             }
             // Если нет – создаем.
             else {
-                console.log('new');
                 app.myPlacemark = this.createPlacemark(coords);
                 this.myMap.geoObjects.add(app.myPlacemark);
                 // Слушаем событие окончания перетаскивания на метке.
@@ -137,7 +134,6 @@
                         // В качестве контента балуна задаем строку с адресом объекта.
                         balloonContent: firstGeoObject.getAddressLine()
                     });
-                console.log(app.myPlacemark);
             });
         },
         initYmaps: function () {
@@ -148,7 +144,6 @@
             },
                 { searchControlProvider: 'yandex#search' });
             navigator.geolocation.getCurrentPosition(function (position) {
-                console.log(position);
                 app.changeAddress(event, [position.coords.latitude, position.coords.longitude]);
             });
             // Слушаем клик на карте.
