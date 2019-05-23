@@ -86,7 +86,7 @@ namespace WebApp.Controllers
             {
                 case SignInStatus.Success:
                     ApplicationModel md = (ApplicationModel)TempData["application"];
-                    if (md != null)
+                    if (md != null) 
                     {
                         ApplicationUser user = UserManager.FindByEmail(model.Email);
                         await ApplicationManager.SubmitApplication(md, user.Id);
@@ -355,6 +355,15 @@ namespace WebApp.Controllers
                 case SignInStatus.Failure:
                 default:
                     // Если у пользователя нет учетной записи, то ему предлагается создать ее
+                    ApplicationUser user = UserManager.FindByEmail(loginInfo.Email);
+                    if (user != null)
+                    {
+                        ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                        AuthenticationManager.SignOut();
+                        AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                        return Redirect("/");
+                    }
+                    
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
@@ -572,10 +581,11 @@ namespace WebApp.Controllers
                     AccountManager.AddNewUser(user.Id);
                     AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                 }
+                // авторизует 3 строчки
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-
                 AuthenticationManager.SignOut();
                 AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+
                 return Redirect("/application/getapplication");
             }
             return View();
