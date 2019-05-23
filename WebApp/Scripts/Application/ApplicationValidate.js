@@ -10,6 +10,7 @@
         reasonId: 0,
         coordinates: [],
         isMap: false,
+        AddressText: "",
         myPlacemark: undefined,
         myMap: {},
         objForLoading: {
