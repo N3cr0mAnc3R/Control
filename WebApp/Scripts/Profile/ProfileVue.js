@@ -6,6 +6,7 @@
 			comment: '',
 			img: '',
 			commentImg: '',
+			user: {},
 			userImg: "/Content/Images/noImage.png",
 			Files: [],
 			objForLoading: {
@@ -116,6 +117,39 @@
 
 					}
 				});
+			},
+			getUserInfo: function () {
+				this.GetUserImage();
+				var self = this;
+				$.ajax({
+					url: "/profile/getUserInfo",
+					type: "POST",
+					async: false,
+					success: function (userInfo) {
+						var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') +1, 12)));
+						self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' +( date.getMonth() + 1 )+ '-' + date.getDate());
+						var today = new Date();
+						
+						var age = today.getFullYear() - date.getFullYear();
+						var m = today.getMonth() - date.getMonth();
+						if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+							age--;
+						}
+						self.$set(self.user, 'Age', age);
+
+						self.$set(self.user, 'Email', userInfo.Email);
+						self.$set(self.user, 'FullName', userInfo.FullName);
+					
+
+						console.log(today.getFullYear());
+						console.log(date);
+						console.log(age);
+
+						console.log(self.user);
+
+					}
+				});
+
 			},
 			GetUserImage: function () {
 				var self = this;
@@ -282,7 +316,7 @@
 			this.objForLoading.loading = true;
 			this.objForLoading.loaded = false;
 			this.selectApplicationsByUserId();
-			this.GetUserImage();
+			this.getUserInfo();
 		}
 
 
