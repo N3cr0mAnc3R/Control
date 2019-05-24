@@ -3,13 +3,14 @@
 	ViewBag.Title = "UserProfile";
 }
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
-<section id="main-section" v-loader="objForLoading">
-	<section>
-		<div class="custom-container">
+<div id="userProfile">
+	<section id="main-section" v-loader="objForLoading">
+		<section>
+			<div class="custom-container">
 				<div class="user-info">
 
 					<div class="img-holder">
-						<img src="https://astrafarm.com/images/antoha.jpg" alt="Alternate Text" />
+						<img v-bind:src="userImg" alt="Alternate Text" />
 					</div>
 
 
@@ -23,146 +24,147 @@
 					</div>
 
 				</div>
-		</div>
-	</section>
-	<div class="custom-container">
-		<nav class="profile-menu">
-			<ul>
-				<li><a href="#">Мои обращения</a></li>
-				<li><a href="#">Создать обращение</a></li>
-			</ul>
-		</nav>
-		@*<button>все</button>
-		<button>принятые</button>
-		<button>непринятые</button>*@
-
-	</div>
-	<section>
+			</div>
+		</section>
 		<div class="custom-container">
+			<nav class="profile-menu">
+				<ul>
+					<li><a href="#">Мои обращения</a></li>
+					<li><a href="#">Создать обращение</a></li>
+				</ul>
+			</nav>
+			@*<button>все</button>
+				<button>принятые</button>
+				<button>непринятые</button>*@
 
-			<section id="applications">
-				<div v-for="app in applications">
-					<div class="application">
+		</div>
+		<section>
+			<div class="custom-container">
+
+				<section id="applications">
+					<div v-for="app in applications">
+						<div class="application">
 
 
 
-						<div class="application-data">
+							<div class="application-data">
 
-							<div v-if="app.imgs.length<1" class="img-holder">
-								<img class="d-block w-100" src="~/Content/Images/noImage.png">
+								<div v-if="app.imgs.length<1" class="img-holder">
+									<img class="d-block w-100" src="~/Content/Images/noImage.png">
+								</div>
+								<div v-else-if="app.imgs.length===1" class="img-holder">
+									<img v-bind:src="app.imgs[0]" alt="Alternate Text" />
+								</div>
+								<div v-else-if="app.imgs.length>1" class="img-holder">
+
+									<div v-bind:id="'app-' + app.Id" class="carousel slide" data-ride="carousel">
+										<ol class="carousel-indicators">
+											<li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
+										</ol>
+										<div class="carousel-inner">
+											<div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs">
+												<img class="d-block w-100" v-bind:src="img">
+											</div>
+										</div>
+										<a class="carousel-control-prev" v-bind:href="'#app-' + app.Id" role="button" data-slide="prev">
+											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											<span class="sr-only">Previous</span>
+										</a>
+										<a class="carousel-control-next" v-bind:href="'#app-' + app.Id" role="button" data-slide="next">
+											<span class="carousel-control-next-icon" aria-hidden="true"></span>
+											<span class="sr-only">Next</span>
+										</a>
+									</div>
+								</div>
+								<div class="application-body">
+
+									<p class="title">{{app.Title}}</p>
+									<p v-if="app.isEditing===false">
+										{{app.Text}}
+									</p>
+									<textarea v-if="app.isEditing===true" class="form-control" rows="6" v-model="app.Text"> </textarea>
+								</div>
+
 							</div>
-							<div v-else-if="app.imgs.length===1" class="img-holder">
-								<img v-bind:src="app.imgs[0]" alt="Alternate Text" />
-							</div>
-							<div v-else-if="app.imgs.length>1" class="img-holder">
-								
-								<div v-bind:id="'app-' + app.Id" class="carousel slide" data-ride="carousel">
-									<ol class="carousel-indicators">
-										<li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
-									</ol>
-									<div class="carousel-inner">
-										<div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs">
-											<img class="d-block w-100" v-bind:src="img">
+							<section class="comments" v-if="app.IsOpened">
+								<div v-for="com in app.comments" class="comment">
+									<div class="custom-container">
+										<div class="img-holder">
+											<img v-bind:src="com.img" alt="Alternate Text" />
+										</div>
+										<div class="comment-text">
+											<p class="comment-author">Автор</p>
+											<p>{{com.Text}}</p>
+											<p><small>30.04.19 19:00</small> @*<a href="#">ответить</a></p>*@
 										</div>
 									</div>
-									<a class="carousel-control-prev" v-bind:href="'#app-' + app.Id" role="button" data-slide="prev">
-										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-										<span class="sr-only">Previous</span>
-									</a>
-									<a class="carousel-control-next" v-bind:href="'#app-' + app.Id" role="button" data-slide="next">
-										<span class="carousel-control-next-icon" aria-hidden="true"></span>
-										<span class="sr-only">Next</span>
-									</a>
 								</div>
-							</div>
-							<div class="application-body">
-
-								<p class="title">{{app.Title}}</p>
-								<p v-if="app.isEditing===false">
-									{{app.Text}}
-								</p>
-								<textarea   v-if="app.isEditing===true" class="form-control" rows="6" v-model="app.Text"> </textarea>	
-							</div>
-
-						</div>
-						<section class="comments" v-if="app.IsOpened">
-							<div v-for="com in app.comments" class="comment">
-								<div class="custom-container">
-									<div class="img-holder">
-										<img src="https://cdn.fishki.net/upload/post/2018/04/19/2575367/tn/483dffd1599856089e91fa679bbc64df.jpg" alt="Alternate Text" />
-									</div>
-									<div class="comment-text">
-										<p class="comment-author">Автор</p>
-										<p>{{com.Text}}</p>
-										<p><small>30.04.19 19:00</small> @*<a href="#">ответить</a></p>*@
-									</div>
-								</div>
-							</div>
-							<div class="custom-container ">
 								<div class="custom-container ">
-									<div class="form-inline form-group mt-4">
+									<div class="custom-container ">
+										<div class="form-inline form-group mt-4">
 
 <textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
 
-										<button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
-									</div>
-									<div>
-										<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
-											<div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
-
-											<span v-if="app.currentCommentPageNumber > 3"> ... </span>
-
-											<div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
-
-											<span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
-
-											<div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
+											<button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
 										</div>
-										<div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
-											<div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+										<div>
+											<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
+												<div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
+
+												<span v-if="app.currentCommentPageNumber > 3"> ... </span>
+
+												<div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+
+												<span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
+
+												<div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
+											</div>
+											<div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
+												<div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+											</div>
 										</div>
+
+
 									</div>
-
-
 								</div>
+
+
+
+
+
+							</section>
+							<div class="application-control">
+								<div class="comment-button-holder">
+									<small v-on:click="toggleComments(app.Id)">
+										<span v-if="!app.IsOpened">показать комментарии</span>
+										<span v-if="app.IsOpened">скрыть комментарии</span>
+									</small>
+								</div>
+
+
+								<div class="buttons" v-if="app.isEditing===false">
+									<button class="button button-primary" v-on:click="changeEditingState(app.Id,true)">Изменить</button>
+									<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
+								</div>
+								<div class="buttons" v-if="app.isEditing===true">
+									<button class="button button-primary" v-on:click="changeApplicationText(app.Id,app.Text)">Сохранить</button>
+									<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
+								</div>
+								<div class="likesContainer">
+									<a v-on:click="Like(app.Id)"><i v-bind:class="{'active-like': app.likeStatus === 1}" class="fa fa-thumbs-up inactive-like">{{app.PosCount}}</i></a>
+									<a v-on:click="Dislike(app.Id)"><i v-bind:class="{'active-dislike': app.likeStatus === -1}" class="fa fa-thumbs-down inactive-dislike">{{app.NegCount}}</i></a>
+								</div>
+
+
 							</div>
-
-
-
-
-
-						</section>
-						<div class="application-control">
-							<div class="comment-button-holder">
-								<small v-on:click="toggleComments(app.Id)">
-									<span v-if="!app.IsOpened">показать комментарии</span>
-									<span v-if="app.IsOpened">скрыть комментарии</span>
-								</small>
-							</div>
-
-
-							<div class="buttons" v-if="app.isEditing===false">
-								<button class="button button-primary" v-on:click="changeEditingState(app.Id,true)">Изменить</button>
-								<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
-							</div>
-							<div class="buttons" v-if="app.isEditing===true">
-								<button class="button button-primary" v-on:click="changeApplicationText(app.Id,app.Text)">Сохранить</button>
-								<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
-							</div>
-                            <div class="likesContainer">
-                                <a  v-on:click="Like(app.Id)"><i v-bind:class="{'active-like': app.likeStatus === 1}" class="fa fa-thumbs-up inactive-like">{{app.PosCount}}</i></a>
-                                <a  v-on:click="Dislike(app.Id)"><i v-bind:class="{'active-dislike': app.likeStatus === -1}"  class="fa fa-thumbs-down inactive-dislike">{{app.NegCount}}</i></a>
-                            </div>
-
-
 						</div>
 					</div>
-				</div>
-			</section>
-		</div>
-		
+				</section>
+			</div>
+
+		</section>
 	</section>
-</section>
+</div>
 <script src="~/Scripts/Profile/ProfileVue.js"></script>
 @*<script>$('.carousel').carousel()</script>*@
 
