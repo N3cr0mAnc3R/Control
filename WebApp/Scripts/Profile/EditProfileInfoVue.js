@@ -66,7 +66,7 @@
 				});
 			},
 			imageSelectionHandler: function (event) {
-				AnotherPicturePicked = true;
+				this.AnotherPicturePicked = true;
 				app.InputFileValidate();
 				var reader = new FileReader();
 				reader.onload = function () {
@@ -96,8 +96,11 @@
 			},
 			//если даиа не выбрана, возникают проблемы
 			changeUserInfo: function () {
-				
+				if (this.AnotherPicturePicked) {
 					app.saveUserPhoto();
+					AnotherPicturePicked = false;
+
+				}
 				
 				
 					$.ajax({

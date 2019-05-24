@@ -3,7 +3,7 @@
 	ViewBag.Title = "UserProfile";
 }
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
-<div id="userProfile">
+<section id="userProfile">
 	<section id="main-section" v-loader="objForLoading">
 		<section>
 			<div class="custom-container">
@@ -15,10 +15,10 @@
 
 
 					<div class="info-holder">
-						<p class="title">Пользователь</p>
+						<p class="title">{{user.FullName}}</p>
 						<ul>
-							<li>возраст: 25</li>
-							<li>mail: mail@mail.ru</li>
+							<li>возраст: {{user.Age}}</li>
+							<li>mail: {{user.Email}}</li>
 						</ul>
 						<a class="button-third" href="/Profile/EditProfileInfo">Изменить</a>
 					</div>
@@ -93,9 +93,9 @@
 											<img v-bind:src="com.img" alt="Alternate Text" />
 										</div>
 										<div class="comment-text">
-											<p class="comment-author">Автор</p>
+											<p class="comment-author">{{com.authorName}}</p>
 											<p>{{com.Text}}</p>
-											<p><small>30.04.19 19:00</small> @*<a href="#">ответить</a></p>*@
+											<p><small>{{com.dateTimeOfCreation}}</small> @*<a href="#">ответить</a></p>*@
 										</div>
 									</div>
 								</div>
@@ -164,7 +164,7 @@
 
 		</section>
 	</section>
-</div>
+</section>
 <script src="~/Scripts/Profile/ProfileVue.js"></script>
 @*<script>$('.carousel').carousel()</script>*@
 
