@@ -2,8 +2,8 @@
 	const app = new Vue({
 		el: "#app",
 		data: {
-
-			img: '',
+			user: {},
+			img: '/Content/Images/noImage.png',
 			Files: [],
 			objForLoading: {
 				loading: false,
@@ -55,25 +55,70 @@
 					type: "POST",
 					async: false,
 					success: function (img) {
-
-						app.img = 'data:image/png;base64, ' + img;
-						console.log(app.img);
+						if(img)
+						self.img = 'data:image/png;base64, ' + img;
+						
 
 					}
 				});
+			},
+			imageSelectionHandler: function (event) {
+				app.InputFileValidate();
+				var reader = new FileReader();
+				reader.onload = function () {
+
+					app.img = reader.result;
+
+				};
+				reader.readAsDataURL(event.target.files[0]);
+			},
+			//дата не забирается
+			getUserInfo: function () {
+				this.GetUserImage();
+				var self = this;
+				$.ajax({
+					url: "/profile/getUserInfo",
+					type: "POST",
+					async: false,
+					success: function (userInfo) {
+						console.log(userInfo);
+						//if (userInfo.DateOfBirth !== 0)
+							self.$set(self.user, 'DateOfBirth', new Date(userInfo.DateOfBirth));
+						self.$set(self.user, 'Email', userInfo.Email);
+						self.$set(self.user, 'FullName', userInfo.FullName);
+
+					}
+				});
+
+			},
+			//если даиа не выбрана, возникают проблемы
+			changeUserInfo: function () {
+				if (app.comment !== '') {
+					$.ajax({
+						url: "/profile/ChangeUserInfo",
+						type: "POST",
+						async: false,
+						data: app.user,
+						success: function () {
+							console.log('heee');
+						}
+					}
+
+					);
+				}
+
 			}
+
+
+
 
 		},
 
-
-		beforeMount() {
+		mounted() {
 			this.objForLoading.loading = true;
 			this.objForLoading.loaded = false;
-
-
+			this.getUserInfo();
 		}
-
-
 
 	});
 };

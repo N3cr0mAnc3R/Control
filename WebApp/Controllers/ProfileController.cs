@@ -82,6 +82,15 @@ namespace WebApp.Controllers
             }
         }
         [HttpPost]
+        public void ChangeUserInfo( UserInfoModel userinfo)
+        {
+            //!проверить доступ
+            
+      
+                ProfileManager.ChangeUserInfo(CurrentUser.Id,userinfo);
+           
+        }
+        [HttpPost]
         public JsonResult SelectCommentsByApplicationId (int ApplicationId, int Offset=1)
         {
             return Json(ProfileManager.SelectCommentsByApplicationId(ApplicationId, Offset));
@@ -109,6 +118,13 @@ namespace WebApp.Controllers
             return Json(ProfileManager.GetUserFileStream(CurrentUser.Id));
 
         }
+        [HttpPost]
+        public JsonResult GetUserInfo()
+        {
+            return Json(ProfileManager.GetUserInfo(CurrentUser.Id));
+
+        }
+
         protected ProfileManager ProfileManager
         {
             get

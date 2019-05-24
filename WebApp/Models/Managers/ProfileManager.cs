@@ -49,6 +49,21 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public UserInfoModel GetUserInfo(string UserId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<UserInfoModel>(
+                    sql: "dbo.GetUserInfo",
+                    param: new
+                    {
+                        UserId
+                    },
+                    commandType: CommandType.StoredProcedure
+                ).First();
+
+            }
+        }
         public dynamic SelectCommentsByApplicationId(int ApplicationId, int Offset)
         {
 
@@ -121,7 +136,20 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public void ChangeUserInfo(string UserId,UserInfoModel userInfo)
+        {
+            //if (userInfo.DateOfBirth!=null &&((DateTime)userInfo.DateOfBirth).Year < 1900)
+            //    userInfo.DateOfBirth = null;
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "dbo.ChangeUserInfo",
+                    param: new { UserId, DateOfBirth= ((DateTime)userInfo.DateOfBirth).Year < 1900?(DateTime?)null:userInfo.DateOfBirth, Email=userInfo.Email, FullName= userInfo.FullName },
+                    commandType: CommandType.StoredProcedure
+                );
 
+            }
+        }
 
         public string FileUpload(Stream fileStream, string contentType, string extension, string userId, string fileName)
         {
@@ -160,15 +188,15 @@ namespace WebApp.Models.Managers
             }
         }
         ///*********************************************************************************
-        public IEnumerable<FileStreamResult> GetUserImage(string id)
+        public FileStreamResult GetUserImage(string id)
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<FileStreamResult>(
+                return (cnt.Query<FileStreamResult>(
                     sql: "dbo.GetUserImage",
                     param: new { UserId = id },
                     commandType: CommandType.StoredProcedure
-                );
+                )).First();
 
             }
         }
