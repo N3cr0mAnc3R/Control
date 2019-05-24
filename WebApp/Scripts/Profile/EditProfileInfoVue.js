@@ -5,6 +5,7 @@
 			user: {},
 			img: '/Content/Images/noImage.png',
 			Files: [],
+			AnotherPicturePicked: false,
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -13,6 +14,7 @@
 		},
 		methods: {
 			InputFileValidate: function () {
+				
 				var x = event.target.files;
 				var re = /(?:\.([^.]+))?$/;
 
@@ -26,7 +28,7 @@
 				}
 
 			},
-			saveProfileChanges: function () {
+			saveUserPhoto: function () {
 
 				var ajaxData = new FormData();
 
@@ -63,6 +65,7 @@
 				});
 			},
 			imageSelectionHandler: function (event) {
+				AnotherPicturePicked = true;
 				app.InputFileValidate();
 				var reader = new FileReader();
 				reader.onload = function () {
@@ -92,7 +95,11 @@
 			},
 			//если даиа не выбрана, возникают проблемы
 			changeUserInfo: function () {
-				if (app.comment !== '') {
+				if (app.AnotherPicturePicked === true) {
+					app.saveUserPhoto();
+					app.AnotherPicturePicked = false;
+				}
+				
 					$.ajax({
 						url: "/profile/ChangeUserInfo",
 						type: "POST",
@@ -106,7 +113,7 @@
 					);
 				}
 
-			}
+			
 
 
 
