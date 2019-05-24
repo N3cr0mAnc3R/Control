@@ -1,10 +1,12 @@
 ﻿window.onload = function () {
 	const app = new Vue({
-		el: "#applications",
+		el: "#userProfile",
 		data: {
 			applications: [],
 			comment: '',
 			img: '',
+			commentImg: '',
+			userImg: "/Content/Images/noImage.png",
 			Files: [],
 			objForLoading: {
 				loading: false,
@@ -92,166 +94,198 @@
 							self.applications.push(application);
 						});
 
-				self.objForLoading.loading = false;
-				self.objForLoading.loaded = true;
-			}
-		});
-	},
-	GetApplicationImages: function (application) {
-		var self = this;
-		$.ajax({
-			url: "/application/GetApplicationImages",
-			type: "POST",
-			data: { Id: application.Id },
-			async: false,
-			success: function (imgs) {
-				let applicationImgs = [];
-				imgs.forEach(function (img) {
-					applicationImgs.push('data:image/png;base64, ' + img);
+						self.objForLoading.loading = false;
+						self.objForLoading.loaded = true;
+					}
 				});
-				self.$set(application, 'imgs', applicationImgs);
+			},
 
-			}
-		});
-	},
-	GetApplicationLikeStatus: function (application) {
-		var self = this;
-		$.ajax({
-			url: "/application/GetLikeDislike",
-			type: "POST",
-			data: { applicationId: application.Id },
-			async: false,
-			success: function (contribution) {
-				application.likeStatus = contribution;
-			}
-		});
-	},
-	GetPosNegCount: function (application) {
-		var self = this;
-		$.ajax({
-			url: "/application/GetPosNegCount",
-			type: "POST",
-			data: { applicationId: application.Id },
-			async: false,
-			success: function (PosNegCount) {
-				application.PosCount = PosNegCount.PosCount;
-				application.NegCount = PosNegCount.NegCount;
-			}
-		});
-	},
-	Like: function (Id) {
-		let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+			GetApplicationImages: function (application) {
+				var self = this;
+				$.ajax({
+					url: "/application/GetApplicationImages",
+					type: "POST",
+					data: { Id: application.Id },
+					async: false,
+					success: function (imgs) {
+						let applicationImgs = [];
+						imgs.forEach(function (img) {
+							applicationImgs.push('data:image/png;base64, ' + img);
+						});
+						self.$set(application, 'imgs', applicationImgs);
 
-		var self = this;
-		$.ajax({
-			url: "/application/Like",
-			type: "POST",
-			data: { applicationId: application.Id },
-			async: true,
-			success: function (PosNegCount) {
-				application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
-				application.PosCount = PosNegCount.PosCount;
-				application.NegCount = PosNegCount.NegCount;
-
-			}
-		});
-	},
-	Dislike: function (Id) {
-		let application = this.applications.find(a => a.Id === Id);
-		var self = this;
-		$.ajax({
-			url: "/application/Dislike",
-			type: "POST",
-			data: { applicationId: application.Id },
-			async: false,
-			success: function (PosNegCount) {
-				application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
-				application.PosCount = PosNegCount.PosCount;
-				application.NegCount = PosNegCount.NegCount;
-			}
-		});
-	},
-
-
-	ChangePageNumber: function (appId, offset) {
-
-		let appl = app.applications.find(a => a.Id === appId);
-		appl.comments = [];
-		$.ajax({
-			url: "/profile/SelectCommentsByApplicationId",
-			type: "POST",
-			data: { ApplicationId: appl.Id, Offset: offset },
-			async: false,
-			success: function (obj) {
-				let applicationComments = [];
-				obj.Comments.forEach(function (comment) {
-					applicationComments.push(comment);
+					}
 				});
-				app.$set(appl, 'comments', applicationComments);
-				app.$set(appl, 'currentCommentPageNumber', offset);
-				//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+			},
+			GetUserImage: function () {
+				var self = this;
+				$.ajax({
+					url: "/profile/GetUserImage",
+					type: "POST",
+					async: false,
+					success: function (img) {
+						if (img)
+							self.userImg = 'data:image/png;base64, ' + img;
+					}
+				});
+			},
+			GetUserImageForComment: function (id) {
+				var self = this;
+				$.ajax({
+					url: "/profile/GetUserImage",
+					type: "POST",
+					data: {UserId:id},
+					async: false,
+					success: function (img) {
+						if (img)
+							self.commentImg = 'data:image/png;base64, ' + img;
+					}
+				});
+			},
 
-			}
-		});
-	},
-	isShowAsPage: function (number, current, max) {
-		if (number > current - 2 && number < current + 2 && number < max && number > 1) {
-			return true;
-		}
-		else return false;
-	},
-	SelectCommentsByApplicationId: function (application, offset) {
-		if (!application.IsOpened) {
-			$.ajax({
-				url: "/profile/SelectCommentsByApplicationId",
-				type: "POST",
-				data: { ApplicationId: application.Id, Offset: offset },
-				async: false,
-				success: function (obj) {
-					let applicationComments = [];
-					obj.Comments.forEach(function (comment) {
-						applicationComments.push(comment);
-					});
-					app.$set(application, 'comments', applicationComments);
-					application.IsOpened = !application.IsOpened;
+			GetApplicationLikeStatus: function (application) {
+				var self = this;
+				$.ajax({
+					url: "/application/GetLikeDislike",
+					type: "POST",
+					data: { applicationId: application.Id },
+					async: false,
+					success: function (contribution) {
+						application.likeStatus = contribution;
+					}
+				});
+			},
+			GetPosNegCount: function (application) {
+				var self = this;
+				$.ajax({
+					url: "/application/GetPosNegCount",
+					type: "POST",
+					data: { applicationId: application.Id },
+					async: false,
+					success: function (PosNegCount) {
+						application.PosCount = PosNegCount.PosCount;
+						application.NegCount = PosNegCount.NegCount;
+					}
+				});
+			},
+			Like: function (Id) {
+				let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+
+				var self = this;
+				$.ajax({
+					url: "/application/Like",
+					type: "POST",
+					data: { applicationId: application.Id },
+					async: true,
+					success: function (PosNegCount) {
+						application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
+						application.PosCount = PosNegCount.PosCount;
+						application.NegCount = PosNegCount.NegCount;
+
+					}
+				});
+			},
+			Dislike: function (Id) {
+				let application = this.applications.find(a => a.Id === Id);
+				var self = this;
+				$.ajax({
+					url: "/application/Dislike",
+					type: "POST",
+					data: { applicationId: application.Id },
+					async: false,
+					success: function (PosNegCount) {
+						application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
+						application.PosCount = PosNegCount.PosCount;
+						application.NegCount = PosNegCount.NegCount;
+					}
+				});
+			},
 
 
-					app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 5));
+			ChangePageNumber: function (appId, offset) {
 
+				let appl = app.applications.find(a => a.Id === appId);
+				appl.comments = [];
+				$.ajax({
+					url: "/profile/SelectCommentsByApplicationId",
+					type: "POST",
+					data: { ApplicationId: appl.Id, Offset: offset },
+					async: false,
+					success: function (obj) {
+						let applicationComments = [];
+						obj.Comments.forEach(function (comment) {
+							applicationComments.push(comment);
+						});
+						app.$set(appl, 'comments', applicationComments);
+						app.$set(appl, 'currentCommentPageNumber', offset);
+						//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+
+					}
+				});
+			},
+			isShowAsPage: function (number, current, max) {
+				if (number > current - 2 && number < current + 2 && number < max && number > 1) {
+					return true;
 				}
-			});
-		}
-		else {
-			application.IsOpened = !application.IsOpened;
-		}
-	}
+				else return false;
+			},
+			SelectCommentsByApplicationId: function (application, offset) {
+				if (!application.IsOpened) {
+					$.ajax({
+						url: "/profile/SelectCommentsByApplicationId",
+						type: "POST",
+						data: { ApplicationId: application.Id, Offset: offset },
+						async: false,
+						success: function (obj) {
+							let applicationComments = [];
+							obj.Comments.forEach(function (comment) {
+								
+								app.GetUserImageForComment(comment.UserId);
+								comment.img = app.commentImg;
+								applicationComments.push(comment);
+							});
+							app.$set(application, 'comments', applicationComments);
+							application.IsOpened = !application.IsOpened;
 
 
-},
-	InputFileValidate: function () {
-		var x = event.target.files;
-		var re = /(?:\.([^.]+))?$/;
+							app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 5));
 
-			for (i = 0; i < x.length; i++) {
-				x[i].Extension = re.exec(x[i].name)[1];
-				x[i].UploadDate = new Date();
-				x[i].Name = x[i].name.substr(0, x[i].name.lastIndexOf('.'));
-				app.Files[i] = x[i];
+						}
+					});
+				}
+				else {
+					application.IsOpened = !application.IsOpened;
+				}
+
+
+
+			},
+			InputFileValidate: function () {
+				var x = event.target.files;
+				var re = /(?:\.([^.]+))?$/;
+
+				for (i = 0; i < x.length; i++) {
+					x[i].Extension = re.exec(x[i].name)[1];
+					x[i].UploadDate = new Date();
+					x[i].Name = x[i].name.substr(0, x[i].name.lastIndexOf('.'));
+					app.Files[i] = x[i];
+				}
+			},
+			saveProfileChanges: function () {
+				$.each(app.Files, function (i, file) {
+					ajaxData.append('Files[' + i + ']', file);
+				});
 			}
 		},
-		saveProfileChanges: function () {
-			$.each(app.Files, function (i, file) {
-				ajaxData.append('Files[' + i + ']', file);
-			});
-		},
 
-beforeMount() {
-	this.objForLoading.loading = true;
-	this.objForLoading.loaded = false;
-	this.selectApplicationsByUserId();
-
-}
+		beforeMount() {
+			this.objForLoading.loading = true;
+			this.objForLoading.loaded = false;
+			this.selectApplicationsByUserId();
+			this.GetUserImage();
+		}
 
 
-    });
+
+	});
 };

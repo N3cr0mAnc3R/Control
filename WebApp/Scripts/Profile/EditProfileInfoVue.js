@@ -81,9 +81,8 @@
 					type: "POST",
 					async: false,
 					success: function (userInfo) {
-						console.log(userInfo);
-						//if (userInfo.DateOfBirth !== 0)
-							self.$set(self.user, 'DateOfBirth', new Date(userInfo.DateOfBirth));
+                        var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') + 1, 12)));
+                        self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' + date.getMonth() + 1 + '-' + date.getDate());
 						self.$set(self.user, 'Email', userInfo.Email);
 						self.$set(self.user, 'FullName', userInfo.FullName);
 
