@@ -37,6 +37,12 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<JsonResult> SubmitApplication(ApplicationModel model)
         {
+            if((model.Latitude == "" || model.Latitude == "undefined") && model.AddressText != "")
+            {
+                string[] gotCoords = YMapsTextToCoordinates(model.AddressText);
+                model.Latitude = gotCoords[1];
+                model.Longitude = gotCoords[0];
+            }
             model.Files = new List<UploadFile>();
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -57,7 +63,7 @@ namespace WebApp.Controllers
             await ApplicationManager.SubmitApplication(model, CurrentUser.Id);
             return Json("");
         }
-        public double[] YMapsTextToCoordinates(string textAddress)
+        public string[] YMapsTextToCoordinates(string textAddress)
         {
             // http://localhost:60483/application/YMapsTextToCoordinates
             string geocode = (textAddress.Trim()).Replace(' ', ('+'));
@@ -80,12 +86,12 @@ namespace WebApp.Controllers
                 }
 
                 string[] stringCoords = bothCoords.Split(' ');
-                for (int i = 0; i < 2; i++)
-                {
-                    coords[i] = Convert.ToDouble(stringCoords[1 - i]);
-                }
+                //for (int i = 0; i < 2; i++)
+                //{
+                //    coords[i] = Convert.ToDouble(stringCoords[1 - i]);
+                //}
 
-                return coords;
+                return stringCoords;
             }
         }
         [AllowAnonymous]

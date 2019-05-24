@@ -50,16 +50,20 @@
                 }
             });
         },
+
         submit: function () {
             Vue.nextTick(function () {
-                app.coordinates = [];
-                app.myPlacemark.geometry._coordinates.forEach(function (coord) {
-                    app.coordinates.push(coord);
-                });
+                if (app.isMap) {
+                    app.coordinates = [];
+                    app.myPlacemark.geometry._coordinates.forEach(function (coord) {
+                        app.coordinates.push(coord);
+                    });
+                }
                 var ajaxData = new FormData();
                 ajaxData.append('Text', app.Text);
                 ajaxData.append('Title', app.Title);
                 ajaxData.append('ReasonId', app.reasonId);
+                ajaxData.append('AddressText', app.AddressText);
                 ajaxData.append('Longitude', app.coordinates[1]);
                 ajaxData.append('Latitude', app.coordinates[0]);
                 $.each(app.Files, function (i, file) {
