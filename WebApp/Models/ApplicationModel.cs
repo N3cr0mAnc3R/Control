@@ -17,6 +17,8 @@ namespace WebApp.Models
 
         public string Text { get; set; }
 
+        public string AddressText { get; set; }
+
         public int DepartmentId { get; set; }
 
         public int ReasonId { get; set; }

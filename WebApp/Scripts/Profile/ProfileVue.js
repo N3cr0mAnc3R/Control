@@ -45,54 +45,52 @@
 
 
 
-	},
-	deleteApplication: function (applicationId) {
-		$.ajax({
-			url: "/profile/DeleteApplication",
-			type: "POST",
-			data: { ApplicationId: applicationId },
-			async: false,
-			success: function () {
-				app.selectApplicationsByUserId();
-			}
-		});
-	},
-	changeApplicationText: function (applicationId, text) {
-		$.ajax({
-			url: "/profile/ChangeApplicationText",
-			type: "POST",
-			data: { ApplicationId: applicationId, Text: text },
-			async: false,
-			success: function () {
-				//app.selectApplicationsByUserId();
-			}
-		});
-	},
-	changeEditingState: function (applicationId, state) {
-		let appl = app.applications.find(a => a.Id === applicationId);
-		this.applicationText = appl.Text;
-		console.log(this.applicationText);
-		app.$set(appl, 'isEditing', state);
-
-	},
-	selectApplicationsByUserId: function () {
-		var self = this;
-		self.applications = [];
-		$.ajax({
-			url: "/profile/SelectApplicationsByUserId",
-			type: "POST",
-			async: false,
-			success: function (applications) {
-				applications.forEach(function (application) {
-					self.GetApplicationImages(application);
-					self.GetApplicationLikeStatus(application);
-					self.GetPosNegCount(application);
-					application.IsOpened = false;
-					application.isEditing = false;
-					application.currentCommentPageNumber = 1;
-					self.applications.push(application);
-					console.log(application);
+			},
+			deleteApplication: function (applicationId) {
+				$.ajax({
+					url: "/profile/DeleteApplication",
+					type: "POST",
+					data: { ApplicationId: applicationId },
+					async: false,
+					success: function () {
+						app.selectApplicationsByUserId();
+					}
 				});
+			},
+			changeApplicationText: function (applicationId, text) {
+				$.ajax({
+					url: "/profile/ChangeApplicationText",
+					type: "POST",
+					data: { ApplicationId: applicationId, Text: text },
+					async: false,
+					success: function () {
+						//app.selectApplicationsByUserId();
+					}
+				});
+			},
+			changeEditingState: function (applicationId, state) {
+				let appl = app.applications.find(a => a.Id === applicationId);
+				this.applicationText = appl.Text;
+				app.$set(appl, 'isEditing', state);
+
+			},
+			selectApplicationsByUserId: function () {
+				var self = this;
+				self.applications = [];
+				$.ajax({
+					url: "/profile/SelectApplicationsByUserId",
+					type: "POST",
+					async: false,
+					success: function (applications) {
+						applications.forEach(function (application) {
+							self.GetApplicationImages(application);
+							self.GetApplicationLikeStatus(application);
+							self.GetPosNegCount(application);
+							application.IsOpened = false;
+							application.isEditing = false;
+							application.currentCommentPageNumber = 1;
+							self.applications.push(application);
+						});
 
 				self.objForLoading.loading = false;
 				self.objForLoading.loaded = true;
@@ -234,20 +232,18 @@
 		var x = event.target.files;
 		var re = /(?:\.([^.]+))?$/;
 
-		for (i = 0; i < x.length; i++) {
-			x[i].Extension = re.exec(x[i].name)[1];
-			x[i].UploadDate = new Date();
-			x[i].Name = x[i].name.substr(0, x[i].name.lastIndexOf('.'));
-			app.Files[i] = x[i];
-		}
-	},
-saveProfileChanges: function () {
-	console.log('1');
-	$.each(app.Files, function (i, file) {
-		ajaxData.append('Files[' + i + ']', file);
-		console.log(app.Files);
-	});
-},
+			for (i = 0; i < x.length; i++) {
+				x[i].Extension = re.exec(x[i].name)[1];
+				x[i].UploadDate = new Date();
+				x[i].Name = x[i].name.substr(0, x[i].name.lastIndexOf('.'));
+				app.Files[i] = x[i];
+			}
+		},
+		saveProfileChanges: function () {
+			$.each(app.Files, function (i, file) {
+				ajaxData.append('Files[' + i + ']', file);
+			});
+		},
 
 beforeMount() {
 	this.objForLoading.loading = true;

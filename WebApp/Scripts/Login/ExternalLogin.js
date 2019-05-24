@@ -84,6 +84,7 @@
                                                                 async: false,
                                                                 data: {
                                                                     user_id: uid,
+                                                                    email: values.email,
                                                                     provider: 'Odnoklassniki'
                                                                 },
                                                                 success: function () {
