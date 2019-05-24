@@ -39,13 +39,15 @@
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
 
         <label v-if="!isMap" for="Address">Введите адрес</label>
-        <input v-if="!isMap" class="form-control col" id="Address" placeholder="Адрес..." v-model="AddressText">
-        <button v-if="!isMap"type="button" class="btn btn-primary" v-on:click="toggleMap()">Переключить карту</button>
+        <input v-if="!isMap" class="form-control col" id="Address" placeholder="Ставрополь, Мира 123 " v-model="AddressText">
+        <button v-if="!isMap" type="button" class="btn btn-primary" v-on:click="toggleMap()">Переключить карту</button>
 
         <button v-if="isMap" type="button" class="btn btn-primary" v-on:click="toggleMap()">Указать адрес</button>
         <div v-if="isMap" id="map"></div>
 
         <button type="submit" class="btn btn-primary" v-on:click="submit()">Отправить</button>
+
+
 
     </div>
 
