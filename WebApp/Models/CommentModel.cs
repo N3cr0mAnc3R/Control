@@ -11,6 +11,10 @@ namespace WebApp.Models.News
 
         public Guid UserId { get; set; }
 
+        public string AuthorName { get; set; }
+
+        public DateTime  DateTimeOfCreation{ get; set; }
+
         public int ApplicationId { get; set; }
 
         public string Text { get; set; }

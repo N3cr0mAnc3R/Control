@@ -276,6 +276,9 @@
 								
 								app.GetUserImageForComment(comment.UserId);
 								comment.img = app.commentImg;
+								comment.authorName = comment.AuthorName,
+								comment.dateTimeOfCreation = comment.DateTimeOfCreation,
+
 								applicationComments.push(comment);
 							});
 							app.$set(application, 'comments', applicationComments);
