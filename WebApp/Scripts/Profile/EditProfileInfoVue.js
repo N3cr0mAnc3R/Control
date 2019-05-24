@@ -46,6 +46,7 @@
 					processData: false,
 					data: ajaxData,
 					success: function () {
+						console.log('saveUserPhoto');
 					}
 				});
 
@@ -95,10 +96,9 @@
 			},
 			//если даиа не выбрана, возникают проблемы
 			changeUserInfo: function () {
-				if (app.AnotherPicturePicked === true) {
+				
 					app.saveUserPhoto();
-					app.AnotherPicturePicked = false;
-				}
+				
 				
 					$.ajax({
 						url: "/profile/ChangeUserInfo",
