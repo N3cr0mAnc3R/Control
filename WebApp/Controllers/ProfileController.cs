@@ -113,9 +113,10 @@ namespace WebApp.Controllers
             throw new ArgumentException();
         }
         [AllowAnonymous]
-        public JsonResult GetUserImage()
+        public JsonResult GetUserImage(string UserId)
         {
-            return Json(ProfileManager.GetUserFileStream(CurrentUser.Id));
+
+            return Json(ProfileManager.GetUserFileStream(UserId==null?CurrentUser.Id:UserId));
 
         }
         [HttpPost]
