@@ -32,7 +32,10 @@
                 x[i].UploadDate = new Date();
                 x[i].Name = x[i].name.substr(0, x[i].name.lastIndexOf('.'));
                 app.Files[i] = x[i];
+                
             }
+            console.log("Validate:");
+            console.log(app.Files);
         },
         init: function () {
             $.ajax({
@@ -52,6 +55,8 @@
         },
 
         submit: function () {
+            console.log("Submit:");
+            console.log(app.Files);
             Vue.nextTick(function () {
                 if (app.isMap) {
                     app.coordinates = [];
@@ -244,4 +249,6 @@
 
     }
 });
+
+
 

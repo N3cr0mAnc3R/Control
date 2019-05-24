@@ -125,7 +125,9 @@
 					async: false,
 					success: function (img) {
 						if (img)
-							self.userImg = 'data:image/png;base64, ' + img;
+                            self.userImg = 'data:image/png;base64, ' + img;
+                        console.log('GetUserImage');
+                        console.log(self.userImg);
 					}
 				});
 			},

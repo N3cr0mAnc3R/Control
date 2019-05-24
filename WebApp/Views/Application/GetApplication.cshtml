@@ -35,25 +35,40 @@
             <option v-for="reason in reasons" v-bind:value="reason.Id">{{reason.Name}} </option>
         </select>
 
-        <input type="file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" multiple />
+        @*<label class="btn btn-primary">
+                Добавить фото <input type="file" class="input-file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" hidden multiple />
+            </label>*@
+
+        <label for="Files">Приложите до 5 фотографий</label>
+        <div class="input-group">
+            <label class="input-group-btn">
+                <span class="btn btn-outline-primary">
+                    Добавить фото&hellip;  <input type="file" class="input-file" id="Files" v-on:change="InputFileValidate" accept=".jpg, .jpeg, .gif, .png" hidden multiple />
+                </span>
+            </label>
+            <input type="text" class="form-control aboutFile" readonly>
+        </div>
         <div v-if="Errors.length > 0"> {{Errors[0]}} </div>
 
-        <label v-if="!isMap" for="Address">Введите адрес</label>
-        <input v-if="!isMap" class="form-control col" id="Address" placeholder="Ставрополь, Мира 123 " v-model="AddressText">
-        <button v-if="!isMap" type="button" class="btn btn-primary" v-on:click="toggleMap()">Переключить карту</button>
-
-        <button v-if="isMap" type="button" class="btn btn-primary" v-on:click="toggleMap()">Указать адрес</button>
+        <label v-if="!isMap" for="Address">Введите адрес (Например, Ставрополь Мира 123)</label>
+        <div class="input-group mb-3">
+            <input v-if="!isMap" class="form-control col" id="Address" placeholder="Ставрополь, Мира 123 " v-model="AddressText">
+            <div class="input-group-append">
+                <button v-if="!isMap" type="button" class="btn btn-outline-primary" v-on:click="toggleMap()">Показать карту</button>
+            </div>
+        </div>
+        <button v-if="isMap" type="button" class="btn btn-outline-primary" v-on:click="toggleMap()">Указать адрес</button>
         <div v-if="isMap" id="map"></div>
 
-        <button type="submit" class="btn btn-primary" v-on:click="submit()">Отправить</button>
-
-
+        <button type="submit" class="btn btn-success" v-on:click="submit()">Отправить</button>
 
     </div>
-
-
-
 </div>
-<script  src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
+
+
+
+
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
 <script src="~/Scripts/Application/ApplicationValidate.js"></script>
+<script src="~/Scripts/Application/InputFile.js"></script>
 
