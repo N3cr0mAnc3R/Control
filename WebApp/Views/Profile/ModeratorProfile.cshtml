@@ -2,50 +2,14 @@
 @{
 	ViewBag.Title = "ModeratorProfile";
 }
-
-<
-@{
-	ViewBag.Title = "UserProfile";
-}
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
-<body id="userProfile">
+<div id="userProfile">
 	<section id="main-section" v-loader="objForLoading">
+		
+	
 		<section>
 			<div class="custom-container">
-				<div class="user-info">
-
-					<div class="img-holder">
-						<img v-bind:src="userImg" alt="Alternate Text" />
-					</div>
-
-
-					<div class="info-holder">
-						<p class="title">{{user.FullName}}</p>
-						<ul>
-							<li>возраст: {{user.Age}}</li>
-							<li>mail: {{user.Email}}</li>
-						</ul>
-						<a class="button-third" href="/Profile/EditProfileInfo">Изменить</a>
-					</div>
-
-				</div>
-			</div>
-		</section>
-		<div class="custom-container">
-			<nav class="profile-menu">
-				<ul>
-					<li><a href="#">Мои обращения</a></li>
-					<li><a href="#">Создать обращение</a></li>
-				</ul>
-			</nav>
-
-
-		</div>
-		<section>
-			<div class="custom-container">
-				@*<button>все</button>
-					<button>принятые</button>
-					<button>непринятые</button>*@
+			
 
 				<section id="applications">
 					<div v-for="app in applications">
@@ -148,13 +112,11 @@
 								</div>
 
 
-								<div class="buttons" v-if="app.isEditing===false">
-									<button class="button button-primary" v-on:click="changeEditingState(app.Id,true)">Изменить</button>
-									<button class="button button-secondary" v-on:click="deleteApplication(app.Id)">Удалить</button>
+								<div class="buttons" >
+									<button class="button button-primary" v-on:click="acceptApplication(app.Id)">Принять к рассмотрению</button>
+									<button class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
 								</div>
-								<div class="buttons" v-if="app.isEditing===true">
-									<button class="button button-primary" v-on:click="changeApplicationText(app.Id,app.Text)">Сохранить</button>
-									<button class="button button-secondary" v-on:click="changeEditingState(app.Id,false)">Назад</button>
+								
 								</div>
 								<div class="likesContainer">
 									<a v-on:click="Like(app.Id)"><i v-bind:class="{'active-like': app.likeStatus === 1}" class="fa fa-thumbs-up inactive-like">{{app.PosCount}}</i></a>
@@ -170,9 +132,7 @@
 
 		</section>
 	</section>
-</body>
-<script src="~/Scripts/Profile/ProfileVue.js"></script>
-@*<script>$('.carousel').carousel()</script>*@
-
+</div>
+<script src="~/Scripts/Profile/ModeratorProfileVue.js"></script>
 
 

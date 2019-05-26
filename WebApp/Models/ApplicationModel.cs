@@ -27,6 +27,8 @@ namespace WebApp.Models
 
         public bool IsActive { get; set; }
 
+        public int StatusId { get; set; }
+
         public string Latitude { get; set; }
 
         public List<CommentModel> Comments { get; set; }

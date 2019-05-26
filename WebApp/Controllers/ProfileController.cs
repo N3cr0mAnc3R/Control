@@ -63,11 +63,7 @@ namespace WebApp.Controllers
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
         }
 
-        [HttpPost]
-        public void ChangeApplication()
-        {
-            //в работе 
-        }
+      
         [HttpPost]
         public void DeleteApplication(int ApplicationId)
         {
@@ -130,7 +126,26 @@ namespace WebApp.Controllers
             return Json(ProfileManager.GetUserInfo(CurrentUser.Id));
 
         }
+        #region модератор
+        [HttpPost]
+        public void AcceptApplication(int ApplicationId)
+        {
+            //!проверить доступ
 
+
+            ProfileManager.AcceptApplication(ApplicationId);
+
+        }
+        [HttpPost]
+        public void DeclineApplication(int ApplicationId)
+        {
+            //!проверить доступ
+
+
+            ProfileManager.DeclineApplication(ApplicationId);
+
+        }
+        #endregion
         protected ProfileManager ProfileManager
         {
             get

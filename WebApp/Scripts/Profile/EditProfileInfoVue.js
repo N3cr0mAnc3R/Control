@@ -99,7 +99,7 @@
                 if (number < 10)
                     return '0' + number;
                 else return number;
-            };
+            },
             //если даиа не выбрана, возникают проблемы
             changeUserInfo: function () {
                 if (this.AnotherPicturePicked) {

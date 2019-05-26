@@ -254,7 +254,41 @@ namespace WebApp.Models.Managers
                 }
             }
         }
+        #region модератор
+        public void AcceptApplication( int ApplicationId)
+        {
+            //!проверить доступ
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "AcceptApplication",
+                    commandType: CommandType.StoredProcedure,
+                     param: new
+                     {
+                         ApplicationId
+                     }
+                    );
+            }
 
+        }
+
+        public void DeclineApplication(int ApplicationId)
+        {
+            //!проверить доступ
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "DeclineApplication",
+                    commandType: CommandType.StoredProcedure,
+                     param: new
+                     {
+                         ApplicationId
+                     }
+                    );
+            }
+
+        }
+        #endregion
 
     }
 }
