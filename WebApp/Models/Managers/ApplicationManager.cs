@@ -128,7 +128,7 @@ namespace WebApp.Models.Managers
 
                 foreach (UploadFile file in application.Files)
                 {
-                    if (file.FileId == null)
+                    if (file.FileId.ToString() == "00000000-0000-0000-0000-000000000000")
                     {
                         FileUpload(file.File.InputStream, file.File.ContentType, Id, Path.GetExtension(file.File.FileName), uid, file.File.FileName);
                     }

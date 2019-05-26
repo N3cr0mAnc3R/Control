@@ -68,6 +68,12 @@ nav li {
 #right-menu {
   float: right;
 }
+.input-file {
+  margin: 20px;
+}
+.aboutFile {
+  cursor: default;
+}
 .button {
   border: none;
   min-height: 30px;
@@ -500,6 +506,7 @@ footer {
 }
 .likesContainer {
   font-size: 16px;
+  cursor: pointer;
 }
 .inactive-like {
   color: #777a7f;
