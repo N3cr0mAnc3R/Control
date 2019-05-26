@@ -32,6 +32,11 @@ namespace WebApp.Controllers
         {
             return View();
         }
+        public ActionResult ModeratorProfile()
+        { 
+            //проверить доступ
+            return View();
+        }
         public ActionResult Edit(int Id)
         {
             if (CheckAccess(Id))

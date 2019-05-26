@@ -358,6 +358,7 @@
     <Content Include="Views\Account\AuthThirdParty.cshtml" />
     <Content Include="Views\Account\RedirectOk.cshtml" />
     <Content Include="Views\Profile\EditProfileInfo.cshtml" />
+    <Content Include="Views\Profile\ModeratorProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

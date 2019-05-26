@@ -1,5 +1,10 @@
 ﻿
 @{
+	ViewBag.Title = "ModeratorProfile";
+}
+
+<
+@{
 	ViewBag.Title = "UserProfile";
 }
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
@@ -33,14 +38,14 @@
 					<li><a href="#">Создать обращение</a></li>
 				</ul>
 			</nav>
-	
+
 
 		</div>
 		<section>
 			<div class="custom-container">
-		@*<button>все</button>
-		<button>принятые</button>
-		<button>непринятые</button>*@
+				@*<button>все</button>
+					<button>принятые</button>
+					<button>непринятые</button>*@
 
 				<section id="applications">
 					<div v-for="app in applications">
@@ -168,4 +173,6 @@
 </body>
 <script src="~/Scripts/Profile/ProfileVue.js"></script>
 @*<script>$('.carousel').carousel()</script>*@
+
+
 
