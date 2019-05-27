@@ -520,6 +520,11 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
+                if(email == "" || email == null)
+                {
+                    AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
+                    return View();
+                }
                 ApplicationUser user = UserManager.FindByEmail(email);
                 if (user == null)
                 {
