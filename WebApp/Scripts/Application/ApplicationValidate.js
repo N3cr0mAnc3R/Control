@@ -11,6 +11,9 @@
         coordinates: [],
         isMap: false,
         AddressText: "",
+        CityText: "",
+        StreetText: "",
+        HouseText: "",
         myPlacemark: undefined,
         myMap: {},
         objForLoading: {
@@ -51,6 +54,7 @@
                         app.coordinates.push(coord);
                     });
                 }
+                app.AddressText = "" + app.CityText + " " + app.StreetText + " " + app.HouseText;
                 var ajaxData = new FormData();
                 ajaxData.append('Text', app.Text);
                 ajaxData.append('Title', app.Title);
