@@ -3,44 +3,31 @@
 	ViewBag.Title = "UserProfile";
 }
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
-<div id="userProfile">
+
 	<section id="main-section" v-loader="objForLoading">
-		<section>
-			<div class="custom-container">
-				<div class="user-info">
-
-					<div class="img-holder">
-						<img v-bind:src="userImg" alt="Alternate Text" />
-					</div>
-
-
-					<div class="info-holder">
-						<p class="title">{{user.FullName}}</p>
-						<ul>
-							<li>возраст: {{user.Age}}</li>
-							<li>mail: {{user.Email}}</li>
-						</ul>
-						<a class="button-third" href="/Profile/EditProfileInfo">Изменить</a>
-					</div>
-
-				</div>
-			</div>
-		</section>
+		
 		<div class="custom-container">
 			<nav class="profile-menu">
 				<ul>
-					<li><span v-on:click="showApplications()" >Обращения</span></li>
-					<li><span  v-on:click="showNews()" >Новости</span></li>
+					<li><span v-on:click="showApplications()">Обращения</span></li>
+					<li><span v-on:click="showNews()">Новости</span></li>
 				</ul>
 			</nav>
-
+			
 
 		</div>
-		<section>
+		<section id="userProfile">
 			<div class="custom-container">
 				
 
 				<section v-if="IsNewsShown===false" id="applications">
+					<div class="filter-container">
+			<span v-on:click="changeStausFilter(1)">новые</span>
+			<span>принятые</span>
+			<span>отклоненные</span>
+			<span>решенные</span>
+			<span>все</span>
+</div>
 					<div v-for="app in applications">
 						<div class="application">
 
@@ -158,7 +145,7 @@
 
 		</section>
 	</section>
-</div>
+
 
 <script src="~/Scripts/Profile/ModeratorProfileVue.js"></script>
 

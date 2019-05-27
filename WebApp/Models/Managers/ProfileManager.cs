@@ -288,6 +288,18 @@ namespace WebApp.Models.Managers
             }
 
         }
+
+        public List<StatusModel>  GetApplicationStatuses()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<StatusModel>(
+                    sql: "dbo.GetApplicationStatuses",
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+            }
+        }
         #endregion
 
     }

@@ -220,6 +220,7 @@
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\MvcResultSqlFileStream.cs" />
     <Compile Include="Models\News\New.cs" />
+    <Compile Include="Models\StatusModel.cs" />
     <Compile Include="Models\PosNegCount.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
