@@ -520,6 +520,11 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
+                if(email == "" || email == null)
+                {
+                    AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
+                    return View();
+                }
                 ApplicationUser user = UserManager.FindByEmail(email);
                 if (user == null)
                 {
@@ -573,10 +578,11 @@ namespace WebApp.Controllers
                         }
                         else
                         {
-                            user = new ApplicationUser()
-                            {
-                                UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
-                            };
+                            
+                            //user = new ApplicationUser()
+                            //{
+                            //    UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
+                            //};
                         }
 
                         IdentityResult result = UserManager.Create(user);
@@ -593,8 +599,14 @@ namespace WebApp.Controllers
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 AuthenticationManager.SignOut();
                 AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
-
-                return Redirect("/application/getapplication");
+                if (user.Email != "")
+                {
+                    return Redirect("/application/getapplication");
+                }
+                else
+                {
+                    return Redirect("profile/requestemail");
+                }
             }
             return View();
         }
