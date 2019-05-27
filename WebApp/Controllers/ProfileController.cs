@@ -149,6 +149,12 @@ namespace WebApp.Controllers
             ProfileManager.DeclineApplication(ApplicationId);
 
         }
+        [HttpPost]
+        public JsonResult GetApplicationStatuses()
+        {
+            return Json(ProfileManager.GetApplicationStatuses());
+
+        }
         #endregion
         protected ProfileManager ProfileManager
         {

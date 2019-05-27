@@ -9,7 +9,8 @@
 			user: {},
 			userImg: "/Content/Images/noImage.png",
 			Files: [],
-			IsNewsShown:false,
+			IsNewsShown: false,
+			ApplicationStatuses: [];
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -217,7 +218,8 @@
 			},
 			showApplications: function () {
 				app.IsNewsShown = false;
-			}
+			},
+
 		},
 
 
