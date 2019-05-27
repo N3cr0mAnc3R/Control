@@ -34,16 +34,13 @@ namespace WebApp.Models.Managers
 
             }
         }
-        public List<ApplicationModel> SelectApplicationsByUserId(string UserId)
+        public List<ApplicationModel> SelectApplications(string UserId)
         {
             using (var cnt = Concrete.OpenConnection())
             {
                 return cnt.Query<ApplicationModel>(
-                    sql: "dbo.SelectApplicationsByUserId",
-                    param: new
-                    {
-                        UserId
-                    },
+                    sql: "dbo.SelectApplications",
+                   
                     commandType: CommandType.StoredProcedure
                 ).ToList();
 

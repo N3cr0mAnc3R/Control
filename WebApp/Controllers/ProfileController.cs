@@ -61,9 +61,9 @@ namespace WebApp.Controllers
             return ProfileManager.CheckAccess(Id, CurrentUser.Id);
         }
         [HttpPost]
-        public JsonResult SelectApplicationsByUserId()
+        public JsonResult SelectApplications()
         {
-            return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
+            return Json(ProfileManager.SelectApplications(CurrentUser.Id));
         }
 
 

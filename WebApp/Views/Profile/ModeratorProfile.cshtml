@@ -23,9 +23,9 @@
 				<section v-if="IsNewsShown===false" id="applications">
 					<div class="filter-container">
 		
-			<span v-for="status in applicationStatuses">{{status.Name}}</span>
+			<span v-for="status in applicationStatuses" v-on:click="changeStatusFilter(status.Id)">{{status.Name}}</span>
 			
-			<span>все</span>
+			<span v-on:click="changeStatusFilter(0)">все</span>
 </div>
 					<div v-for="app in applications">
 						<div class="application">

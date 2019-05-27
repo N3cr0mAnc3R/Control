@@ -63,11 +63,11 @@
 				});
 			},
 
-			selectApplicationsByUserId: function () {
+			selectApplications: function () {
 				var self = this;
 				self.applications = [];
 				$.ajax({
-					url: "/profile/SelectApplicationsByUserId",
+					url: "/profile/SelectApplications",
 					type: "POST",
 					async: false,
 					success: function (applications) {
@@ -75,6 +75,7 @@
 							self.GetApplicationImages(application);
 							application.IsOpened = false;
 							application.isEditing = false;
+							application.StatusId= 1;
 							application.currentCommentPageNumber = 1;
 							self.applications.push(application);
 						});
@@ -238,7 +239,12 @@
 				);
 
 			},
-
+			changeStatusFilter: function ( StatusId) {
+				let appl = this.applications.find(a => a.Id === applicationId);//обращение из заполненного заранее массива обращений...
+				appl.StatusId = StatusId;
+				//appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
+				console.log(this.applications);
+			}
 		},
 
 
@@ -247,7 +253,7 @@
 		beforeMount() {
 			this.objForLoading.loading = true;
 			this.objForLoading.loaded = false;
-			this.selectApplicationsByUserId();
+			this.selectApplications();
 			this.getApplicationStatuses();
 		}
 
