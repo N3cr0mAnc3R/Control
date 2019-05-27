@@ -138,8 +138,17 @@ button:focus {
 }
 .profile-menu li {
   height: 26px;
+  padding-left: 0;
+  padding-right: 0;
 }
-.profile-menu li:hover {
+.profile-menu span {
+  display: inline-block;
+  height: 26px;
+  padding: 0 20px;
+}
+.profile-menu span:hover {
+  cursor: pointer;
+  color: #3aa0fe;
   border-bottom: 1.5px solid #3aa0fe;
 }
 .user-info {
@@ -321,6 +330,10 @@ button:focus {
 .page-wrapper .page-number.current {
   background-color: #548e7e;
 }
+/*.message{
+	display:absolute;
+	bottom:60px;
+}*/
 /****************/
 footer {
   padding: 20px;
