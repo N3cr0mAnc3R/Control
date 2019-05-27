@@ -520,32 +520,35 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
-                if(email == "" || email == null)
+                if (email == "" || email == null)
                 {
                     AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
-                    return View();
+                    Redirect("/Profile/RequestEmail");
                 }
-                ApplicationUser user = UserManager.FindByEmail(email);
-                if (user == null)
+                else
                 {
-                    user = new ApplicationUser()
+                    ApplicationUser user = UserManager.FindByEmail(email);
+                    if (user == null)
                     {
-                        Email = email,
-                        UserName = email
-                    };
+                        user = new ApplicationUser()
+                        {
+                            Email = email,
+                            UserName = email
+                        };
 
-                    IdentityResult result = UserManager.Create(user);
-                    if (!result.Succeeded)
-                    {
-                        return Redirect("/account/login");
+                        IdentityResult result = UserManager.Create(user);
+                        if (!result.Succeeded)
+                        {
+                            return Redirect("/account/login");
+                        }
+                        AccountManager.AddNewUser(user.Id);
                     }
-                    AccountManager.AddNewUser(user.Id);
-                }
-                ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-                AuthenticationManager.SignOut();
-                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
-                return Redirect("/application/getapplication");
+                    AuthenticationManager.SignOut();
+                    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                    return Redirect("/application/getapplication");
+                }
             }
             return View();
         }
