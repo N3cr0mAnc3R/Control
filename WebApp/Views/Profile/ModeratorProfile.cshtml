@@ -22,10 +22,9 @@
 
 				<section v-if="IsNewsShown===false" id="applications">
 					<div class="filter-container">
-			<span v-on:click="changeStausFilter(1)">новые</span>
-			<span>принятые</span>
-			<span>отклоненные</span>
-			<span>решенные</span>
+		
+			<span v-for="status in applicationStatuses">{{status.Name}}</span>
+			
 			<span>все</span>
 </div>
 					<div v-for="app in applications">

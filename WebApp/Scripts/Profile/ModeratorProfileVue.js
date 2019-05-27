@@ -10,7 +10,7 @@
 			userImg: "/Content/Images/noImage.png",
 			Files: [],
 			IsNewsShown: false,
-			ApplicationStatuses: [];
+			applicationStatuses: [],
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -219,6 +219,25 @@
 			showApplications: function () {
 				app.IsNewsShown = false;
 			},
+			getApplicationStatuses: function (applicationId) {
+				var self = this;
+				$.ajax({
+					url: "/profile/GetApplicationStatuses",
+					type: "POST",
+					async: false,
+					data: { ApplicationId: applicationId },
+					success: function (statuses) {
+						console.log(statuses);
+						statuses.forEach(function (status) {
+							
+							self.applicationStatuses.push(status);
+						});
+					}
+				}
+
+				);
+
+			},
 
 		},
 
@@ -229,7 +248,7 @@
 			this.objForLoading.loading = true;
 			this.objForLoading.loaded = false;
 			this.selectApplicationsByUserId();
-
+			this.getApplicationStatuses();
 		}
 
 
