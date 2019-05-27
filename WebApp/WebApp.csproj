@@ -238,6 +238,12 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fontawesome-webfont.svg" />
     <Content Include="Content\Images\noImage.png" />
+    <Content Include="Content\Notifier\Notify.css">
+      <DependentUpon>Notify.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Notifier\Notify.min.css">
+      <DependentUpon>Notify.css</DependentUpon>
+    </Content>
     <Content Include="Content\Styles.css">
       <DependentUpon>Styles.less</DependentUpon>
     </Content>
@@ -300,6 +306,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Content\Notifier\Notify.less" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Application\ApplicationValidate.js" />
     <Content Include="Scripts\Directives\loader.js" />
@@ -314,6 +321,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Login\ExternalLogin.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Notifier\NotifierCtrl.js" />
     <Content Include="Scripts\Profile\EditProfileInfoVue.js" />
     <Content Include="Scripts\Profile\ModeratorProfileVue.js" />
     <Content Include="Scripts\Profile\ProfileVue.js" />
@@ -361,6 +369,7 @@
     <Content Include="Views\Account\RedirectOk.cshtml" />
     <Content Include="Views\Profile\EditProfileInfo.cshtml" />
     <Content Include="Views\Profile\ModeratorProfile.cshtml" />
+    <Content Include="Views\Shared\Notifier.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
