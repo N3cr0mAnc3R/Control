@@ -126,7 +126,7 @@
 					type: "POST",
 					async: false,
 					success: function (userInfo) {
-						var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') +1, 12)));
+						var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') + 1, userInfo.DateOfBirth.indexOf(')') - userInfo.DateOfBirth.indexOf('(') - 1)));
 						self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' +( date.getMonth() + 1 )+ '-' + date.getDate());
 						var today = new Date();
 						
@@ -142,7 +142,7 @@
 					
 
 						console.log(today.getFullYear());
-						console.log(date);
+						console.log(date.getFullYear());
 						console.log(age);
 
 						console.log(self.user);
