@@ -559,7 +559,11 @@ namespace WebApp.Controllers
             if (user_id != "")
             {
                 // Пред тем, как лезть в таблицу ThirdPartyAuth, проверь email
-                ApplicationUser user = UserManager.FindByEmail(email);
+                ApplicationUser user = null;
+                if (email != null)
+                {
+                    user = UserManager.FindByEmail(email);
+                }
 
                 if(user == null)
                 {
