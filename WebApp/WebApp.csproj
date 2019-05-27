@@ -317,6 +317,7 @@
     <Content Include="Scripts\Profile\EditProfileInfoVue.js" />
     <Content Include="Scripts\Profile\ModeratorProfileVue.js" />
     <Content Include="Scripts\Profile\ProfileVue.js" />
+    <Content Include="Scripts\Profile\RequestEmail.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -361,6 +362,7 @@
     <Content Include="Views\Account\RedirectOk.cshtml" />
     <Content Include="Views\Profile\EditProfileInfo.cshtml" />
     <Content Include="Views\Profile\ModeratorProfile.cshtml" />
+    <Content Include="Views\Profile\RequestEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

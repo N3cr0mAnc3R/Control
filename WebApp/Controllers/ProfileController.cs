@@ -52,7 +52,10 @@ namespace WebApp.Controllers
             
             //return Redirect("/");
         }
-
+        public ActionResult RequestEmail()
+        {
+            return View();
+        }
         public bool CheckAccess(int Id)
         {
             return ProfileManager.CheckAccess(Id, CurrentUser.Id);
@@ -62,6 +65,7 @@ namespace WebApp.Controllers
         {
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
         }
+
 
       
         [HttpPost]
