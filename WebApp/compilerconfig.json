@@ -2,5 +2,9 @@
   {
     "outputFile": "Content/Styles.css",
     "inputFile": "Content/Styles.less"
+  },
+  {
+    "outputFile": "Content/Notifier/Notify.css",
+    "inputFile": "Content/Notifier/Notify.less"
   }
 ]

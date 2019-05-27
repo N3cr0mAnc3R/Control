@@ -9,8 +9,10 @@
 			user: {},
 			userImg: "/Content/Images/noImage.png",
 			Files: [],
-			IsNewsShown: false,
+			statusFilter: 1,
 			applicationStatuses: [],
+			IsNewsShown: false,
+			
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -63,11 +65,13 @@
 				});
 			},
 
-			selectApplicationsByUserId: function () {
+			selectApplications: function () {
+
 				var self = this;
+				self.statusFilter = 0;
 				self.applications = [];
 				$.ajax({
-					url: "/profile/SelectApplicationsByUserId",
+					url: "/profile/SelectApplications",
 					type: "POST",
 					async: false,
 					success: function (applications) {
@@ -77,6 +81,30 @@
 							application.isEditing = false;
 							application.currentCommentPageNumber = 1;
 							self.applications.push(application);
+						});
+
+						self.objForLoading.loading = false;
+						self.objForLoading.loaded = true;
+					}
+				});
+			},
+			selectApplicationsByStatusId: function (statusId) {
+				app.statusFilter = statusId;
+				var self = this;
+				self.applications = [];
+				$.ajax({
+					url: "/profile/SelectApplicationsByStatusId",
+					type: "POST",
+					data: { StatusId: statusId },
+					async: false,
+					success: function (applications) {
+						applications.forEach(function (application) {
+							self.GetApplicationImages(application);
+							application.IsOpened = false;
+							application.isEditing = false;
+							application.currentCommentPageNumber = 1;
+							self.applications.push(application);
+							console.log(self.applications);
 						});
 
 						self.objForLoading.loading = false;
@@ -118,8 +146,8 @@
 				});
 			},
 
-		
-			
+
+
 
 			ChangePageNumber: function (appId, offset) {
 
@@ -182,36 +210,40 @@
 
 
 			declineApplication: function (applicationId) {
-			
-					$.ajax({
-						url: "/profile/DeclineApplication",
-						type: "POST",
-						async: false,
-						data: { ApplicationId: applicationId },
-						success: function () {
-							let appl = app.applications.find(a => a.Id === applicationId);
-							appl.Status = 3;//немного костыля  
-							alert();
-						}
-					}
 
-					);
-				
+				$.ajax({
+					url: "/profile/DeclineApplication",
+					type: "POST",
+					async: false,
+					data: { ApplicationId: applicationId },
+					success: function () {
+						let appl = app.applications.find(a => a.Id === applicationId);
+						appl.Status = 3;//немного костыля  
+						if (app.statusFilter === 0) { app.selectApplications(); }
+						else
+							app.selectApplicationsByStatusId(app.statusFilter);
+					}
+				}
+
+				);
+
 			},
 			acceptApplication: function (applicationId) {
-					$.ajax({
-						url: "/profile/AcceptApplication",
-						type: "POST",
-						async: false,
-						data: { ApplicationId: applicationId },
-						success: function () {
-							let appl = app.applications.find(a => a.Id === applicationId);
-							appl.Status = 2;//немного костыля  
-
-						}
+				$.ajax({
+					url: "/profile/AcceptApplication",
+					type: "POST",
+					async: false,
+					data: { ApplicationId: applicationId },
+					success: function () {
+						let appl = app.applications.find(a => a.Id === applicationId);
+						appl.Status = 2;//немного костыля  
+						if (app.statusFilter === 0) { app.selectApplications(); }
+						else
+							app.selectApplicationsByStatusId(app.statusFilter);
 					}
+				}
 
-					);
+				);
 			},
 			showNews: function () {
 				app.IsNewsShown = true;
@@ -229,7 +261,7 @@
 					success: function (statuses) {
 						console.log(statuses);
 						statuses.forEach(function (status) {
-							
+
 							self.applicationStatuses.push(status);
 						});
 					}
@@ -237,7 +269,7 @@
 
 				);
 
-			},
+			}
 
 		},
 
@@ -247,7 +279,7 @@
 		beforeMount() {
 			this.objForLoading.loading = true;
 			this.objForLoading.loaded = false;
-			this.selectApplicationsByUserId();
+			this.selectApplications();
 			this.getApplicationStatuses();
 		}
 
