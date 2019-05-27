@@ -9,8 +9,9 @@
 			user: {},
 			userImg: "/Content/Images/noImage.png",
 			Files: [],
+			applicationStatusFilter:1,
 			IsNewsShown: false,
-			applicationStatuses: [],
+		
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -75,7 +76,28 @@
 							self.GetApplicationImages(application);
 							application.IsOpened = false;
 							application.isEditing = false;
-							application.StatusId= 1;
+							application.currentCommentPageNumber = 1;
+							self.applications.push(application);
+						});
+
+						self.objForLoading.loading = false;
+						self.objForLoading.loaded = true;
+					}
+				});
+			},
+			selectApplicationsByStatusId: function (statusId) {
+				var self = this;
+				self.applications = [];
+				$.ajax({
+					url: "/profile/SelectApplicationsByStatusId",
+					type: "POST",
+					data: { StatusId: statusId },
+					async: false,
+					success: function (applications) {
+						applications.forEach(function (application) {
+							self.GetApplicationImages(application);
+							application.IsOpened = false;
+							application.isEditing = false;
 							application.currentCommentPageNumber = 1;
 							self.applications.push(application);
 						});
@@ -239,12 +261,7 @@
 				);
 
 			},
-			changeStatusFilter: function ( StatusId) {
-				let appl = this.applications.find(a => a.Id === applicationId);//обращение из заполненного заранее массива обращений...
-				appl.StatusId = StatusId;
-				//appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
-				console.log(this.applications);
-			}
+			
 		},
 
 

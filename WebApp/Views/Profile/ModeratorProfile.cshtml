@@ -23,11 +23,11 @@
 				<section v-if="IsNewsShown===false" id="applications">
 					<div class="filter-container">
 		
-			<span v-for="status in applicationStatuses" v-on:click="changeStatusFilter(status.Id)">{{status.Name}}</span>
+			<span v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)">{{status.Name}}</span>
 			
-			<span v-on:click="changeStatusFilter(0)">все</span>
+			<span v-on:click="selectApplications()">все</span>
 </div>
-					<div v-for="app in applications">
+					<div  v-for="app in applications">
 						<div class="application">
 
 
@@ -80,7 +80,7 @@
 										<div class="comment-text">
 											<p class="comment-author">{{com.authorName}}</p>
 											<p>{{com.Text}}</p>
-											<p><small>{{com.dateTimeOfCreation}}</small> @*<a href="#">ответить</a></p>*@
+											<p><small>{{com.dateTimeOfCreation}}</small> 
 										</div>
 									</div>
 								</div>

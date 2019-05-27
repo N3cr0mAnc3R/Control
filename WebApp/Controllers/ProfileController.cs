@@ -1,13 +1,4 @@
-﻿//using Microsoft.AspNet.Identity.Owin;
-//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Web;
-//using System.Web.Mvc;
-//using WebApp.Models;
-//using WebApp.Models.Common;
-//using WebApp.Models.Managers;
+﻿
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -63,11 +54,21 @@ namespace WebApp.Controllers
         [HttpPost]
         public JsonResult SelectApplications()
         {
-            return Json(ProfileManager.SelectApplications(CurrentUser.Id));
+            return Json(ProfileManager.SelectApplications());
         }
 
+        [HttpPost]
+        public JsonResult SelectApplicationsByUserId()
+        {
+            return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
+        }
 
-      
+        [HttpPost]
+        public JsonResult SelectApplicationsByStatusId(int StatusId)
+        {
+            return Json(ProfileManager.SelectApplicationsByStatusId(StatusId));
+        }
+
         [HttpPost]
         public void DeleteApplication(int ApplicationId)
         {
