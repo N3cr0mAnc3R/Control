@@ -85,7 +85,7 @@
                     type: "POST",
                     async: false,
                     success: function (userInfo) {
-                        var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') + 1, 12)));
+						var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') + 1, userInfo.DateOfBirth.indexOf(')') - userInfo.DateOfBirth.indexOf('(') - 1)));
 
                         self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' + self.getTimeNumber(date.getMonth() + 1) + '-' + self.getTimeNumber(date.getDate()));
                         self.$set(self.user, 'Email', userInfo.Email);
