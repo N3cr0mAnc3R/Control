@@ -32,19 +32,19 @@
 			</nav>
 		</div>
 	</header>
-</body>
 
 
 
 
 
-<div class="custom-container body-content">
-	@RenderBody()
-	
-	@*<footer>
-		<p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
-	</footer>*@
-</div>
+    <div class="custom-container body-content">
+        @RenderBody()
+        @Html.Partial("Notifier")
+
+        @*<footer>
+            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
+        </footer>*@
+    </div>
 <footer>
 	<div class="custom-container"> Подвал</div>
 </footer>

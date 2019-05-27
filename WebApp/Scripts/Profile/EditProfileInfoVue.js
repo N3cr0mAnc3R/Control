@@ -90,7 +90,7 @@
                         self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' + self.getTimeNumber(date.getMonth() + 1) + '-' + self.getTimeNumber(date.getDate()));
                         self.$set(self.user, 'Email', userInfo.Email);
                         self.$set(self.user, 'FullName', userInfo.FullName);
-
+                        //notifier([{Type: 'success', Body: 'Тестовое сообщение'}]);
                     }
                 });
 
