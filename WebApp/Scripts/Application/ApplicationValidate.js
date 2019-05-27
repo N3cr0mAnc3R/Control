@@ -38,20 +38,7 @@
             console.log(app.Files);
         },
         init: function () {
-            $.ajax({
-                url: "/application/GetReasonsByDepartment",
-                type: "POST",
-                async: false,
-                data: { Id: this.departmentId },
-                success: function (reasons) {
-                    Vue.nextTick(function () {
-                        app.reasons = [];
-                        reasons.forEach(function (reason) {
-                            app.reasons.push(reason);
-                        });
-                    });
-                }
-            });
+            this.ajaxGetReasonsByDepartment();
         },
 
         submit: function () {
@@ -219,7 +206,9 @@
                 data: { Id: this.departmentId },
                 success: function (reasons) {
                     Vue.nextTick(function () {
+                        app.reasons = [];
                         reasons.forEach(function (reason) {
+                            
                             app.reasons.push(reason);
                         });
                         app.objForLoading.loaded = true;
@@ -238,14 +227,14 @@
             }
 
 
-        },
-        mounted() {
-            this.objForLoading.loading = true;
-            this.objForLoading.loaded = false;
-            this.init();
-
-
         }
+
+    },
+    mounted() {
+        this.objForLoading.loading = true;
+        this.objForLoading.loaded = false;
+        this.init();
+
 
     }
 });
