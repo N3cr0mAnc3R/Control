@@ -220,6 +220,7 @@
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\MvcResultSqlFileStream.cs" />
     <Compile Include="Models\News\New.cs" />
+    <Compile Include="Models\StatusModel.cs" />
     <Compile Include="Models\PosNegCount.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -325,6 +326,7 @@
     <Content Include="Scripts\Profile\EditProfileInfoVue.js" />
     <Content Include="Scripts\Profile\ModeratorProfileVue.js" />
     <Content Include="Scripts\Profile\ProfileVue.js" />
+    <Content Include="Scripts\Profile\RequestEmail.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -369,6 +371,7 @@
     <Content Include="Views\Account\RedirectOk.cshtml" />
     <Content Include="Views\Profile\EditProfileInfo.cshtml" />
     <Content Include="Views\Profile\ModeratorProfile.cshtml" />
+    <Content Include="Views\Profile\RequestEmail.cshtml" />
     <Content Include="Views\Shared\Notifier.cshtml" />
   </ItemGroup>
   <ItemGroup>

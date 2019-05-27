@@ -34,16 +34,45 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public List<ApplicationModel> SelectApplications()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<ApplicationModel>(
+                    sql: "dbo.SelectApplications",
+                   
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+            }
+        }
         public List<ApplicationModel> SelectApplicationsByUserId(string UserId)
         {
             using (var cnt = Concrete.OpenConnection())
             {
                 return cnt.Query<ApplicationModel>(
                     sql: "dbo.SelectApplicationsByUserId",
-                    param: new
-                    {
-                        UserId
-                    },
+                      param: new
+                      {
+                          UserId
+                      },
+
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+            }
+        }
+        public List<ApplicationModel> SelectApplicationsByStatusId(int StatusId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<ApplicationModel>(
+                    sql: "dbo.SelectApplicationsByStatusId",
+                      param: new
+                      {
+                          StatusId
+                      },
+
                     commandType: CommandType.StoredProcedure
                 ).ToList();
 
@@ -287,6 +316,18 @@ namespace WebApp.Models.Managers
                     );
             }
 
+        }
+
+        public List<StatusModel>  GetApplicationStatuses()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<StatusModel>(
+                    sql: "dbo.GetApplicationStatuses",
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+            }
         }
         #endregion
 

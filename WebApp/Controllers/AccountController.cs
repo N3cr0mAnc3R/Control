@@ -520,27 +520,35 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
-                ApplicationUser user = UserManager.FindByEmail(email);
-                if (user == null)
+                if (email == "" || email == null)
                 {
-                    user = new ApplicationUser()
-                    {
-                        Email = email,
-                        UserName = email
-                    };
-
-                    IdentityResult result = UserManager.Create(user);
-                    if (!result.Succeeded)
-                    {
-                        return Redirect("/account/login");
-                    }
-                    AccountManager.AddNewUser(user.Id);
+                    AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
+                    Redirect("/Profile/RequestEmail");
                 }
-                ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                else
+                {
+                    ApplicationUser user = UserManager.FindByEmail(email);
+                    if (user == null)
+                    {
+                        user = new ApplicationUser()
+                        {
+                            Email = email,
+                            UserName = email
+                        };
 
-                AuthenticationManager.SignOut();
-                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
-                return Redirect("/application/getapplication");
+                        IdentityResult result = UserManager.Create(user);
+                        if (!result.Succeeded)
+                        {
+                            return Redirect("/account/login");
+                        }
+                        AccountManager.AddNewUser(user.Id);
+                    }
+                    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+                    AuthenticationManager.SignOut();
+                    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+                    return Redirect("/application/getapplication");
+                }
             }
             return View();
         }
@@ -554,7 +562,11 @@ namespace WebApp.Controllers
             if (user_id != "")
             {
                 // Пред тем, как лезть в таблицу ThirdPartyAuth, проверь email
-                ApplicationUser user = UserManager.FindByEmail(email);
+                ApplicationUser user = null;
+                if (email != null)
+                {
+                    user = UserManager.FindByEmail(email);
+                }
 
                 if(user == null)
                 {
@@ -573,6 +585,7 @@ namespace WebApp.Controllers
                         }
                         else
                         {
+
                             user = new ApplicationUser()
                             {
                                 UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
@@ -593,8 +606,14 @@ namespace WebApp.Controllers
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 AuthenticationManager.SignOut();
                 AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
-
-                return Redirect("/application/getapplication");
+                if (user.Email != "")
+                {
+                    return Redirect("/application/getapplication");
+                }
+                else
+                {
+                    return Redirect("profile/requestemail");
+                }
             }
             return View();
         }

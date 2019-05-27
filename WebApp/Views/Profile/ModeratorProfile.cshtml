@@ -1,18 +1,33 @@
 ﻿
 @{
-	ViewBag.Title = "ModeratorProfile";
+	ViewBag.Title = "UserProfile";
 }
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
-<div id="userProfile">
+
 	<section id="main-section" v-loader="objForLoading">
 		
-	
-		<section>
-			<div class="custom-container">
+		<div class="custom-container">
+			<nav class="profile-menu">
+				<ul>
+					<li><span v-on:click="showApplications()">Обращения</span></li>
+					<li><span v-on:click="showNews()">Новости</span></li>
+				</ul>
+			</nav>
 			
 
-				<section id="applications">
-					<div v-for="app in applications">
+		</div>
+		<section id="userProfile">
+			<div class="custom-container">
+				
+
+				<section v-if="IsNewsShown===false" id="applications">
+					<div class="filter-container">
+		
+			<span v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)">{{status.Name}}</span>
+			
+			<span v-on:click="selectApplications()">все</span>
+</div>
+					<div  v-for="app in applications">
 						<div class="application">
 
 
@@ -65,7 +80,7 @@
 										<div class="comment-text">
 											<p class="comment-author">{{com.authorName}}</p>
 											<p>{{com.Text}}</p>
-											<p><small>{{com.dateTimeOfCreation}}</small> @*<a href="#">ответить</a></p>*@
+											<p><small>{{com.dateTimeOfCreation}}</small> 
 										</div>
 									</div>
 								</div>
@@ -110,29 +125,27 @@
 										<span v-if="app.IsOpened">скрыть комментарии</span>
 									</small>
 								</div>
-
-
-								<div class="buttons" >
+								<div class="buttons">
 									<button class="button button-primary" v-on:click="acceptApplication(app.Id)">Принять к рассмотрению</button>
 									<button class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
 								</div>
 								
-								</div>
-								<div class="likesContainer">
-									<a v-on:click="Like(app.Id)"><i v-bind:class="{'active-like': app.likeStatus === 1}" class="fa fa-thumbs-up inactive-like">{{app.PosCount}}</i></a>
-									<a v-on:click="Dislike(app.Id)"><i v-bind:class="{'active-dislike': app.likeStatus === -1}" class="fa fa-thumbs-down inactive-dislike">{{app.NegCount}}</i></a>
-								</div>
 
 
 							</div>
 						</div>
 					</div>
 				</section>
+				<section id="news">
+
+				</section>
 			</div>
+
 
 		</section>
 	</section>
-</div>
+
+
 <script src="~/Scripts/Profile/ModeratorProfileVue.js"></script>
 
 

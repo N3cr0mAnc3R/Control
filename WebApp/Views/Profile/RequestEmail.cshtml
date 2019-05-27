@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "RequestEmail";
+}
+
+<div class="container" id="app">
+    <form>
+        <h1>{{user.Email}}</h1>
+        <label for="formGroupExampleInput2">Введите адрес электронной почты, чтобы с вами могли связаться</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="email-required">email</span>
+            </div>
+            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="example@mail.ru" v-model="user.Email">
+        </div>
+
+    </form>
+
+    <button class="btn btn-success" v-on:click="changeUserInfo">Сохранить</button>
+
+</div>
+<script src="~/Scripts/Profile/RequestEmail.js"></script>
