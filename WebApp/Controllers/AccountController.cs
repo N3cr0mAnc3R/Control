@@ -582,11 +582,11 @@ namespace WebApp.Controllers
                         }
                         else
                         {
-                            
-                            //user = new ApplicationUser()
-                            //{
-                            //    UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
-                            //};
+
+                            user = new ApplicationUser()
+                            {
+                                UserName = Regex.Replace(Membership.GeneratePassword(8, 0), @"[^a-zA-Z0-9]", m => "9")
+                            };
                         }
 
                         IdentityResult result = UserManager.Create(user);
