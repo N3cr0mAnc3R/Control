@@ -137,15 +137,23 @@
             });
         },
         initYmaps: function () {
-            //var myPlacemark, //Перемещена выше для видимости в Vue
-            this.myMap = new ymaps.Map('map', {
-                center: [45.043515, 41.961798],
-                zoom: 15
-            },
-                { searchControlProvider: 'yandex#search' });
             navigator.geolocation.getCurrentPosition(function (position) {
                 app.changeAddress(event, [position.coords.latitude, position.coords.longitude]);
+                app.myMap.setCenter([
+                    position.coords.latitude,
+                    position.coords.longitude
+                ]);
             });
+            let coords = [45.043515, 41.961798];
+            if (app.coordinates.length > 0) {
+                coords = app.coordinates;
+            }
+            this.myMap = new ymaps.Map('map', {
+                center: coords,
+                zoom: 17
+            },
+                { searchControlProvider: 'yandex#search' });
+            
             // Слушаем клик на карте.
             this.myMap.events.add('click', app.changeAddress);
             //myMap.events.add('click',  function (e) {
