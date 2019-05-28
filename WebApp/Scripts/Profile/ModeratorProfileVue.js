@@ -12,7 +12,7 @@
 			statusFilter: 1,
 			applicationStatuses: [],
 			IsNewsShown: false,
-			
+
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -189,10 +189,12 @@
 
 								app.GetUserImageForComment(comment.UserId);
 								comment.img = app.commentImg;
-								comment.authorName = comment.AuthorName,
-									comment.dateTimeOfCreation = comment.DateTimeOfCreation,
+								comment.authorName = comment.AuthorName;
+										var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+								comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
 
-									applicationComments.push(comment);
+
+								applicationComments.push(comment);
 							});
 							app.$set(application, 'comments', applicationComments);
 							application.IsOpened = !application.IsOpened;
@@ -247,6 +249,7 @@
 			},
 			showNews: function () {
 				app.IsNewsShown = true;
+				console.log('l');
 			},
 			showApplications: function () {
 				app.IsNewsShown = false;

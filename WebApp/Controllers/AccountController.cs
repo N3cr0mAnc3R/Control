@@ -523,7 +523,7 @@ namespace WebApp.Controllers
                 if (email == "" || email == null)
                 {
                     AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
-                    Redirect("/Profile/RequestEmail");
+                    return Redirect("/Profile/RequestEmail");
                 }
                 else
                 {

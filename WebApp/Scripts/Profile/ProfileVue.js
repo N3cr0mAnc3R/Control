@@ -67,7 +67,7 @@
 					data: { ApplicationId: applicationId, Text: text },
 					async: false,
 					success: function () {
-						//app.selectApplicationsByUserId();
+						app.changeEditingState(applicationId, false);
 					}
 				});
 			},
@@ -147,6 +147,8 @@
 
 						console.log(self.user);
 
+						self.objForLoading.loading = false;
+						self.objForLoading.loaded = true;
 					}
 				});
 
@@ -250,6 +252,10 @@
 					success: function (obj) {
 						let applicationComments = [];
 						obj.Comments.forEach(function (comment) {
+							app.GetUserImageForComment(comment.UserId);
+							comment.img = app.commentImg;
+							comment.authorName = comment.AuthorName,
+							comment.dateTimeOfCreation = comment.DateTimeOfCreation,
 							applicationComments.push(comment);
 						});
 						app.$set(appl, 'comments', applicationComments);
@@ -278,8 +284,9 @@
 								
 								app.GetUserImageForComment(comment.UserId);
 								comment.img = app.commentImg;
-								comment.authorName = comment.AuthorName,
-								comment.dateTimeOfCreation = comment.DateTimeOfCreation,
+								comment.authorName = comment.AuthorName;
+								var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+								comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
 
 								applicationComments.push(comment);
 							});
@@ -318,8 +325,8 @@
 		},
 
 		beforeMount() {
-			this.objForLoading.loading = true;
-			this.objForLoading.loaded = false;
+			//this.objForLoading.loading = true;
+			//this.objForLoading.loaded = false;
 			this.selectApplicationsByUserId();
 			this.getUserInfo();
 		}

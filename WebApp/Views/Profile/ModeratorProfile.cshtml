@@ -7,27 +7,27 @@
 	<section id="main-section" v-loader="objForLoading">
 		
 		<div class="custom-container">
-			<nav class="profile-menu">
-				<ul>
-					<li><span v-on:click="showApplications()">Обращения</span></li>
-					<li><span v-on:click="showNews()">Новости</span></li>
-				</ul>
-			</nav>
 			
 
 		</div>
 		<section id="userProfile">
 			<div class="custom-container">
-				
+				<nav class="profile-menu">
+					<ul>
+						<li><span v-bind:class="{'current': !IsNewsShown}" v-on:click="showApplications">Обращения</span></li>
+						<li><span  v-bind:class="{'current': IsNewsShown}" v-on:click="showNews">Новости</span></li>
+					</ul>
+				</nav>
+
 
 				<section v-if="IsNewsShown===false" id="applications">
 					<div class="filter-container">
-		
-			<span v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)">{{status.Name}}</span>
-			
-			<span v-on:click="selectApplications()">все</span>
-</div>
-					<div  v-for="app in applications">
+
+						<span class="filter" v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)" v-bind:class="{ 'current': status.Id === statusFilter }">{{status.Name}}</span>
+
+						<span v-bind:class="{ 'current': statusFilter ===0}" class="filter" v-on:click="selectApplications()">все</span>
+					</div>
+					<div v-for="app in applications">
 						<div class="application">
 
 
@@ -80,7 +80,7 @@
 										<div class="comment-text">
 											<p class="comment-author">{{com.authorName}}</p>
 											<p>{{com.Text}}</p>
-											<p><small>{{com.dateTimeOfCreation}}</small> 
+											<p><small>{{com.dateTimeOfCreation}}</small>
 										</div>
 									</div>
 								</div>
@@ -129,16 +129,14 @@
 									<button class="button button-primary" v-on:click="acceptApplication(app.Id)">Принять к рассмотрению</button>
 									<button class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
 								</div>
-								
+
 
 
 							</div>
 						</div>
 					</div>
 				</section>
-				<section id="news">
-
-				</section>
+				<section id="news"></section>
 			</div>
 
 
