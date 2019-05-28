@@ -190,7 +190,7 @@
 								app.GetUserImageForComment(comment.UserId);
 								comment.img = app.commentImg;
 								comment.authorName = comment.AuthorName;
-										var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+								var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
 								comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
 
 
