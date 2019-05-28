@@ -11,6 +11,9 @@
         coordinates: [],
         isMap: false,
         AddressText: "",
+        CityText: "",
+        StreetText: "",
+        HouseText: "",
         myPlacemark: undefined,
         myMap: {},
         objForLoading: {
@@ -51,6 +54,7 @@
                         app.coordinates.push(coord);
                     });
                 }
+                app.AddressText = "" + app.CityText + " " + app.StreetText + " " + app.HouseText;
                 var ajaxData = new FormData();
                 ajaxData.append('Text', app.Text);
                 ajaxData.append('Title', app.Title);
@@ -133,65 +137,26 @@
             });
         },
         initYmaps: function () {
-            //var myPlacemark, //Перемещена выше для видимости в Vue
-            this.myMap = new ymaps.Map('map', {
-                center: [45.043515, 41.961798],
-                zoom: 15
-            },
-                { searchControlProvider: 'yandex#search' });
             navigator.geolocation.getCurrentPosition(function (position) {
                 app.changeAddress(event, [position.coords.latitude, position.coords.longitude]);
+                app.myMap.setCenter([
+                    position.coords.latitude,
+                    position.coords.longitude
+                ]);
             });
+            let coords = [45.043515, 41.961798];
+            if (app.coordinates.length > 0) {
+                coords = app.coordinates;
+            }
+            this.myMap = new ymaps.Map('map', {
+                center: coords,
+                zoom: 17
+            },
+                { searchControlProvider: 'yandex#search' });
+            
             // Слушаем клик на карте.
             this.myMap.events.add('click', app.changeAddress);
-            //myMap.events.add('click',  function (e) {
-            //    var coords = e.get('coords');
-
-            //    // Если метка уже создана – просто передвигаем ее.
-            //    if (app.myPlacemark) {
-            //        app.myPlacemark.geometry.setCoordinates(coords);
-            //    }
-            //    // Если нет – создаем.
-            //    else {
-            //        app.myPlacemark = createPlacemark(coords);
-            //        myMap.geoObjects.add(app.myPlacemark);
-            //        // Слушаем событие окончания перетаскивания на метке.
-            //        app.myPlacemark.events.add('dragend', function () {
-            //            getAddress(app.myPlacemark.geometry.getCoordinates());
-            //        });
-            //    }
-            //    getAddress(coords);
-            //});
-            // Создание метки.
-            //function createPlacemark(coords) {
-            //    return new ymaps.Placemark(coords, {
-            //        iconCaption: 'поиск...'
-            //    }, {
-            //            preset: 'islands#violetDotIconWithCaption',
-            //            draggable: true
-            //        });
-            //}
-
-            // Определяем адрес по координатам (обратное геокодирование).
-            //function getAddress(coords) {
-            //    app.myPlacemark.properties.set('iconCaption', 'поиск...');
-            //    ymaps.geocode(coords).then(function (res) {
-            //        var firstGeoObject = res.geoObjects.get(0);
-
-            //        app.myPlacemark.properties
-            //            .set({
-            //                // Формируем строку с данными об объекте.
-            //                iconCaption: [
-            //                    // Название населенного пункта или вышестоящее административно-территориальное образование.
-            //                    firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
-            //                    // Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
-            //                    firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
-            //                ].filter(Boolean).join(', '),
-            //                // В качестве контента балуна задаем строку с адресом объекта.
-            //                balloonContent: firstGeoObject.getAddressLine()
-            //            });
-            //    });
-            //}
+            
 
             this.objForLoading.loading = false;
             this.objForLoading.loaded = true;
@@ -238,6 +203,7 @@
 
     }
 });
-
-
-
+window.onload = function () {
+    $('#form').css('display', 'block');
+    $('.sk-wave').css('display', 'none');
+};
