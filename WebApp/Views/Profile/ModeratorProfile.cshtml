@@ -126,8 +126,8 @@
 									</small>
 								</div>
 								<div class="buttons">
-									<button class="button button-primary" v-on:click="acceptApplication(app.Id)">Принять к рассмотрению</button>
-									<button class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
+									<button  v-if="app.StatusId!==2" class="button button-primary" v-on:click="acceptApplication(app.Id)">Принять к рассмотрению</button>
+									<button v-if="app.StatusId!==3"  class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
 								</div>
 
 
