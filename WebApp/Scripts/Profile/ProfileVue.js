@@ -47,33 +47,33 @@
 
 
 
-        },
-        deleteApplication: function (applicationId) {
-            $.ajax({
-                url: "/profile/DeleteApplication",
-                type: "POST",
-                data: { ApplicationId: applicationId },
-                async: false,
-                success: function () {
-                    app.selectApplicationsByUserId();
-                }
-            });
-        },
-        changeApplicationText: function (applicationId, text) {
-            $.ajax({
-                url: "/profile/ChangeApplicationText",
-                type: "POST",
-                data: { ApplicationId: applicationId, Text: text },
-                async: false,
-                success: function () {
-                    //app.selectApplicationsByUserId();
-                }
-            });
-        },
-        changeEditingState: function (applicationId, state) {
-            let appl = app.applications.find(a => a.Id === applicationId);
-            this.applicationText = appl.Text;
-            app.$set(appl, 'isEditing', state);
+			},
+			deleteApplication: function (applicationId) {
+				$.ajax({
+					url: "/profile/DeleteApplication",
+					type: "POST",
+					data: { ApplicationId: applicationId },
+					async: false,
+					success: function () {
+						app.selectApplicationsByUserId();
+					}
+				});
+			},
+			changeApplicationText: function (applicationId, text) {
+				$.ajax({
+					url: "/profile/ChangeApplicationText",
+					type: "POST",
+					data: { ApplicationId: applicationId, Text: text },
+					async: false,
+					success: function () {
+						app.changeEditingState(applicationId, false);
+					}
+				});
+			},
+			changeEditingState: function (applicationId, state) {
+				let appl = app.applications.find(a => a.Id === applicationId);
+				this.applicationText = appl.Text;
+				app.$set(appl, 'isEditing', state);
 
         },
         selectApplicationsByUserId: function () {
@@ -136,12 +136,20 @@
                     }
                     self.$set(self.user, 'Age', age);
 
-                    self.$set(self.user, 'Email', userInfo.Email);
-                    self.$set(self.user, 'FullName', userInfo.FullName);
+						self.$set(self.user, 'Email', userInfo.Email);
+						self.$set(self.user, 'FullName', userInfo.FullName);
+					
 
-                    
-                }
-            });
+						console.log(today.getFullYear());
+						console.log(date.getFullYear());
+						console.log(age);
+
+						console.log(self.user);
+
+						self.objForLoading.loading = false;
+						self.objForLoading.loaded = true;
+					}
+				});
 
         },
         GetUserImage: function () {
@@ -231,46 +239,51 @@
 
         ChangePageNumber: function (appId, offset) {
 
-            let appl = app.applications.find(a => a.Id === appId);
-            appl.comments = [];
-            $.ajax({
-                url: "/profile/SelectCommentsByApplicationId",
-                type: "POST",
-                data: { ApplicationId: appl.Id, Offset: offset },
-                async: false,
-                success: function (obj) {
-                    let applicationComments = [];
-                    obj.Comments.forEach(function (comment) {
-                        applicationComments.push(comment);
-                    });
-                    app.$set(appl, 'comments', applicationComments);
-                    app.$set(appl, 'currentCommentPageNumber', offset);
-                    //app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+				let appl = app.applications.find(a => a.Id === appId);
+				appl.comments = [];
+				$.ajax({
+					url: "/profile/SelectCommentsByApplicationId",
+					type: "POST",
+					data: { ApplicationId: appl.Id, Offset: offset },
+					async: false,
+					success: function (obj) {
+						let applicationComments = [];
+						obj.Comments.forEach(function (comment) {
+							app.GetUserImageForComment(comment.UserId);
+							comment.img = app.commentImg;
+							comment.authorName = comment.AuthorName,
+							comment.dateTimeOfCreation = comment.DateTimeOfCreation,
+							applicationComments.push(comment);
+						});
+						app.$set(appl, 'comments', applicationComments);
+						app.$set(appl, 'currentCommentPageNumber', offset);
+						//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
 
-                }
-            });
-        },
-        isShowAsPage: function (number, current, max) {
-            if (number > current - 2 && number < current + 2 && number < max && number > 1) {
-                return true;
-            }
-            else return false;
-        },
-        SelectCommentsByApplicationId: function (application, offset) {
-            if (!application.IsOpened) {
-                $.ajax({
-                    url: "/profile/SelectCommentsByApplicationId",
-                    type: "POST",
-                    data: { ApplicationId: application.Id, Offset: offset },
-                    async: false,
-                    success: function (obj) {
-                        let applicationComments = [];
-                        obj.Comments.forEach(function (comment) {
-
-                            app.GetUserImageForComment(comment.UserId);
-                            comment.img = app.commentImg;
-                            comment.authorName = comment.AuthorName,
-                                comment.dateTimeOfCreation = comment.DateTimeOfCreation,
+					}
+				});
+			},
+			isShowAsPage: function (number, current, max) {
+				if (number > current - 2 && number < current + 2 && number < max && number > 1) {
+					return true;
+				}
+				else return false;
+			},
+			SelectCommentsByApplicationId: function (application, offset) {
+				if (!application.IsOpened) {
+					$.ajax({
+						url: "/profile/SelectCommentsByApplicationId",
+						type: "POST",
+						data: { ApplicationId: application.Id, Offset: offset },
+						async: false,
+						success: function (obj) {
+							let applicationComments = [];
+							obj.Comments.forEach(function (comment) {
+								
+								app.GetUserImageForComment(comment.UserId);
+								comment.img = app.commentImg;
+								comment.authorName = comment.AuthorName;
+								var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+								comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
 
                                 applicationComments.push(comment);
                         });
