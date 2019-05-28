@@ -8,8 +8,9 @@
         height: 600px;
     }
 </style>
-<div class="form-wrapper @*text-center*@">
-    <div id="form" v-loader="objForLoading">
+<div class="form-wrapper">
+    <div class="sk-wave"><div class="sk-rect sk-rect-1"></div><div class="sk-rect sk-rect-2"></div><div class="sk-rect sk-rect-3"></div><div class="sk-rect sk-rect-4"></div><div class="sk-rect sk-rect-5"></div></div>
+    <div id="form" style="display: none;">
         @foreach (New newspiece in ViewBag.News)
         {
             <span> @newspiece.Text</span>
@@ -82,7 +83,7 @@
             <button type="button" class="btn btn-outline-primary" v-on:click="toggleMap()">Указать адрес</button>
             <div id="map"></div>
         </div>
-            <button type="submit" class="btn btn-success" v-on:click="submit()">Отправить</button>
+        <button type="submit" class="btn btn-success" v-on:click="submit()">Отправить</button>
 
     </div>
 </div>
