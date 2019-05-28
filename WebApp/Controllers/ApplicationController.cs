@@ -27,6 +27,17 @@ namespace WebApp.Controllers
 
             return View();
         }
+
+        public async Task<ActionResult> SimilarApplication(string Longitude, string Latitude, int ReasonId)
+        {
+            return View(await ApplicationManager.GetSimilarApplications(Longitude, Latitude, ReasonId));
+        }
+
+        public ActionResult Attach(int Id)
+        {
+            ApplicationManager.AttachApplication(Id, CurrentUser.Id);
+            return Redirect("/profile/userprofile");
+        }
         protected ApplicationUserManager ApplicationUserManager
         {
             get
@@ -58,10 +69,15 @@ namespace WebApp.Controllers
                 }
 
                 TempData["application"] = model;
-                return Json("auth");
+                return Json(new { uri = "auth"});
             }
+            if (await ApplicationManager.HasSimilarApplications(model.Longitude, model.Latitude, model.ReasonId))
+            {
+                return Json(new { uri = "similar", model.Longitude, model.Latitude, model.ReasonId });
+            }
+
             await ApplicationManager.SubmitApplication(model, CurrentUser.Id);
-            return Json("");
+            return Json(new { uri = "" });
         }
         public string[] YMapsTextToCoordinates(string textAddress)
         {

@@ -72,9 +72,12 @@
                     contentType: false,
                     processData: false,
                     data: ajaxData,
-                    success: function (uri) {
-                        if (uri === 'auth') {
+                    success: function (response) {
+                        if (response.uri === 'auth') {
                             window.open('/account/login', '_self');
+                        }
+                        else if (response.uri === 'similar') {
+                            window.open('/application/SimilarApplication?Longitude=' + response.Longitude + '&Latitude=' + response.Latitude + '&ReasonId=' + response.ReasonId, '_self');
                         }
                         else {
                             window.open('/profile/userprofile', '_self');
@@ -143,6 +146,7 @@
                     position.coords.latitude,
                     position.coords.longitude
                 ]);
+                console.log(position.coords);
             });
             let coords = [45.043515, 41.961798];
             if (app.coordinates.length > 0) {

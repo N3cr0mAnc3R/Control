@@ -107,6 +107,56 @@ namespace WebApp.Models.Managers
             }
         }
 
+        public async Task<IEnumerable<ApplicationModel>> GetSimilarApplications(string Longitude, string Latitude, int ReasonId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<ApplicationModel>(
+                    sql: "dbo.GetSimilarApplication",
+                    param: new
+                    {
+                        ReasonId,
+                        Longitude = double.Parse(Longitude.Replace('.', ',')),
+                        Latitude = double.Parse(Latitude.Replace('.', ','))
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
+        public void AttachApplication(int Id, string UserId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "dbo.AttachApplication",
+                    param: new
+                    {
+                        Id,
+                        UserId
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
+        public async Task<bool> HasSimilarApplications(string Longitude, string Latitude, int ReasonId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return (cnt.Query<bool>(
+                    sql: "dbo.GetSimilarApplication",
+                    param: new
+                    {
+                        ReasonId,
+                        Longitude = double.Parse(Longitude.Replace('.', ',')),
+                        Latitude = double.Parse(Latitude.Replace('.', ','))
+                    },
+                    commandType: CommandType.StoredProcedure
+                )).First();
+            }
+        }
+
         public async Task SubmitApplication(ApplicationModel application, string uid)
         {
             using (var cnt = Concrete.OpenConnection())

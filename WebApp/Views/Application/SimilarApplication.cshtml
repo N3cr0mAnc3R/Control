@@ -1,0 +1,16 @@
+﻿@using WebApp.Models
+@model IEnumerable<ApplicationModel>
+
+    <div >
+        <section id="main-section">
+            @foreach(ApplicationModel app in Model)
+            {
+            <form action="/Application/Attach">
+                <input type="hidden" name="Id" value="@app.Id" />
+                <div>@app.Title</div>
+                <div>@app.Text</div>
+                <input type="submit" class="btn btn-outline-primary" value="Прикрепиться">
+            </form>
+            }
+        </section>
+    </div>

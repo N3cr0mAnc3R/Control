@@ -373,6 +373,7 @@
     <Content Include="Views\Profile\ModeratorProfile.cshtml" />
     <Content Include="Views\Profile\RequestEmail.cshtml" />
     <Content Include="Views\Shared\Notifier.cshtml" />
+    <Content Include="Views\Application\SimilarApplication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
