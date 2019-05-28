@@ -19,7 +19,7 @@
             let appl = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
             app.SelectCommentsByApplicationId(appl);
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
-
+			
         },
         changeComment: function (event) {//байндинг комментария с vue 
             this.comment = event.target.value;

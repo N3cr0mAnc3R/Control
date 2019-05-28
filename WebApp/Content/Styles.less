@@ -4,7 +4,6 @@
 	padding-top: 20px; /*^*/
 	padding-left: 15px;
 	padding-right: 15px;
-
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -21,6 +20,29 @@ textarea {
 	/*max-width: 280px;*/
 }
 
+.textarea {
+	resize: none;
+	width: 80%;
+	padding: 5px 8px;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+	font-size: 15px;
+	line-height: 1.2;
+	overflow:hidden;
+	float:left;
+	margin-right:10px;
+}
+.comment-control-container{
+	padding-top:20px
+}
+.comment-control-container button {
+	float: left;
+}
+.comment-control-container:after {
+	content: '';
+	display: block;
+	clear: both;
+}
 .application .application-body textarea {
 	font-size: 12px
 }
@@ -625,14 +647,14 @@ footer {
 	}
 }
 
-	.loading-controller {
-		display: none;
+.loading-controller {
+	display: none;
 
-		&.loaded {
-			display: block;
-		}
+	&.loaded {
+		display: block;
 	}
 }
+
 .likesContainer {
 	font-size: 16px;
 	cursor: pointer;
@@ -732,49 +754,50 @@ footer {
 }
 
 #email-required {
-    background-color: crimson;
-    color:ghostwhite;
+	background-color: crimson;
+	color: ghostwhite;
 }
+
 @spinkit-size: 4em;
 @spinkit-spinner-color: #337ab7;
 
 .sk-wave {
-    @rectCount: 5;
-    @animationDuration: 1.2s;
-    @delayRange: 0.4s;
-    width: @spinkit-size * 1.5;
-    height: @spinkit-size;
-    margin: auto;
-    text-align: center;
-    font-size: 1em;
+	@rectCount: 5;
+	@animationDuration: 1.2s;
+	@delayRange: 0.4s;
+	width: @spinkit-size * 1.5;
+	height: @spinkit-size;
+	margin: auto;
+	text-align: center;
+	font-size: 1em;
 
-    .sk-rect {
-        background-color: @spinkit-spinner-color;
-        height: 100%;
-        width: .5em;
-        display: inline-block;
-        animation: sk-wave-stretch-delay @animationDuration infinite ease-in-out;
-        margin-right: 3px;
-    }
+	.sk-rect {
+		background-color: @spinkit-spinner-color;
+		height: 100%;
+		width: .5em;
+		display: inline-block;
+		animation: sk-wave-stretch-delay @animationDuration infinite ease-in-out;
+		margin-right: 3px;
+	}
 
-    .sk-create(@rectCount);
+	.sk-create(@rectCount);
 
-    .sk-create(@n, @i: 1) when (@i =< @n) {
-        .sk-rect-@{i} {
-            animation-delay: -@animationDuration + @delayRange / (@rectCount - 1) * (@i - 1);
-        }
+	.sk-create(@n, @i: 1) when (@i =< @n) {
+		.sk-rect-@{i} {
+			animation-delay: -@animationDuration + @delayRange / (@rectCount - 1) * (@i - 1);
+		}
 
-        .sk-create(@n, (@i + 1));
-    }
+		.sk-create(@n, (@i + 1));
+	}
 }
 
 
 @keyframes sk-wave-stretch-delay {
-    0%, 40%, 100% {
-        transform: scaleY(0.4);
-    }
+	0%, 40%, 100% {
+		transform: scaleY(0.4);
+	}
 
-    20% {
-        transform: scaleY(1.0);
-    }
+	20% {
+		transform: scaleY(1.0);
+	}
 }
