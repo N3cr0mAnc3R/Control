@@ -12,6 +12,7 @@
 			statusFilter: 1,
 			applicationStatuses: [],
 			IsNewsShown: false,
+			newsText: '',
 
 			objForLoading: {
 				loading: false,
@@ -249,7 +250,8 @@
 			},
 			showNews: function () {
 				app.IsNewsShown = true;
-				console.log('l');
+			
+					CKEDITOR.replace('news1');
 			},
 			showApplications: function () {
 				app.IsNewsShown = false;
@@ -267,6 +269,23 @@
 
 							self.applicationStatuses.push(status);
 						});
+					}
+				}
+
+				);
+
+			},
+			addNews: function () {
+				var self = this;
+				$.ajax({
+					url: "/profile/AddNews",
+					type: "POST",
+					async: false,
+					data: { Text: app.newsText },
+
+					success: function () {
+						
+						console.log('сохранено');
 					}
 				}
 

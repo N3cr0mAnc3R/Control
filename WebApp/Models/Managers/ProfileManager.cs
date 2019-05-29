@@ -329,6 +329,25 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public void AddNews(string UserId, string Text)
+        {
+
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "AddNew",
+                    commandType: CommandType.StoredProcedure,
+                     param: new
+                     {
+                         UserId,
+                        
+                         Text
+                        
+                     }
+                    );
+            }
+
+        }
         #endregion
 
     }

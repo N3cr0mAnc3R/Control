@@ -136,8 +136,6 @@ namespace WebApp.Controllers
         public void AcceptApplication(int ApplicationId)
         {
             //!проверить доступ
-
-
             ProfileManager.AcceptApplication(ApplicationId);
 
         }
@@ -145,9 +143,14 @@ namespace WebApp.Controllers
         public void DeclineApplication(int ApplicationId)
         {
             //!проверить доступ
-
-
             ProfileManager.DeclineApplication(ApplicationId);
+
+        }
+        [HttpPost]
+        public void AddNews(string Text)
+        {
+            //!проверить доступ
+            ProfileManager.AddNews(CurrentUser.Id, Text);
 
         }
         [HttpPost]
