@@ -31,6 +31,7 @@ textarea {
 }
 .comment-control-container {
   padding-top: 20px;
+  position: relative;
 }
 .comment-control-container button {
   float: left;
@@ -158,6 +159,7 @@ button:focus {
   width: 90%;
   margin: auto;
   border-bottom: #dbdada 1.5px solid;
+  margin-bottom: 20px;
 }
 .profile-menu li {
   height: 26px;
@@ -393,6 +395,9 @@ footer {
 .filter.current {
   border-left: 2px solid #3aa0fe;
   padding-left: 3px;
+}
+#news {
+  padding-top: 20px;
 }
 @media (max-width: 1050px) {
   #toggle-icon {
