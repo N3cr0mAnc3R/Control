@@ -3,14 +3,18 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.Security;
 using WebApp.Models;
 using WebApp.Models.Managers;
@@ -520,6 +524,27 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
+                string uriString = String.Format("https://api.vk.com/method/users.get?user_ids={0}&fields=bdate&access_token={1}&v={2}", 
+                    user_id,
+                    access_token,
+                    ConfigurationManager.AppSettings["vk:version"]);
+
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(uriString);
+                
+
+
+                using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
+                {
+                    using (var reader = new StreamReader(resp.GetResponseStream()))
+                    {
+                        JavaScriptSerializer js = new JavaScriptSerializer();
+                        var objText = reader.ReadToEnd();
+                        VkUserInfoResponse myojb = (VkUserInfoResponse)js.Deserialize(objText, typeof(VkUserInfoResponse));
+                    }
+
+                }
+
+
                 if (email == "" || email == null)
                 {
                     AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
@@ -547,6 +572,7 @@ namespace WebApp.Controllers
 
                     AuthenticationManager.SignOut();
                     AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+
                     return Redirect("/application/getapplication");
                 }
             }
