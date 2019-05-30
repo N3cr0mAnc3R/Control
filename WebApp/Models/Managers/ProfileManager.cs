@@ -329,7 +329,7 @@ namespace WebApp.Models.Managers
 
             }
         }
-        public void AddNews(string UserId, string Text)
+        public void AddNews(string user, string text, DateTime date)
         {
 
             using (var cnt = Concrete.OpenConnection())
@@ -339,10 +339,10 @@ namespace WebApp.Models.Managers
                     commandType: CommandType.StoredProcedure,
                      param: new
                      {
-                         UserId,
-                        
-                         Text
-                        
+                         user,
+                         text,
+                         date
+
                      }
                     );
             }
