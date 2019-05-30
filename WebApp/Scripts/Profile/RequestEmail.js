@@ -39,7 +39,15 @@
 
                         //self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' + self.getTimeNumber(date.getMonth() + 1) + '-' + self.getTimeNumber(date.getDate()));
                         self.$set(self.user, 'Email', userInfo.Email);
-                        self.$set(self.user, 'FullName', userInfo.FullName);
+
+                        if (userInfo.FullName != "" && userInfo.FullName != null) {
+
+                            self.$set(self.user, 'FullName', userInfo.FullName);
+                        }
+                        else {
+                            self.$set(self.user, 'FullName', "гражданин");
+                        }
+                        
 
                     }
                 });
