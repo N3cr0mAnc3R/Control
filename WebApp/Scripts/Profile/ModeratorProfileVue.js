@@ -12,8 +12,7 @@
 			statusFilter: 1,
 			applicationStatuses: [],
 			IsNewsShown: false,
-			newsText: '',
-
+			datetime:'',
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -29,8 +28,9 @@
 			},
 			changeComment: function (event) {//байндинг комментария с vue 
 				this.comment = event.target.value;
+				
 			},
-
+			
 			addComment: function (applicationId) {
 				if (app.comment !== '') {
 					$.ajax({
@@ -251,7 +251,7 @@
 			showNews: function () {
 				app.IsNewsShown = true;
 			
-					CKEDITOR.replace('news1');
+				setTimeout(function () { CKEDITOR.replace('news1'); }, 500);
 			},
 			showApplications: function () {
 				app.IsNewsShown = false;
@@ -276,12 +276,15 @@
 
 			},
 			addNews: function () {
-				var self = this;
+				
+				var t = CKEDITOR.instances.news1.getData();
+				console.log(t);
+				if (app.datetime && t)//все поля заполнены 
 				$.ajax({
 					url: "/profile/AddNews",
 					type: "POST",
 					async: false,
-					data: { Text: app.newsText },
+					data: { Text: t, DateTime:app.datetime},
 
 					success: function () {
 						

@@ -146,11 +146,11 @@ namespace WebApp.Controllers
             ProfileManager.DeclineApplication(ApplicationId);
 
         }
-        [HttpPost]
-        public void AddNews(string Text)
+        [HttpPost, ValidateInput(false)]
+        public void AddNews(string Text, DateTime dateTime )
         {
             //!проверить доступ
-            ProfileManager.AddNews(CurrentUser.Id, Text);
+            ProfileManager.AddNews(CurrentUser.Id, Text, dateTime);
 
         }
         [HttpPost]
