@@ -517,7 +517,29 @@ namespace WebApp.Controllers
                 return Json(url);
             }
         }
+        public void OKUserInfoUpdate(string bday, string name)
+        {
+            bool needUpdate = false;
+            UserInfoModel currentInfo = ProfileManager.GetUserInfo(CurrentUser.Id);
+            DateTime birthday = DateTime.Parse(bday);
+            if ((currentInfo.DateOfBirth == null || currentInfo.DateOfBirth == new DateTime(0))
+                        && (birthday != null || birthday != new DateTime(0)))
+            {
+                needUpdate = true;
+                currentInfo.DateOfBirth = birthday;
+            }
+            if ((currentInfo.FullName == "" || currentInfo.FullName == null)
+                && (name != ""))
+            {
+                needUpdate = true;
+                currentInfo.FullName = name;
+            }
+            // ... то обновляем внутреннюю учетку 
+            if (needUpdate)
+                ProfileManager.ChangeUserInfo(CurrentUser.Id, currentInfo);
 
+
+        }
 
         [AllowAnonymous]
         [HttpGet]

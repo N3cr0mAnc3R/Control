@@ -146,7 +146,7 @@ namespace WebApp.Controllers
             ProfileManager.DeclineApplication(ApplicationId);
 
         }
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         public void AddNews(string Text, DateTime dateTime )
         {
             //!проверить доступ

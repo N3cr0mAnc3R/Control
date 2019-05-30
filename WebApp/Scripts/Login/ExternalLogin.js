@@ -77,7 +77,7 @@
                                                     success: function (values) {
                                                         Vue.nextTick(function () {
                                                             let uid = Number.parseInt(values.uid);
-                                                            console.log(values.uid, uid, typeof uid);
+                                                            console.log(values);
                                                             $.ajax({
                                                                 url: '/account/AuthThirdParty',
                                                                 type: "get",
@@ -87,10 +87,21 @@
                                                                     email: values.email,
                                                                     provider: 'Odnoklassniki'
                                                                 },
+                                                                //ЗДЕСЬ???
                                                                 success: function () {
+                                                                    $.ajax({
+                                                                        url: '/account/OKUserInfoUpdate',
+                                                                        type: "get",
+                                                                        async: false,
+                                                                        data: {
+                                                                            bday: values.birthday,
+                                                                            name: values.name,
+
+                                                                        }
+                                                                    })
                                                                     window.open('/application/getapplication', '_self');
                                                                 }
-                                                            });
+                                                            });                                                           
 
                                                         });
                                                     }

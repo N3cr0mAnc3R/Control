@@ -12,7 +12,6 @@
 			statusFilter: 1,
 			applicationStatuses: [],
 			IsNewsShown: false,
-			newsText: '1',
 			datetime:'',
 			objForLoading: {
 				loading: false,
@@ -31,10 +30,7 @@
 				this.comment = event.target.value;
 				
 			},
-			changeNewsText: function (event) {
-				this.newsText = event.target.value;
-                console.log($('news1'));
-			},
+			
 			addComment: function (applicationId) {
 				if (app.comment !== '') {
 					$.ajax({
@@ -281,11 +277,14 @@
 			},
 			addNews: function () {
 				
+				var t = CKEDITOR.instances.news1.getData();
+				console.log(t);
+				if (app.datetime && t)//все поля заполнены 
 				$.ajax({
 					url: "/profile/AddNews",
 					type: "POST",
 					async: false,
-					data: { Text: app.newsText, DateTime:app.datetime},
+					data: { Text: t, DateTime:app.datetime},
 
 					success: function () {
 						
