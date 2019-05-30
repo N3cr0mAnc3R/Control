@@ -1,4 +1,5 @@
-﻿window.onload = function () {
+﻿//Вообще непонятный файл
+window.onload = function () {
     const app = new Vue({
         el: "#app",
         data: {

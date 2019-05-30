@@ -627,7 +627,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AuthThirdParty(string access_token, int? expires_in, string user_id,
-                                           string email, string provider)
+                                           string email, string provider, string bday, string name)
         {
 
             if (user_id != "")
@@ -673,6 +673,7 @@ namespace WebApp.Controllers
                         AccountManager.AddThirdPartyAuth(user.Id, user_id, provider);
                     }
                 }
+                OKUserInfoUpdate(bday, name);
                 // авторизует 3 строчки
                 ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 AuthenticationManager.SignOut();
@@ -688,35 +689,6 @@ namespace WebApp.Controllers
             }
             return View();
         }
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public async Task<JsonResult> Login(string access_token, int expires_in, int user_id, string email)
-        //{
-        //    ApplicationUser user = null;
-        //    if (email != "")
-        //    {
-        //        user = await UserManager.FindByEmailAsync(email);
-        //        if (user == null)
-        //        {
-        //            var result = UserManager.Create(new ApplicationUser() { Email = email, UserName = email });
-        //            if (result.Succeeded)
-        //            {
-        //                user = UserManager.FindByEmail(email);
-        //            }
-        //            else return Json(result.Errors);
-        //        }
-        //    }
-        //    if (user == null)
-        //    {
-        //        return Json("Для корректной авторизации необходима электронная почта.");
-        //    }
-        //    ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
-        //    AuthenticationManager.SignOut();
-        //    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
-        //    //  return Json(await CreateUserProfile(user));
-        //    return Json(""); // Это просто чтоб запускалось!!! Надо чтобы работала строчка выше!!
-        //}
 
 
         #region Вспомогательные приложения

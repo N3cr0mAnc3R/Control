@@ -15,16 +15,18 @@
 
     },
     methods: {
+        //Раскрытие/закрытие комментариев
         toggleComments: function (Id) {
             let appl = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
             app.SelectCommentsByApplicationId(appl);
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
-			
+
         },
+        //Опять странный байндинг
         changeComment: function (event) {//байндинг комментария с vue 
             this.comment = event.target.value;
         },
-
+        //Добавление комментария
         addComment: function (applicationId) {
             if (app.comment !== '') {
                 $.ajax({
@@ -43,39 +45,39 @@
 
                 );
             }
-
-
-
-
-			},
-			deleteApplication: function (applicationId) {
-				$.ajax({
-					url: "/profile/DeleteApplication",
-					type: "POST",
-					data: { ApplicationId: applicationId },
-					async: false,
-					success: function () {
-						app.selectApplicationsByUserId();
-					}
-				});
-			},
-			changeApplicationText: function (applicationId, text) {
-				$.ajax({
-					url: "/profile/ChangeApplicationText",
-					type: "POST",
-					data: { ApplicationId: applicationId, Text: text },
-					async: false,
-					success: function () {
-						app.changeEditingState(applicationId, false);
-					}
-				});
-			},
-			changeEditingState: function (applicationId, state) {
-				let appl = app.applications.find(a => a.Id === applicationId);
-				this.applicationText = appl.Text;
-				app.$set(appl, 'isEditing', state);
+        },
+        //"Удаление" заявки
+        deleteApplication: function (applicationId) {
+            $.ajax({
+                url: "/profile/DeleteApplication",
+                type: "POST",
+                data: { ApplicationId: applicationId },
+                async: false,
+                success: function () {
+                    app.selectApplicationsByUserId();
+                }
+            });
+        },
+        //Редактирование заявки
+        changeApplicationText: function (applicationId, text) {
+            $.ajax({
+                url: "/profile/ChangeApplicationText",
+                type: "POST",
+                data: { ApplicationId: applicationId, Text: text },
+                async: false,
+                success: function () {
+                    app.changeEditingState(applicationId, false);
+                }
+            });
+        },
+        //функция для переключения возможности редактирования заявки
+        changeEditingState: function (applicationId, state) {
+            let appl = app.applications.find(a => a.Id === applicationId);
+            this.applicationText = appl.Text;
+            app.$set(appl, 'isEditing', state);
 
         },
+        //Получение всех заявко, отправленных пользователем
         selectApplicationsByUserId: function () {
             var self = this;
             self.applications = [];
@@ -99,7 +101,7 @@
                 }
             });
         },
-
+        //Получение фотографий заявки
         GetApplicationImages: function (application) {
             var self = this;
             $.ajax({
@@ -117,6 +119,7 @@
                 }
             });
         },
+        //Получение информации о пользователе
         getUserInfo: function () {
             this.GetUserImage();
             var self = this;
@@ -136,22 +139,23 @@
                     }
                     self.$set(self.user, 'Age', age);
 
-						self.$set(self.user, 'Email', userInfo.Email);
-						self.$set(self.user, 'FullName', userInfo.FullName);
-					
+                    self.$set(self.user, 'Email', userInfo.Email);
+                    self.$set(self.user, 'FullName', userInfo.FullName);
 
-						console.log(today.getFullYear());
-						console.log(date.getFullYear());
-						console.log(age);
 
-						console.log(self.user);
+                    console.log(today.getFullYear());
+                    console.log(date.getFullYear());
+                    console.log(age);
 
-						self.objForLoading.loading = false;
-						self.objForLoading.loaded = true;
-					}
-				});
+                    console.log(self.user);
+
+                    self.objForLoading.loading = false;
+                    self.objForLoading.loaded = true;
+                }
+            });
 
         },
+        //Получение аватарки пользователя
         GetUserImage: function () {
             var self = this;
             $.ajax({
@@ -159,11 +163,13 @@
                 type: "POST",
                 async: false,
                 success: function (img) {
-                    if (img)
+                    if (img) {
                         self.userImg = 'data:image/png;base64, ' + img;
+                    }
                 }
             });
         },
+        //Получение аватарки автора комментария
         GetUserImageForComment: function (id) {
             var self = this;
             $.ajax({
@@ -177,7 +183,7 @@
                 }
             });
         },
-
+        //Получение информации о состоянии like/dislike
         GetApplicationLikeStatus: function (application) {
             var self = this;
             $.ajax({
@@ -190,6 +196,7 @@
                 }
             });
         },
+        //Получение количества like-ов/dislike-ов
         GetPosNegCount: function (application) {
             var self = this;
             $.ajax({
@@ -203,6 +210,7 @@
                 }
             });
         },
+        //Изменение статуса на Like
         Like: function (Id) {
             let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
 
@@ -220,6 +228,7 @@
                 }
             });
         },
+        //Изменение статуса на Dislike
         Dislike: function (Id) {
             let application = this.applications.find(a => a.Id === Id);
             var self = this;
@@ -236,56 +245,58 @@
             });
         },
 
-
+        //Перейти на другую страницу с комментариями
         ChangePageNumber: function (appId, offset) {
 
-				let appl = app.applications.find(a => a.Id === appId);
-				appl.comments = [];
-				$.ajax({
-					url: "/profile/SelectCommentsByApplicationId",
-					type: "POST",
-					data: { ApplicationId: appl.Id, Offset: offset },
-					async: false,
-					success: function (obj) {
-						let applicationComments = [];
-						obj.Comments.forEach(function (comment) {
-							app.GetUserImageForComment(comment.UserId);
-							comment.img = app.commentImg;
-							comment.authorName = comment.AuthorName,
-							comment.dateTimeOfCreation = comment.DateTimeOfCreation,
-							applicationComments.push(comment);
-						});
-						app.$set(appl, 'comments', applicationComments);
-						app.$set(appl, 'currentCommentPageNumber', offset);
-						//app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+            let appl = app.applications.find(a => a.Id === appId);
+            appl.comments = [];
+            $.ajax({
+                url: "/profile/SelectCommentsByApplicationId",
+                type: "POST",
+                data: { ApplicationId: appl.Id, Offset: offset },
+                async: false,
+                success: function (obj) {
+                    let applicationComments = [];
+                    obj.Comments.forEach(function (comment) {
+                        app.GetUserImageForComment(comment.UserId);
+                        comment.img = app.commentImg;
+                        comment.authorName = comment.AuthorName,
+                            comment.dateTimeOfCreation = comment.DateTimeOfCreation,
+                            applicationComments.push(comment);
+                    });
+                    app.$set(appl, 'comments', applicationComments);
+                    app.$set(appl, 'currentCommentPageNumber', offset);
+                    //app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
 
-					}
-				});
-			},
-			isShowAsPage: function (number, current, max) {
-				if (number > current - 2 && number < current + 2 && number < max && number > 1) {
-					return true;
-				}
-				else return false;
-			},
-			SelectCommentsByApplicationId: function (application, offset) {
-				if (!application.IsOpened) {
-					$.ajax({
-						url: "/profile/SelectCommentsByApplicationId",
-						type: "POST",
-						data: { ApplicationId: application.Id, Offset: offset },
-						async: false,
-						success: function (obj) {
-							let applicationComments = [];
-							obj.Comments.forEach(function (comment) {
-								
-								app.GetUserImageForComment(comment.UserId);
-								comment.img = app.commentImg;
-								comment.authorName = comment.AuthorName;
-								var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
-								comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                }
+            });
+        },
+        //Функция проверки, нужно ли показывать номер страницы с комментариями
+        isShowAsPage: function (number, current, max) {
+            if (number > current - 2 && number < current + 2 && number < max && number > 1) {
+                return true;
+            }
+            else return false;
+        },
+        //Открытие комментариев (загрузка)
+        SelectCommentsByApplicationId: function (application, offset) {
+            if (!application.IsOpened) {
+                $.ajax({
+                    url: "/profile/SelectCommentsByApplicationId",
+                    type: "POST",
+                    data: { ApplicationId: application.Id, Offset: offset },
+                    async: false,
+                    success: function (obj) {
+                        let applicationComments = [];
+                        obj.Comments.forEach(function (comment) {
 
-                                applicationComments.push(comment);
+                            app.GetUserImageForComment(comment.UserId);
+                            comment.img = app.commentImg;
+                            comment.authorName = comment.AuthorName;
+                            var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+                            comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+
+                            applicationComments.push(comment);
                         });
                         app.$set(application, 'comments', applicationComments);
                         application.IsOpened = !application.IsOpened;
@@ -299,10 +310,8 @@
             else {
                 application.IsOpened = !application.IsOpened;
             }
-
-
-
         },
+        //Валидация файла
         InputFileValidate: function () {
             var x = event.target.files;
             var re = /(?:\.([^.]+))?$/;
@@ -314,6 +323,7 @@
                 app.Files[i] = x[i];
             }
         },
+        //Непонятная функция
         saveProfileChanges: function () {
             $.each(app.Files, function (i, file) {
                 ajaxData.append('Files[' + i + ']', file);
@@ -331,7 +341,7 @@
 
 
 });
-
+//Убираем загрузчик по зваершению загрузки страницы
 window.onload = function () {
     $('#userProfile').css('display', 'block');
     $('.sk-wave').css('display', 'none');

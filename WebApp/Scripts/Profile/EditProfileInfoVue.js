@@ -2,17 +2,18 @@
     const app = new Vue({
         el: "#app",
         data: {
-            user: {},
-            img: '/Content/Images/noImage.png',
-            Files: [],
-            AnotherPicturePicked: false,
-            objForLoading: {
+            user: {},//Информация о пользователе
+            img: '/Content/Images/noImage.png', // Аватарка пользователя
+            Files: [],//Новая аватарка пользователя
+            AnotherPicturePicked: false, // Флаг загрузки новой аватарки
+            objForLoading: {//Загрузчик
                 loading: false,
                 loaded: true
             }
 
         },
         methods: {
+            //Валидатор файлов
             InputFileValidate: function () {
 
                 var x = event.target.files;
@@ -28,6 +29,7 @@
                 }
 
             },
+            //Загрузка аватарки на сервер
             saveUserPhoto: function () {
 
                 var ajaxData = new FormData();
@@ -46,11 +48,11 @@
                     processData: false,
                     data: ajaxData,
                     success: function () {
-                        console.log('saveUserPhoto');
                     }
                 });
 
             },
+            //Получение аватарки пользователя
             GetUserImage: function () {
                 var self = this;
                 $.ajax({
@@ -58,13 +60,14 @@
                     type: "POST",
                     async: false,
                     success: function (img) {
-                        if (img)
-                            self.img = 'data:image/png;base64, ' + img;
-
+                        if (img) {
+                            self.img = 'data:image/png;base64, ' + img; //Раскодирование из base64
+                        }
 
                     }
                 });
             },
+            //Предпоказ аватарки после выбора из инпута
             imageSelectionHandler: function (event) {
                 this.AnotherPicturePicked = true;
                 app.InputFileValidate();
@@ -76,7 +79,7 @@
                 };
                 reader.readAsDataURL(event.target.files[0]);
             },
-            //дата не забирается
+            //Получение основной информации о пользователе. Делается через ajax, чтобы прикрутить реактивность
             getUserInfo: function () {
                 this.GetUserImage();
                 var self = this;
@@ -85,50 +88,42 @@
                     type: "POST",
                     async: false,
                     success: function (userInfo) {
+                        //Из Json-а получается формат \Date(123123123). Вырезаем только количество секунд и парсим в дату
 						var date = new Date(Number(userInfo.DateOfBirth.substr(userInfo.DateOfBirth.indexOf('(') + 1, userInfo.DateOfBirth.indexOf(')') - userInfo.DateOfBirth.indexOf('(') - 1)));
 
+                        //Представляем дату в читабельном для vue формате
                         self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' + self.getTimeNumber(date.getMonth() + 1) + '-' + self.getTimeNumber(date.getDate()));
                         self.$set(self.user, 'Email', userInfo.Email);
                         self.$set(self.user, 'FullName', userInfo.FullName);
-                        notifier([{Type: 'success', Body: 'Тестовое сообщение'}]);
+                        //notifier([{Type: 'success', Body: 'Тестовое сообщение'}]);
                     }
                 });
 
             },
+            //После парсинга даты формат её стрёмный. Функция проверяет, однозначное ли число и добавляет 0 вначале, чтобы корректно отобразить дату
             getTimeNumber: function (number) {
                 if (number < 10)
                     return '0' + number;
                 else return number;
             },
-            //если даиа не выбрана, возникают проблемы
+            //Обновление информации
             changeUserInfo: function () {
+                //Чтобы не загружать лишний раз одну и ту же фотографию, проверяем флаг
                 if (this.AnotherPicturePicked) {
                     app.saveUserPhoto();
-                    AnotherPicturePicked = false;
+                    this.AnotherPicturePicked = false;
 
                 }
-
-
                 $.ajax({
                     url: "/profile/ChangeUserInfo",
                     type: "POST",
                     async: false,
                     data: app.user,
                     success: function () {
-                        console.log('heee');
                     }
-                }
-
-                );
+                });
             }
-
-
-
-
-
-
         },
-
         mounted() {
             this.objForLoading.loading = true;
             this.objForLoading.loaded = false;
