@@ -147,10 +147,10 @@ namespace WebApp.Controllers
 
         }
         [HttpPost]
-        public void AddNews(string Text)
+        public void AddNews(string Text, DateTime dateTime )
         {
             //!проверить доступ
-            ProfileManager.AddNews(CurrentUser.Id, Text);
+            ProfileManager.AddNews(CurrentUser.Id, Text, dateTime);
 
         }
         [HttpPost]
