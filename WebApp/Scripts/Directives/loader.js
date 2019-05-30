@@ -1,19 +1,24 @@
-﻿
+﻿//Директива для создания загрузчика на некоторых элементах страницы
 Vue.directive('loader', {
     bind: function (el, binding, vnode) {
-        var element = $(el);
+        var element = $(el);//Сам компонент, на который нужно навесить загрузчик
         var $loader;
+        //Добавляем вручную для него класс, чтобы спрятать
         element.addClass('loading-controller');
+        //Следим за переменной, объявленной в качестве загрузчика
         vnode.context.$watch(binding.expression, function (object) {
             if (object.loading === undefined || object.loaded === undefined) {
+                //Если объект загружен, то отображаем его с помощью класса
                 element.addClass("loaded");
                 return;
             }
             if (object.loading === true) {
                 $loader = $('<div class="sk-wave"><div class="sk-rect sk-rect-1"></div><div class="sk-rect sk-rect-2"></div><div class="sk-rect sk-rect-3"></div><div class="sk-rect sk-rect-4"></div><div class="sk-rect sk-rect-5"></div></div>');
+                //Добавляем лоадер вместо содержимого блока
                 element.after($loader);
             }
             else if ($loader !== undefined) {
+                //Убираем лоадер спустя 0.4 секунды с затуханием
                 $loader.fadeOut(400, function () {
                     element.addClass("loaded");
                     element.css("display", "block");
