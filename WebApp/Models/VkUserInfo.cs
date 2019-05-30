@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +10,7 @@ namespace WebApp.Models
     [Serializable]
     public class VkUserInfoResponse
     {
-        public VkUserInfo response { get; set; }
+        public VkUserInfo[] response { get; set; }
 
 
         [Serializable]
@@ -17,9 +19,9 @@ namespace WebApp.Models
             public string Email { get; set; }
             public string first_name { get; set; }
             public string last_name { get; set; }
-            public DateTime bdate { get; set; }
+            public DateTime bDate1 { get { return DateTime.Parse(bdate); } set {  } }
+            public string bdate { get; set; }
         }
-
 
     }
 }
