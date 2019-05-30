@@ -525,33 +525,33 @@ namespace WebApp.Controllers
         {
             if (user_id != null)
             {
+                // Создаем юрл запроса на получение информации о пользователе вк
                 string uriString = String.Format("https://api.vk.com/method/users.get?user_ids={0}&fields=bdate&access_token={1}&v={2}", 
                     user_id,
                     access_token,
                     ConfigurationManager.AppSettings["vk:version"]);
-
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(uriString);
-                
 
-
+                // Получаем ответ от ВК, распаковываем JSON в модель
+                VkUserInfoResponse userInfo = null;
                 using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
                 {
                     using (var reader = new StreamReader(resp.GetResponseStream()))
                     {
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var objText = reader.ReadToEnd();
-                        VkUserInfoResponse myojb = (VkUserInfoResponse)js.Deserialize(objText, typeof(VkUserInfoResponse));
+                        userInfo = (VkUserInfoResponse)js.Deserialize(objText, typeof(VkUserInfoResponse));
                     }
 
                 }
 
-
+                // Если ВК по телефону, а не по емэйлу, то переходим в авторизацию как в одноклассниках, а далее запрашиваем почту  
                 if (email == "" || email == null)
                 {
                     AuthThirdParty(access_token, expires_in, user_id.ToString(), email, "vkontakte");
                     return Redirect("/Profile/RequestEmail");
                 }
-                else
+                else // находим или создаем внутреннюю учетку пользователя
                 {
                     ApplicationUser user = UserManager.FindByEmail(email);
                     if (user == null)
@@ -569,10 +569,32 @@ namespace WebApp.Controllers
                         }
                         AccountManager.AddNewUser(user.Id);
                     }
-                    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 
+                    // Логиним пользователя
+                    ClaimsIdentity ident = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationManager.SignOut();
                     AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, ident);
+
+                    // Получаем информацио о пользователе ВК
+                    UserInfoModel currentInfo = ProfileManager.GetUserInfo(user.Id);
+                    bool needUpdate = false;
+                   
+                    // Если дата рождения или имя во внутренней учетке нет, а в ВК есть, то...
+                    if ((currentInfo.DateOfBirth == null || currentInfo.DateOfBirth == new DateTime(0))
+                        && (userInfo.response[0].bDate1 != null || userInfo.response[0].bDate1 != new DateTime(0)))
+                    {
+                        needUpdate = true;
+                        currentInfo.DateOfBirth = userInfo.response[0].bDate1;
+                    }
+                    if ((currentInfo.FullName == "" || currentInfo.FullName == null)
+                        && (userInfo.response[0].first_name != ""))
+                    {
+                        needUpdate = true;
+                        currentInfo.FullName = userInfo.response[0].first_name + " " + userInfo.response[0].last_name;
+                    }
+                    // ... то обновляем внутреннюю учетку 
+                    if (needUpdate)
+                        ProfileManager.ChangeUserInfo(user.Id, currentInfo);
 
                     return Redirect("/application/getapplication");
                 }
@@ -747,6 +769,13 @@ namespace WebApp.Controllers
             get
             {
                 return Request.GetOwinContext().Get<AccountManager>();
+            }
+        }
+        protected ProfileManager ProfileManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<ProfileManager>();
             }
         }
     }
