@@ -399,6 +399,27 @@ footer {
 #news {
   padding-top: 20px;
 }
+.main-content {
+  float: left;
+  width: 70%;
+}
+.sidebar {
+  padding-left: 20px;
+  width: 25%;
+  float: left;
+}
+.short-application {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100px;
+  box-shadow: 0 1px 5px 2px #dbdada;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  font-size: 13px;
+}
 @media (max-width: 1050px) {
   #toggle-icon {
     display: block;
@@ -426,19 +447,6 @@ footer {
   #toggle:checked + header nav #right-menu {
     padding-bottom: 20px;
   }
-}
-.hidden {
-  display: none;
-}
-.loader-wrapper {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  z-index: 400;
-  position: absolute;
-}
-.loader-wrapper .loader {
-  background: #000;
 }
 @media (max-width: 992px) {
   .user-info {
@@ -498,6 +506,18 @@ footer {
     text-align: center;
   }
 }
+@media (max-width: 305px) {
+  .application-control .button-primary,
+  .application-control .button-secondary {
+    margin: 0 0 10px 0;
+  }
+  .application .application-body {
+    /*padding-bottom: 140px //*/
+  }
+  .application-control {
+    position: relative;
+  }
+}
 .likesContainer {
   float: none;
   width: 100%;
@@ -519,17 +539,15 @@ footer {
   height: 65px;
   width: 65px;
 }
-@media (max-width: 305px) {
-  .application-control .button-primary,
-  .application-control .button-secondary {
-    margin: 0 0 10px 0;
-  }
-  .application .application-body {
-    /*padding-bottom: 140px //*/
-  }
-  .application-control {
-    position: relative;
-  }
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 400;
+  position: absolute;
+}
+.loader-wrapper .loader {
+  background: #000;
 }
 .loading-controller {
   display: none;

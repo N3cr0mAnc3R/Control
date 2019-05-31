@@ -6,7 +6,7 @@
 		okinfo: ""
 	},
 	methods: {
-
+        //Получение url для авторизации через ВКонтакте
         GetVkInfo: function () {
             $.ajax({
                 url: "/Account/GetVkInfo",
@@ -16,36 +16,34 @@
 				success: function (info) {
 					Vue.nextTick(function () {
 						app.vkinfo = info;
-						console.log(app.vkinfo);
-
 					});
 				}
 			});
 		},
-
+        //Получение url для авторизации через Одноклассники
         GetOkInfo: function () {
             $.ajax({
                 url: "/Account/GetOkInfo",
                 type: "POST",
                 async: false,
-                //data: { code: "" },
                 success: function (info) {
                     Vue.nextTick(function () {
                         app.okinfo = info;
-                        console.log(app.okinfo);
-
                     });
                 }
             });
         }
 
     },
+    //На эту страницу мы попадаем при разных обстоятельствах
     beforeMount() {
+         //Текущий url
         var str = window.location.href;
-        console.log(str.indexOf('token.do'));
+        //Если передаётся code (для одноклассников)
         if (str.indexOf('code') > -1) {
-            console.log(13);
+            //Получаем code
             var code = str.substring(str.lastIndexOf('code') + 5);
+            //Используем code для формирования ссылки для получения токена
             $.ajax({
                 url: "/Account/GetOKTokenUrl",
                 type: "post",
@@ -53,15 +51,14 @@
                 data: { code: code },
                 success: function (url) {
                     Vue.nextTick(function () {
-                        console.log(url);
+                        //Переходим по полученному url-у и получаем токен
                         $.ajax({
                             url: url,
                             type: "post",
                             async: false,
                             success: function (text) {
                                 Vue.nextTick(function () {
-                                    console.log(text);
-
+                                    //Формируем ссылку с полученным токеном
                                     $.ajax({
                                         url: '/account/GetOKUserInfo',
                                         type: "post",
@@ -69,12 +66,13 @@
                                         data: { access_token: text.access_token },
                                         success: function (finalUrl) {
                                             Vue.nextTick(function () {
-
+                                                //Отправляем запрос в ОК и получаем данные о пользователе
                                                 $.ajax({
                                                     url: finalUrl,
                                                     type: "post",
                                                     async: false,
                                                     success: function (values) {
+                                                        //Авторизуемся на сервере и сохраняем данные о пользователе
                                                         Vue.nextTick(function () {
                                                             let uid = Number.parseInt(values.uid);
                                                             console.log(values);
@@ -85,20 +83,11 @@
                                                                 data: {
                                                                     user_id: uid,
                                                                     email: values.email,
+                                                                    bday: values.birthday,
+                                                                    name: values.name,
                                                                     provider: 'Odnoklassniki'
                                                                 },
-                                                                //ЗДЕСЬ???
                                                                 success: function () {
-                                                                    $.ajax({
-                                                                        url: '/account/OKUserInfoUpdate',
-                                                                        type: "get",
-                                                                        async: false,
-                                                                        data: {
-                                                                            bday: values.birthday,
-                                                                            name: values.name,
-
-                                                                        }
-                                                                    })
                                                                     window.open('/application/getapplication', '_self');
                                                                 }
                                                             });                                                           
@@ -118,13 +107,15 @@
                 }
             });
         }
+        //Если загружается в первый раз
         else if (str.indexOf('AuthVk') === -1) {
             this.GetVkInfo();
             this.GetOkInfo();
         }
+            //Если авторизовались с помощью вк
         else {
             var newstr = str.replace('#', '?');
-            console.log(newstr);
+            //Меняем Символ # на знак ? и снова открываем эту же страницу
             window.open(newstr, '_self');
         }
     }
