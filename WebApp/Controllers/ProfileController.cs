@@ -16,6 +16,7 @@ using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class ProfileController : BaseController
     {
         // GET: Profile
@@ -24,7 +25,7 @@ namespace WebApp.Controllers
             return View();
         }
         public ActionResult ModeratorProfile()
-        { 
+        {
             //проверить доступ
             return View();
         }
@@ -38,9 +39,9 @@ namespace WebApp.Controllers
         }
         public ActionResult EditProfileInfo()
         {
-           //проверить, есть ли  доступ у пользователя к профилю
-                return View();
-            
+            //проверить, есть ли  доступ у пользователя к профилю
+            return View();
+
             //return Redirect("/");
         }
         public ActionResult RequestEmail()
@@ -73,9 +74,9 @@ namespace WebApp.Controllers
         public void DeleteApplication(int ApplicationId)
         {
             //!проверить доступ
-            if(CheckAccess(ApplicationId))
-            { 
-            ProfileManager.DeleteApplication(ApplicationId);
+            if (CheckAccess(ApplicationId))
+            {
+                ProfileManager.DeleteApplication(ApplicationId);
             }
         }
         [HttpPost]
@@ -88,31 +89,31 @@ namespace WebApp.Controllers
             }
         }
         [HttpPost]
-        public void ChangeUserInfo( UserInfoModel userinfo)
+        public void ChangeUserInfo(UserInfoModel userinfo)
         {
             //!проверить доступ
-            
-      
-                ProfileManager.ChangeUserInfo(CurrentUser.Id,userinfo);
-           
+
+
+            ProfileManager.ChangeUserInfo(CurrentUser.Id, userinfo);
+
         }
         [HttpPost]
-        public JsonResult SelectCommentsByApplicationId (int ApplicationId, int Offset=1)
+        public JsonResult SelectCommentsByApplicationId(int ApplicationId, int Offset = 1)
         {
             return Json(ProfileManager.SelectCommentsByApplicationId(ApplicationId, Offset));
         }
         [HttpPost]
-        public void AddComment( int ApplicationId, string Text, int? ParentCommentId)
+        public void AddComment(int ApplicationId, string Text, int? ParentCommentId)
         {
             ProfileManager.AddComment(CurrentUser.Id, ApplicationId, Text, ParentCommentId);
-            SelectCommentsByApplicationId( ApplicationId);
+            SelectCommentsByApplicationId(ApplicationId);
         }
         [HttpPost]
         public JsonResult FileUpload()
         {
             if (ModelState.IsValid)
             {
-                UploadFile File = new UploadFile() { File = Request.Files.Get(0)} ; 
+                UploadFile File = new UploadFile() { File = Request.Files.Get(0) };
                 ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
                 return Json(ProfileManager.FileUpload(File.File.InputStream, File.File.ContentType, Path.GetExtension(File.File.FileName), user.Id, File.File.FileName));
             }
@@ -122,7 +123,7 @@ namespace WebApp.Controllers
         public JsonResult GetUserImage(string UserId)
         {
 
-            return Json(ProfileManager.GetUserFileStream(UserId==null?CurrentUser.Id:UserId));
+            return Json(ProfileManager.GetUserFileStream(UserId == null ? CurrentUser.Id : UserId));
 
         }
         [HttpPost]
@@ -147,7 +148,7 @@ namespace WebApp.Controllers
 
         }
         [HttpPost, ValidateInput(false)]
-        public void AddNews(string Text, DateTime dateTime )
+        public void AddNews(string Text, DateTime dateTime)
         {
             //!проверить доступ
             ProfileManager.AddNews(CurrentUser.Id, Text, dateTime);

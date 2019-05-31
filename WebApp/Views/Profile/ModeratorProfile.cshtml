@@ -93,9 +93,9 @@
 								<div class="custom-container ">
 									<div class="form-inline form-group mt-4">
 
-										<textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
+										<textarea v-on:input="changeComment" class="textarea" data-autoresize rows="1"></textarea>
 
-										<button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
+										<button v-on:click="addComment(app.Id)" class="button button-primary ">></button>
 									</div>
 									<div>
 										<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
