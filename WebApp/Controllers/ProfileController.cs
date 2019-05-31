@@ -16,6 +16,7 @@ using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class ProfileController : BaseController
     {
         // GET: Profile

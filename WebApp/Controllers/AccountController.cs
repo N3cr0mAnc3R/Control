@@ -627,7 +627,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AuthThirdParty(string access_token, int? expires_in, string user_id,
-                                           string email, string provider, string bday, string name)
+                                           string email, string provider, string bday = "", string name = "")
         {
 
             if (user_id != "")

@@ -41,7 +41,7 @@ window.onload = function () {
                         //self.$set(self.user, 'DateOfBirth', date.getFullYear() + '-' + self.getTimeNumber(date.getMonth() + 1) + '-' + self.getTimeNumber(date.getDate()));
                         self.$set(self.user, 'Email', userInfo.Email);
 
-                        if (userInfo.FullName != "" && userInfo.FullName != null) {
+                        if (userInfo.FullName !== "" && userInfo.FullName !== null) {
 
                             self.$set(self.user, 'FullName', userInfo.FullName);
                         }
