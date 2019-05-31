@@ -70,14 +70,14 @@
                     <input type="text" id="inputCity" class="form-control" placeholder="Например, Ставрополь" v-model="CityText">
                 </div>
             </div>
-            <div class="form-group col-md-5">
-                <label for="inputStreet">Улица</label>
-                <input type="text" id="inputStreet" class="form-control" placeholder="Например, Ленина" v-model="StreetText">
+            <div class="form-group col-md-6">
+                <label for="inputStreet">Улица, дом</label>
+                <input type="text" id="inputStreet" class="form-control" placeholder="Например, Ленина 123" v-model="StreetText">
             </div>
-            <div class="form-group col-md-1">
+            @*<div class="form-group col-md-1">
                 <label for="inputHouse">Дом</label>
                 <input type="text" id="inputHouse" class="form-control" placeholder="123" v-model="HouseText">
-            </div>
+            </div>*@
         </div>
         <div v-if="isMap">
             <button type="button" class="btn btn-outline-primary" v-on:click="toggleMap()">Указать адрес</button>

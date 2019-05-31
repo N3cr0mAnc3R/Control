@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Models.Managers;
 
 namespace WebApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -25,6 +27,21 @@ namespace WebApp.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult ShowAllNews()
+        {
+            return Json(NewsManager.ShowAllNews());
+        }
+
+        protected NewsManager NewsManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<NewsManager>();
+
+            }
         }
     }
 }

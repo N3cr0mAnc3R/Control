@@ -24,5 +24,16 @@ namespace WebApp.Models.Managers
                 );
             }
         }
+        public IEnumerable<New> ShowAllNews()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<New>(
+                    sql: "dbo.ShowAllNews",
+                  
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
     }
 }

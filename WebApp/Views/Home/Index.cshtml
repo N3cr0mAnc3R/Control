@@ -1,31 +1,191 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+<script src="~/Scripts/Home/HomeVue.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+
+<section id="main-section" v-loader="objForLoading">
+
+	<div class="custom-container">
+
+
+	</div>
+	<section id="home">
+		<div class="custom-container">
+			<nav class="profile-menu">
+				<ul>
+					<li><span v-bind:class="{'current': !IsNewsShown}" v-on:click="showApplications">Обращения</span></li>
+					<li><span v-bind:class="{'current': IsNewsShown}" v-on:click="showNews">Новости</span></li>
+					<li><span v-bind:class="{'current': IsNewsShown}" v-on:click="showNews">Карта</span></li>
+
+				</ul>
+			</nav>
+			<div class="main-content">
+
+
+
+
+				<section id="applications">
+					@*<div class="filter-container">
+
+					<span class="filter" v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)" v-bind:class="{ 'current': status.Id === statusFilter }">{{status.Name}}</span>
+
+					<span v-bind:class="{ 'current': statusFilter ===0}" class="filter" v-on:click="selectApplications()">все</span>
+				</div>*@
+					<div v-for="app in applications">
+						<div class="application">
+
+							<div class="application-data">
+
+								<div v-if="app.imgs.length<1" class="img-holder">
+									<img class="d-block w-100" src="~/Content/Images/noImage.png">
+								</div>
+								<div v-else-if="app.imgs.length===1" class="img-holder">
+									<img v-bind:src="app.imgs[0]" alt="Alternate Text" />
+								</div>
+								<div v-else-if="app.imgs.length>1" class="img-holder">
+
+									<div v-bind:id="'app-' + app.Id" class="carousel slide" data-ride="carousel">
+										<ol class="carousel-indicators">
+											<li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
+										</ol>
+										<div class="carousel-inner">
+											<div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs">
+												<img class="d-block w-100" v-bind:src="img">
+											</div>
+										</div>
+										<a class="carousel-control-prev" v-bind:href="'#app-' + app.Id" role="button" data-slide="prev">
+											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											<span class="sr-only">Previous</span>
+										</a>
+										<a class="carousel-control-next" v-bind:href="'#app-' + app.Id" role="button" data-slide="next">
+											<span class="carousel-control-next-icon" aria-hidden="true"></span>
+											<span class="sr-only">Next</span>
+										</a>
+									</div>
+								</div>
+								<div class="application-body">
+
+									<p class="title">{{app.Title}}</p>
+									<p v-if="app.isEditing===false">
+										{{app.Text}}
+									</p>
+									<textarea v-if="app.isEditing===true" class="form-control" rows="6" v-model="app.Text"> </textarea>
+								</div>
+
+							</div>
+							<section class="comments" v-if="app.IsOpened">
+								<div v-for="com in app.comments" class="comment">
+									<div class="custom-container">
+										<div class="img-holder">
+											<img v-bind:src="com.img" alt="Alternate Text" />
+										</div>
+										<div class="comment-text">
+											<p class="comment-author">{{com.authorName}}</p>
+											<p>{{com.Text}}</p>
+											<p><small>{{com.dateTimeOfCreation}}</small>
+										</div>
+									</div>
+								</div>
+								<div class="custom-container ">
+									<div class="custom-container ">
+										<div class="form-inline form-group mt-4">
+
+											<textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
+
+											<button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
+										</div>
+										<div>
+											<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
+												<div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
+
+												<span v-if="app.currentCommentPageNumber > 3"> ... </span>
+
+												<div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+
+												<span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
+
+												<div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
+											</div>
+											<div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
+												<div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+
+
+
+
+
+							</section>
+							<div class="application-control">
+								<div class="comment-button-holder">
+									<small v-on:click="toggleComments(app.Id)">
+										<span v-if="!app.IsOpened">показать комментарии</span>
+										<span v-if="app.IsOpened">скрыть комментарии</span>
+									</small>
+								</div>
+
+
+
+
+							</div>
+						</div>
+					</div>
+
+
+
+
+
+
+
+				</section>
+			</div>
+			<div class="sidebar">
+		
+					<div v-for="n in news" class="short-application">
+						<div class="custom-container">
+							<div v-html="n.Text"></div>
+						</div>
+					</div>
+				
+			</div>
+		</div>
+		
+	</section>
+</section>
+
+@*<div class="jumbotron">
+		<h1>ASP.NET</h1>
+		<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+		<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<h2>Getting started</h2>
+			<p>
+				ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+				enables a clean separation of concerns and gives you full control over markup
+				for enjoyable, agile development.
+			</p>
+			<p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+		</div>
+		<div class="col-md-4">
+			<h2>Get more libraries</h2>
+			<p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+			<p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+		</div>
+		<div class="col-md-4">
+			<h2>Web Hosting</h2>
+			<p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+			<p><a class="btn btn-primary" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+		</div>
+	</div>*@
