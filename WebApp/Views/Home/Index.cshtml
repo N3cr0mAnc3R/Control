@@ -10,34 +10,28 @@
 
 <section id="main-section" v-loader="objForLoading">
 
-	<div class="custom-container">
 
-
-	</div>
 	<section id="home">
 		<div class="custom-container">
 			<nav class="profile-menu">
 				<ul>
-					<li><span v-bind:class="{'current': !IsNewsShown}" v-on:click="showApplications">Обращения</span></li>
-					<li><span v-bind:class="{'current': IsNewsShown}" v-on:click="showNews">Новости</span></li>
-					<li><span v-bind:class="{'current': IsNewsShown}" v-on:click="showNews">Карта</span></li>
+					<li><span v-bind:class="{'current': tabNumber===1}" v-on:click="changeTabNumber(1)">Обращения</span></li>
+					<li><span v-bind:class="{'current': tabNumber===2}" v-on:click="changeTabNumber(2)">Новости</span></li>
+					<li><span v-bind:class="{'current': tabNumber===3}" v-on:click="changeTabNumber(3)">Карта</span></li>
 
 				</ul>
 			</nav>
 			<div class="main-content">
 
-
-
-
-				<section id="applications">
+				<section v-if=" tabNumber===1" id="applications">
 					@*<div class="filter-container">
 
-					<span class="filter" v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)" v-bind:class="{ 'current': status.Id === statusFilter }">{{status.Name}}</span>
+							<span class="filter" v-for="status in applicationStatuses" v-on:click="selectApplicationsByStatusId(status.Id)" v-bind:class="{ 'current': status.Id === statusFilter }">{{status.Name}}</span>
 
-					<span v-bind:class="{ 'current': statusFilter ===0}" class="filter" v-on:click="selectApplications()">все</span>
-				</div>*@
-					<div v-for="app in applications">
-						<div class="application">
+							<span v-bind:class="{ 'current': statusFilter ===0}" class="filter" v-on:click="selectApplications()">все</span>
+						</div>*@
+					
+						<div v-for="app in applications" class="application">
 
 							<div class="application-data">
 
@@ -121,10 +115,8 @@
 								</div>
 
 
-
-
-
 							</section>
+							
 							<div class="application-control">
 								<div class="comment-button-holder">
 									<small v-on:click="toggleComments(app.Id)">
@@ -138,27 +130,37 @@
 
 							</div>
 						</div>
-					</div>
-
-
-
-
-
-
-
-				</section>
-			</div>
-			<div class="sidebar">
 		
+				</section>
+
+				<section v-if=" tabNumber===2" id=" news">
 					<div v-for="n in news" class="short-application">
 						<div class="custom-container">
 							<div v-html="n.Text"></div>
 						</div>
 					</div>
-				
+				</section>
+
 			</div>
+			<section>
+				<div class="sidebar">
+
+					<div v-for="app in applications"
+						 class="short-application">
+						<div class="custom-container">
+							<h5>{{app.Title}}</h5>
+							<p>
+								{{app.Text}}
+							</p>...
+
+							<button class="button-thid">Подробнее</button>
+						</div>
+					</div>
+
+				</div>
+			</section>
 		</div>
-		
+
 	</section>
 </section>
 

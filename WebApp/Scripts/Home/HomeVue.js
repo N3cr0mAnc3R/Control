@@ -13,7 +13,8 @@
 			applicationStatuses: [],
 			IsNewsShown: false,
 			datetime: '',
-			news:'',
+			news: '',
+			tabNumber: 1,
 			objForLoading: {
 				loading: false,
 				loaded: true
@@ -30,6 +31,9 @@
 			changeComment: function (event) {//байндинг комментария с vue 
 				this.comment = event.target.value;
 
+			},
+			changeTabNumber: function (number) {
+				app.tabNumber = number;
 			},
 
 			addComment: function (applicationId) {
@@ -234,7 +238,7 @@
 			showNews: function () {
 				app.IsNewsShown = true;
 
-				setTimeout(function () { CKEDITOR.replace('news1'); }, 500);
+				
 			},
 			showApplications: function () {
 				app.IsNewsShown = false;

@@ -322,12 +322,6 @@
                 x[i].Name = x[i].name.substr(0, x[i].name.lastIndexOf('.'));
                 app.Files[i] = x[i];
             }
-        },
-        //Непонятная функция
-        saveProfileChanges: function () {
-            $.each(app.Files, function (i, file) {
-                ajaxData.append('Files[' + i + ']', file);
-            });
         }
     },
 
