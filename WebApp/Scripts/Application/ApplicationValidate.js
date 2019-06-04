@@ -13,7 +13,7 @@
         AddressText: "",
         CityText: "",
         StreetText: "",
-        HouseText: "",
+        //HouseText: "",
         myPlacemark: undefined,
         myMap: {},
         objForLoading: {

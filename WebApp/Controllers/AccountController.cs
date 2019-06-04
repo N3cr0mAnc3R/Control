@@ -394,7 +394,12 @@ namespace WebApp.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email
+                    //Name = model.Name,
+                    //Birthdate = model.Birthdate
+                };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -627,7 +632,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AuthThirdParty(string access_token, int? expires_in, string user_id,
-                                           string email, string provider, string bday, string name)
+                                           string email, string provider, string bday = "", string name = "")
         {
 
             if (user_id != "")
