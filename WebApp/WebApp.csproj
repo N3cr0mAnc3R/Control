@@ -213,6 +213,7 @@
     <Compile Include="Models\IndexType.cs" />
     <Compile Include="Models\Managers\AccountManager.cs" />
     <Compile Include="Models\Managers\ApplicationManager.cs" />
+    <Compile Include="Models\Managers\MainManager.cs" />
     <Compile Include="Models\Managers\Manager.cs" />
     <Compile Include="Models\Managers\NewsManager.cs" />
     <Compile Include="Models\Managers\ProfileManager.cs" />
@@ -644,6 +645,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Main\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

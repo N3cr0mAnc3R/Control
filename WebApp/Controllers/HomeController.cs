@@ -35,11 +35,26 @@ namespace WebApp.Controllers
             return Json(NewsManager.ShowAllNews());
         }
 
+        [HttpPost]
+        public JsonResult GetApplicationsWithCoords()
+        {
+            return Json(MainManager.GetApplicationsWithCoords());
+        }
+
         protected NewsManager NewsManager
         {
             get
             {
                 return Request.GetOwinContext().Get<NewsManager>();
+
+            }
+        }
+
+        protected MainManager MainManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<MainManager>();
 
             }
         }
