@@ -16,6 +16,7 @@
         myPlacemarks: [],
         datetime: '',
         news: '',
+        HasTop: false,
         objForLoading: {
             loading: false,
             loaded: true
@@ -74,8 +75,9 @@
             $.ajax({
                 url: "/profile/SelectApplications",
                 type: "POST",
-                async: true,
+                async: false,
                 success: function (applications) {
+                    console.log(applications);
                     if (applications && applications.length > 0) {
                         applications.forEach(function (application) {
                             self.GetApplicationImages(application);
@@ -279,9 +281,31 @@
         }
     },
     beforeMount() {
-        this.objForLoading.loading = undefined;
-        this.objForLoading.loaded = undefined;
-        this.selectApplications();
+        var self = this;
+        $.when($.ajax({
+            url: "/profile/SelectApplications",
+            type: "POST",
+            async: true
+        }), $.ajax({
+            url: "/home/GetTopApplications",
+            type: "POST",
+            async: true
+        })).then(function (resp1, resp2) {
+            self.applications = [];
+            if (resp1[0] && resp1[0].length > 0) {
+                resp1[0].forEach(function (application) {
+                    self.GetApplicationImages(application);
+                    self.applications.push(application);
+                });
+            } 
+            console.log(self.applications);
+            self.topApplications = resp2[0];
+            if (self.topApplications.length > 0) {
+                self.HasTop = true;
+            }
+            self.objForLoading.loading = false;
+            self.objForLoading.loaded = true;
+        });
     },
     mounted() {
 

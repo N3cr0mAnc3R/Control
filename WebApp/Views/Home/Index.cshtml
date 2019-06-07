@@ -128,17 +128,24 @@
                         </div>
                     </div>
                 </section>
+                <section v-if="tabNumber === 2">
+                    <div v-for="n in news" class="short-application">
+                        <div class="custom-container">
+                            <div v-html="n.Text"></div>
+                        </div>
+                    </div>
+                </section>
                 <section v-if="tabNumber === 3">
                     <div>
                         <div id="map"></div>
                     </div>
                 </section>
             </div>
-            <div class="sidebar">
+            <div class="sidebar" v-if="HasTop">
 
-                <div v-for="n in news" class="short-application">
+                <div v-for="app in topApplications" class="short-application">
                     <div class="custom-container">
-                        <div v-html="n.Text"></div>
+                        {{app.Title}}
                     </div>
                 </div>
 

@@ -41,6 +41,12 @@ namespace WebApp.Controllers
             return Json(MainManager.GetApplicationsWithCoords());
         }
 
+        [HttpPost]
+        public JsonResult GetTopApplications()
+        {
+            return Json(MainManager.GetTopApplications());
+        }
+
         protected NewsManager NewsManager
         {
             get

@@ -23,5 +23,17 @@ namespace WebApp.Models.Managers
 
             }
         }
+
+        public IEnumerable<ApplicationModel> GetTopApplications()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<ApplicationModel>(
+                    sql: "dbo.GetTopApplications",
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+        }
     }
 }

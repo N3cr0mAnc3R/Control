@@ -29,6 +29,12 @@ namespace WebApp.Controllers
             //проверить доступ
             return View();
         }
+
+        public ActionResult OfficialProfile()
+        {
+            //проверить доступ
+            return View();
+        }
         public ActionResult Edit(int Id)
         {
             if (CheckAccess(Id))
