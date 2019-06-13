@@ -65,53 +65,55 @@
                                     </div>
 
                                 </div>
-                                <section class="comments" v-if="app.IsOpened">
-                                    <div v-for="com in app.comments" class="comment">
-                                        <div class="custom-container">
-                                            <div class="img-holder">
-                                                <img v-bind:src="com.img" alt="Alternate Text" />
-                                            </div>
-                                            <div class="comment-text">
-                                                <p class="comment-author">{{com.authorName}}</p>
-                                                <p>{{com.Text}}</p>
-                                                <p><small>{{com.dateTimeOfCreation}}</small>
+                                <div v-loader="app" parent="applications">
+                                    <section class="comments" v-if="app.IsOpened">
+                                        <div v-for="com in app.comments" class="comment">
+                                            <div class="custom-container">
+                                                <div class="img-holder">
+                                                    <img v-bind:src="com.img" alt="Нет изображения" />
+                                                </div>
+                                                <div class="comment-text">
+                                                    <p class="comment-author">{{com.AuthorName}}</p>
+                                                    <p>{{com.Text}}</p>
+                                                    <p><small>{{com.dateTimeOfCreation}}</small>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="custom-container ">
                                         <div class="custom-container ">
-                                            <div class="form-inline form-group mt-4">
+                                            <div class="custom-container ">
+                                                <div class="form-inline form-group mt-4">
 
-                                                <textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
+                                                    <textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
 
-                                                <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
-                                            </div>
-                                            <div>
-                                                <div v-if="app.commentPagesNumber > 5" class="page-wrapper">
-                                                    <div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
-
-                                                    <span v-if="app.currentCommentPageNumber > 3"> ... </span>
-
-                                                    <div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
-
-                                                    <span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
-
-                                                    <div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
+                                                    <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
                                                 </div>
-                                                <div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
-                                                    <div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+                                                <div>
+                                                    <div v-if="app.commentPagesNumber > 5" class="page-wrapper">
+                                                        <div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
+
+                                                        <span v-if="app.currentCommentPageNumber > 3"> ... </span>
+
+                                                        <div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+
+                                                        <span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
+
+                                                        <div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
+                                                    </div>
+                                                    <div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
+                                                        <div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+                                                    </div>
                                                 </div>
+
+
                                             </div>
-
-
                                         </div>
-                                    </div>
 
 
 
 
 
-                                </section>
+                                    </section>
+                                </div>
                                 <div class="application-control">
                                     <div class="comment-button-holder">
                                         <small v-on:click="toggleComments(app.Id)">

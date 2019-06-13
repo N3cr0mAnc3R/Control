@@ -26,7 +26,19 @@
     methods: {
         toggleComments: function (Id) {
             let appl = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
-            app.SelectCommentsByApplicationId(appl);
+            //appl.loading = false;
+            //appl.loaded = true;
+
+            if (!appl.IsOpened) {
+                appl.IsOpened = !appl.IsOpened;
+                app.$set(appl, 'loading', true);
+                app.$set(appl, 'loaded', false);
+
+                app.SelectCommentsByApplicationId(appl);
+            }
+            else {
+                appl.IsOpened = !appl.IsOpened;
+            }
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
         },
         changeComment: function (event) {//байндинг комментария с vue 
@@ -125,23 +137,26 @@
         ChangePageNumber: function (appId, offset) {
 
             let appl = app.applications.find(a => a.Id === appId);
-            appl.comments = [];
-            $.ajax({
-                url: "/profile/SelectCommentsByApplicationId",
-                type: "POST",
-                data: { ApplicationId: appl.Id, Offset: offset },
-                async: false,
-                success: function (obj) {
-                    let applicationComments = [];
-                    obj.Comments.forEach(function (comment) {
-                        applicationComments.push(comment);
-                    });
-                    app.$set(appl, 'comments', applicationComments);
-                    app.$set(appl, 'currentCommentPageNumber', offset);
-                    //app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
+            app.$set(appl, 'loading', true);
+            app.$set(appl, 'loaded', false);
+            this.SelectCommentsByApplicationId(appl, offset);
+            //appl.comments = [];
+            //$.ajax({
+            //    url: "/profile/SelectCommentsByApplicationId",
+            //    type: "POST",
+            //    data: { ApplicationId: appl.Id, Offset: offset },
+            //    async: false,
+            //    success: function (obj) {
+            //        let applicationComments = [];
+            //        obj.Comments.forEach(function (comment) {
+            //            applicationComments.push(comment);
+            //        });
+            //        app.$set(appl, 'comments', applicationComments);
+            //        app.$set(appl, 'currentCommentPageNumber', offset);
+            //        //app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
 
-                }
-            });
+            //    }
+            //});
         },
         isShowAsPage: function (number, current, max) {
             if (number > current - 2 && number < current + 2 && number < max && number > 1) {
@@ -150,37 +165,42 @@
             else return false;
         },
         SelectCommentsByApplicationId: function (application, offset) {
-            if (!application.IsOpened) {
-                $.ajax({
-                    url: "/profile/SelectCommentsByApplicationId",
-                    type: "POST",
-                    data: { ApplicationId: application.Id, Offset: offset },
-                    async: false,
-                    success: function (obj) {
-                        let applicationComments = [];
-                        obj.Comments.forEach(function (comment) {
-
+            application.loading = true;
+            application.loaded = false;
+            $.ajax({
+                url: "/profile/SelectCommentsByApplicationId",
+                type: "POST",
+                data: { ApplicationId: application.Id, Offset: offset },
+                async: false,
+                success: function (obj) {
+                    let applicationComments = [];
+                    let tempUsers = [];
+                    obj.Comments.forEach(function (comment) {
+                        if (tempUsers.indexOf(comment.UserId) === -1) {
                             app.GetUserImageForComment(comment.UserId);
-                            comment.img = app.commentImg;
-                            comment.authorName = comment.AuthorName;
-                            var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
-                            comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                            tempUsers.push(comment.UserId);
+                        }
+                        comment.img = app.commentImg;
+                        //comment.authorName = comment.AuthorName;
+                        var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+                        comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
 
 
-                            applicationComments.push(comment);
-                        });
-                        app.$set(application, 'comments', applicationComments);
-                        application.IsOpened = !application.IsOpened;
+                        applicationComments.push(comment);
+                    });
+                    app.$set(application, 'comments', applicationComments);
 
 
-                        app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 5));
+                    app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 5));
+                    app.$set(application, 'currentCommentPageNumber', offset? offset : 1);
 
-                    }
-                });
-            }
-            else {
-                application.IsOpened = !application.IsOpened;
-            }
+                    //app.$set(application, 'loading', false);
+                    //app.$set(application, 'loaded', true);
+                    application.loading = false;
+                    application.loaded = true;
+                }
+            });
+
         },
         getAllNews: function () {
 
@@ -282,6 +302,8 @@
     },
     beforeMount() {
         var self = this;
+        self.objForLoading.loading = true;
+        self.objForLoading.loaded = false;
         $.when($.ajax({
             url: "/profile/SelectApplications",
             type: "POST",
@@ -291,26 +313,36 @@
             type: "POST",
             async: true
         })).then(function (resp1, resp2) {
-            self.applications = [];
-            if (resp1[0] && resp1[0].length > 0) {
-                resp1[0].forEach(function (application) {
-                    self.GetApplicationImages(application);
-                    self.applications.push(application);
-                });
-            } 
-            console.log(self.applications);
-            self.topApplications = resp2[0];
-            if (self.topApplications.length > 0) {
-                self.HasTop = true;
-            }
-            self.objForLoading.loading = false;
-            self.objForLoading.loaded = true;
-        });
-    },
-    mounted() {
+            Vue.nextTick(function () {
+                self.applications = [];
+                if (resp1[0] && resp1[0].length > 0) {
+                    resp1[0].forEach(function (application) {
+                        self.GetApplicationImages(application);
+                        application.IsOpened = false;
+                        application.isEditing = false;
 
-        //Снимаем базовый загрузчик
-        $('.sk-wave').css('display', 'none');
-        $('#home').css('display', 'block');
+                        self.$set(application, 'loading', false);
+                        self.$set(application, 'loaded', true);
+                        application.currentCommentPageNumber = 1;
+                        self.applications.push(application);
+                    });
+                }
+                $('.sk-wave').css('display', 'none');
+                $('#home').css('display', 'block');
+                self.topApplications = resp2[0];
+                if (self.topApplications.length > 0) {
+                    self.HasTop = true;
+                }
+                self.objForLoading.loading = false;
+                self.objForLoading.loaded = true;
+            });
+        });
     }
+    //   ,
+    //mounted() {
+
+    //    //Снимаем базовый загрузчик
+    //    $('.sk-wave').css('display', 'none');
+    //    $('#home').css('display', 'block');
+    //}
 });
