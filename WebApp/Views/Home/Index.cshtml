@@ -72,11 +72,11 @@
                                                 <div class="img-holder">
                                                     <img v-bind:src="com.img" alt="Нет изображения" />
                                                 </div>
-                                                <div class="comment-text">
-                                                    <p class="comment-author">{{com.AuthorName}}</p>
-                                                    <p>{{com.Text}}</p>
-                                                    <p><small>{{com.dateTimeOfCreation}}</small>
-                                                </div>
+												<div class="comment-text">
+													<p class="comment-author">{{com.AuthorName}}</p>
+													<p>{{com.Text}}</p>
+													<p> <small>{{com.dateTimeOfCreation}}</small><a href="#">ответить</a></p>
+												</div>
                                             </div>
                                         </div>
                                         <div class="custom-container ">
@@ -85,7 +85,7 @@
 
                                                     <textarea v-on:input="changeComment" class="form-control w-75 p-2 mr-2"></textarea>
 
-                                                    <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">></button>
+                                                    <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px"><i class="fab fa-telegram-plane"></i></button>
                                                 </div>
                                                 <div>
                                                     <div v-if="app.commentPagesNumber > 5" class="page-wrapper">
