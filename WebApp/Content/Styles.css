@@ -784,3 +784,8 @@ footer {
     transform: scaleY(1);
   }
 }
+#map {
+  /*width: 600px;*/
+  width: 100%;
+  height: 600px;
+}

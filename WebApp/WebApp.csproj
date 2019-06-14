@@ -213,6 +213,7 @@
     <Compile Include="Models\IndexType.cs" />
     <Compile Include="Models\Managers\AccountManager.cs" />
     <Compile Include="Models\Managers\ApplicationManager.cs" />
+    <Compile Include="Models\Managers\MainManager.cs" />
     <Compile Include="Models\Managers\Manager.cs" />
     <Compile Include="Models\Managers\NewsManager.cs" />
     <Compile Include="Models\Managers\ProfileManager.cs" />
@@ -592,6 +593,7 @@
     <Content Include="Scripts\Notifier\NotifierCtrl.js" />
     <Content Include="Scripts\Profile\EditProfileInfoVue.js" />
     <Content Include="Scripts\Profile\ModeratorProfileVue.js" />
+    <Content Include="Scripts\Profile\OfficialProfileVue.js" />
     <Content Include="Scripts\Profile\ProfileVue.js" />
     <Content Include="Scripts\Profile\RequestEmail.js" />
     <Content Include="Scripts\vue.js" />
@@ -641,9 +643,11 @@
     <Content Include="Views\Profile\RequestEmail.cshtml" />
     <Content Include="Views\Shared\Notifier.cshtml" />
     <Content Include="Views\Application\SimilarApplication.cshtml" />
+    <Content Include="Views\Profile\OfficialProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Main\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

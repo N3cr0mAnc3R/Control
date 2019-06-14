@@ -28,6 +28,10 @@ namespace WebApp
             {
                 return new ProfileManager(context.Get<Concrete>());
             });
+            app.CreatePerOwinContext((IdentityFactoryOptions<MainManager> options, IOwinContext context) =>
+            {
+                return new MainManager(context.Get<Concrete>());
+            });
 
 
 
