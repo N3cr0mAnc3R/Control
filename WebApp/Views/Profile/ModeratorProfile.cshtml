@@ -85,7 +85,9 @@
 									<div class="comment-text">
 										<p class="comment-author">{{com.authorName}}</p>
 										<p>{{com.Text}}</p>
-										<p><small>{{com.dateTimeOfCreation}}</small>
+										<p> <small>{{com.dateTimeOfCreation}}</small><a href="#">ответить</a></p>
+
+
 									</div>
 								</div>
 							</div>
@@ -95,7 +97,7 @@
 
 										<textarea v-on:input="changeComment" class="textarea" data-autoresize rows="1"></textarea>
 
-										<button v-on:click="addComment(app.Id)" class="button button-primary ">></button>
+										<button v-on:click="addComment(app.Id)" class="button button-primary "><i class="fab fa-telegram-plane"></i></button>
 									</div>
 									<div>
 										<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
