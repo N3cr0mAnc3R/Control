@@ -280,7 +280,7 @@ button:focus {
 
 .application {
 	width: 90%;
-	min-height: 260px;
+	/*min-height: 260px;*/
 	box-shadow: 0 1px 5px 2px rgb(219, 218, 218);
 	margin: auto;
 	margin-top: 20px;
@@ -308,7 +308,7 @@ button:focus {
 	box-sizing: border-box;
 	padding: 15px 20px;
 	width: 60%;
-	max-height: 200px;
+	height: 200px;
 	overflow-y: auto;
 }
 
@@ -326,6 +326,7 @@ button:focus {
 	border-bottom: 1px solid rgb(250, 250, 250);
 	font-size: 11px;
 }
+
 .comment .custom-container:after {
 	content: '';
 	display: block;
@@ -559,8 +560,7 @@ footer {
 
 
 //главная
-@media (min-width:1800px) 
-{
+@media (min-width:1800px) {
 
 	#home .application {
 		min-height: 300px;
@@ -573,13 +573,12 @@ footer {
 	}
 
 	#home .application-body {
-		max-height: 240px;
+		height: 240px;
 	}
 }
 
 //главная
-@media (min-width:1500px) 
-{
+@media (min-width:1500px) {
 
 	#home .application {
 		min-height: 290px;
@@ -592,35 +591,89 @@ footer {
 	}
 
 	#home .application-body {
-		max-height: 230px;
+		height: 230px;
+	}
+	#userProfile .application {
+		min-height: 320px;
+	}
+
+	#userProfile .application .application-data .img-holder img {
+		height: 260px;
+	}
+
+	#userProfile .application .application-body {
+		height: 260px;
+		border: 1PX solid pink
 	}
 }
 //главная
 
-@media (min-width:1300px) 
-{
+@media (min-width:1300px) and (max-width:1500) {
 
 	#home .application {
 		min-height: 280px;
 	}
-
-
 
 	#home .application .application-data .img-holder img {
 		height: 220px;
 	}
 
 	#home .application-body {
-		max-height: 220px;
+		height: 220px;
+	}
+
+	#userProfile .application {
+		min-height: 310px;
+	}
+
+	#userProfile .application .application-data .img-holder img {
+		height: 250px;
+	}
+
+	#userProfile .application .application-body {
+		height: 250px;
+		border: 1PX solid pink
+	}
+}
+
+@media (min-width:1250px )  {
+	#userProfile .application {
+		min-height: 300px;
+	}
+
+	#userProfile .application .application-data .img-holder img {
+		height: 240px;
+		border: 1PX solid blue
+	}
+
+	#userProfile .application .application-body {
+		height: 240px;
+		border: 1px solid red;
+	}
+}
+
+@media(min-width:1200){
+
+
+	#userProfile .application {
+		min-height: 290px;
+	}
+
+	#userProfile .application .application-data .img-holder img {
+		height: 230px;
+	}
+
+	#userProfile .application .application-body {
+		height: 230px;
+		border:1px solid red;
+		
 	}
 }
 
 
-
 //главная
 
-@media (min-width:1100px) 
-{
+@media (min-width:1100px) {
 
 	#home .application {
 		min-height: 270px;
@@ -628,12 +681,12 @@ footer {
 
 
 
-	#home .application  .application-data .img-holder img {
+	#home .application .application-data .img-holder img {
 		height: 210px;
 	}
 
 	#home .application-body {
-		max-height: 210px;
+		height: 210px;
 	}
 }
 
@@ -727,11 +780,7 @@ footer {
 	}
 }
 //главная
-@media (max-width:680px) 
-{
-
-
-
+@media (max-width:680px) {
 
 	#home .application .img-holder, .application .img-holder img {
 		float: none;
@@ -808,7 +857,6 @@ footer {
 	}
 
 	.application .application-body {
-	
 	}
 
 	.application-control {
@@ -826,7 +874,7 @@ footer {
 
 
 .application .comments {
-	padding: 20px 0 20px 0; 
+	padding: 20px 0 20px 0;
 }
 
 .application-control {
@@ -1011,8 +1059,9 @@ footer {
 		transform: scaleY(1.0);
 	}
 }
+
 #map {
-    /*width: 600px;*/
-    width: 100%;
-    height: 600px;
+	/*width: 600px;*/
+	width: 100%;
+	height: 600px;
 }
