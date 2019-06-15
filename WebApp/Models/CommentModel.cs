@@ -20,5 +20,6 @@ namespace WebApp.Models.News
         public string Text { get; set; }
 
         public int ParentCommentId { get; set; }
+        public List<CommentModel> Children { get; set; }
     }
 }

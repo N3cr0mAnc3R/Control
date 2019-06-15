@@ -2,9 +2,13 @@
     el: "#home",
     data: {
         applications: [],
-        comment: '',
+        comment: {
+            text: '',
+            img: '',
+            parent: null
+        },
         img: '',
-        commentImg: '',
+        //commentImg: '',
         user: {},
         userImg: "/Content/Images/noImage.png",
         Files: [],
@@ -41,23 +45,20 @@
             }
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
         },
-        changeComment: function (event) {//байндинг комментария с vue 
-            this.comment = event.target.value;
-
-        },
         addComment: function (applicationId) {
-            if (app.comment !== '') {
+            if (app.comment.text !== '') {
                 $.ajax({
                     url: "/profile/AddComment",
                     type: "POST",
                     async: false,
-                    data: { ApplicationId: applicationId, Text: app.comment },
+                    data: { ApplicationId: applicationId, Text: app.comment.text, ParentCommentId: app.comment.parent },
                     success: function () {
                         let appl = app.applications.find(a => a.Id === applicationId);
                         appl.IsOpened = false;//немного костыля  
                         appl.currentCommentPageNumber = 1;//немного костыля  
                         app.SelectCommentsByApplicationId(appl);
-                        app.comment = '';
+                        app.comment.text = '';
+                        app.comment.parent = null;
                     }
                 }
 
@@ -130,7 +131,7 @@
                 async: false,
                 success: function (img) {
                     if (img)
-                        self.commentImg = 'data:image/png;base64, ' + img;
+                        self.comment.img = 'data:image/png;base64, ' + img;
                 }
             });
         },
@@ -234,6 +235,12 @@
             else if (tab === 3) {
                 ymaps.ready(this.initYmaps);
             }
+        },
+        reply: function (comment) {
+            console.log(this.comment);
+            this.comment.parent = comment.Id;
+            this.comment.text = comment.AuthorName + ', ';
+            $('textarea').focus();
         },
         getAddress: function (placemark, title, coords) {
             placemark.properties.set('iconCaption', 'поиск...');

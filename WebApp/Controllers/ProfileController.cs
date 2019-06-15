@@ -113,7 +113,6 @@ namespace WebApp.Controllers
         public void AddComment(int ApplicationId, string Text, int? ParentCommentId)
         {
             ProfileManager.AddComment(CurrentUser.Id, ApplicationId, Text, ParentCommentId);
-            SelectCommentsByApplicationId(ApplicationId);
         }
         [HttpPost]
         public JsonResult FileUpload()

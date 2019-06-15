@@ -40,7 +40,7 @@ namespace WebApp.Models.Managers
             {
                 return cnt.Query<ApplicationModel>(
                     sql: "dbo.SelectApplications",
-                   
+
                     commandType: CommandType.StoredProcedure
                 ).ToList();
 
@@ -93,25 +93,51 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public List<CommentModel> GetFullCommentList(CommentModel comm)
+        {
+            List<CommentModel> result = new List<CommentModel>();
+            using (var cnt = Concrete.OpenConnection())
+            {
+                List<CommentModel> middle = cnt.Query<CommentModel>(
+                    sql: "GetCommentsByParentId",
+                    commandType: CommandType.StoredProcedure,
+                     param: new
+                     {
+                         comm.Id
+                     }).ToList();
+                if (middle.Count() > 0)
+                {
+                    foreach (CommentModel model in middle)
+                    {
+                        result.Add(model);
+                        result.AddRange(GetFullCommentList(model));
+                    }
+                }
+            }
+            return result;
+        }
         public dynamic SelectCommentsByApplicationId(int ApplicationId, int Offset)
         {
 
             using (var cnt = Concrete.OpenConnection())
             {
                 List<CommentModel> comments;
+                List<CommentModel> commentsAnswered;
                 int commentNumber;
                 using (var multi = cnt.QueryMultiple(
                       sql: "dbo.Select5CommentsByApplicationId",
                       param: new
                       {
                           ApplicationId,
-                          Offset 
+                          Offset
                       },
                       commandType: CommandType.StoredProcedure
                   ))
                 {
                     comments = multi.Read<CommentModel>().ToList();
                     commentNumber = multi.Read<int>().First();
+                    comments.ForEach(a => a.Children = GetFullCommentList(a));
+
                 }
                 return new
                 {
@@ -165,7 +191,7 @@ namespace WebApp.Models.Managers
 
             }
         }
-        public void ChangeUserInfo(string UserId,UserInfoModel userInfo)
+        public void ChangeUserInfo(string UserId, UserInfoModel userInfo)
         {
             //if (userInfo.DateOfBirth!=null &&((DateTime)userInfo.DateOfBirth).Year < 1900)
             //    userInfo.DateOfBirth = null;
@@ -173,7 +199,7 @@ namespace WebApp.Models.Managers
             {
                 cnt.Execute(
                     sql: "dbo.ChangeUserInfo",
-                    param: new { UserId, DateOfBirth= ((DateTime)userInfo.DateOfBirth).Year < 1900?(DateTime?)null:userInfo.DateOfBirth, Email=userInfo.Email, FullName= userInfo.FullName },
+                    param: new { UserId, DateOfBirth = ((DateTime)userInfo.DateOfBirth).Year < 1900 ? (DateTime?)null : userInfo.DateOfBirth, Email = userInfo.Email, FullName = userInfo.FullName },
                     commandType: CommandType.StoredProcedure
                 );
 
@@ -191,7 +217,7 @@ namespace WebApp.Models.Managers
                         FileStreamResult filestreamResult = (conn.Query<FileStreamResult>("UserFileSave",
                         new
                         {
-                           
+
                             UserId = userId,
                             contentType = contentType,
                             extension = extension,
@@ -284,7 +310,7 @@ namespace WebApp.Models.Managers
             }
         }
         #region модератор
-        public void AcceptApplication( int ApplicationId)
+        public void AcceptApplication(int ApplicationId)
         {
             //!проверить доступ
             using (var cnt = Concrete.OpenConnection())
@@ -318,7 +344,7 @@ namespace WebApp.Models.Managers
 
         }
 
-        public List<StatusModel>  GetApplicationStatuses()
+        public List<StatusModel> GetApplicationStatuses()
         {
             using (var cnt = Concrete.OpenConnection())
             {
