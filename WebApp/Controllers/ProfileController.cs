@@ -59,6 +59,7 @@ namespace WebApp.Controllers
             return ProfileManager.CheckAccess(Id, CurrentUser.Id);
         }
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult SelectApplications()
         {
             return Json(ProfileManager.SelectApplications());
