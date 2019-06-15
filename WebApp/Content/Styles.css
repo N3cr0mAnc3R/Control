@@ -41,6 +41,9 @@ textarea {
   display: block;
   clear: both;
 }
+.answer-comment {
+  padding-left: 50px!important;
+}
 .application .application-body textarea {
   font-size: 12px;
 }
@@ -374,7 +377,13 @@ button:focus {
 	bottom:60px;
 }*/
 /****************/
-#home:after {
+#home:after,
+#app:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.clearFix:after {
   content: '';
   display: block;
   clear: both;
@@ -473,7 +482,6 @@ footer {
   }
   #userProfile .application .application-body {
     height: 260px;
-    border: 1PX solid pink;
   }
 }
 @media (min-width: 1300px) and (max-width: 1500) {
@@ -494,7 +502,6 @@ footer {
   }
   #userProfile .application .application-body {
     height: 250px;
-    border: 1PX solid pink;
   }
 }
 @media (min-width: 1250px) {
@@ -503,14 +510,12 @@ footer {
   }
   #userProfile .application .application-data .img-holder img {
     height: 240px;
-    border: 1PX solid blue;
   }
   #userProfile .application .application-body {
     height: 240px;
-    border: 1px solid red;
   }
 }
-@media (min-width: 1200) {
+@media (min-width: 1200px) and (max-width: 1250px) {
   #userProfile .application {
     min-height: 290px;
   }

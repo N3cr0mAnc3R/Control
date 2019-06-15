@@ -35,6 +35,11 @@ namespace WebApp.Controllers
             //проверить доступ
             return View();
         }
+        public ActionResult SingleApplication()
+        {
+            //проверить доступ
+            return View();
+        }
         public ActionResult Edit(int Id)
         {
             if (CheckAccess(Id))
@@ -70,7 +75,11 @@ namespace WebApp.Controllers
         {
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
         }
-
+        [HttpPost]
+        public JsonResult SelectApplicationById(int Id)
+        {
+            return Json(ProfileManager.SelectApplicationById(Id));
+        }
         [HttpPost]
         public JsonResult SelectApplicationsByStatusId(int StatusId)
         {
