@@ -122,16 +122,17 @@
                 }
             });
         },
-        GetUserImageForComment: function (id) {
+        GetUserImageForComment: function (comment) {
             var self = this;
             $.ajax({
                 url: "/profile/GetUserImage",
                 type: "POST",
-                data: { UserId: id },
+                data: { UserId: comment.UserId },
                 async: false,
                 success: function (img) {
                     if (img)
-                        self.comment.img = 'data:image/png;base64, ' + img;
+                        comment.img = 'data:image/png;base64, ' + img;
+                    console.log(comment);
                 }
             });
         },
@@ -178,10 +179,13 @@
                     let tempUsers = [];
                     obj.Comments.forEach(function (comment) {
                         if (tempUsers.indexOf(comment.UserId) === -1) {
-                            app.GetUserImageForComment(comment.UserId);
+                            app.GetUserImageForComment(comment);
                             tempUsers.push(comment.UserId);
                         }
-                        comment.img = app.commentImg;
+                        else {
+                            comment.img = applicationComments.find(a => a.UserId === comment.UserId).img;
+                        }
+                        //comment.img = app.commentImg;
                         //comment.authorName = comment.AuthorName;
                         var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                         comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');

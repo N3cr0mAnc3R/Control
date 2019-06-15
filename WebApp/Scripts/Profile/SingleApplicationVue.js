@@ -93,16 +93,16 @@
 		},
 
 		//Получение аватарки автора комментария
-		GetUserImageForComment: function (id) {
-			var self = this;
+		GetUserImageForComment: function (comment) {
+            var self = this;
 			$.ajax({
 				url: "/profile/GetUserImage",
 				type: "POST",
-				data: { UserId: id },
+                data: { UserId: comment.UserId },
 				async: false,
 				success: function (img) {
 					if (img)
-						self.commentImg = 'data:image/png;base64, ' + img;
+                        comment.img = 'data:image/png;base64, ' + img;
 				}
 			});
 		},
@@ -213,8 +213,8 @@
 						let applicationComments = [];
 						obj.Comments.forEach(function (comment) {
 
-							app.GetUserImageForComment(comment.UserId);
-							comment.img = app.commentImg;
+							app.GetUserImageForComment(comment);
+							//comment.img = app.commentImg;
 							comment.authorName = comment.AuthorName;
 							var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
 							comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
