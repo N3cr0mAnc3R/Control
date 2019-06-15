@@ -67,6 +67,7 @@ Vue.directive('loader', {
 
             if (object.loaded) {
                 element.addClass("loaded");
+                element.css("display", "block");
             }
         }, { deep: true });
     },
