@@ -62,6 +62,22 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public ApplicationModel SelectApplicationById(int Id)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<ApplicationModel>(
+                    sql: "dbo.SelectApplicationById",
+                      param: new
+                      {
+                          Id
+                      },
+
+                    commandType: CommandType.StoredProcedure
+                ).First();
+
+            }
+        }
         public List<ApplicationModel> SelectApplicationsByStatusId(int StatusId)
         {
             using (var cnt = Concrete.OpenConnection())

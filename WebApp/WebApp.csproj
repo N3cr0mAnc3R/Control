@@ -596,6 +596,7 @@
     <Content Include="Scripts\Profile\OfficialProfileVue.js" />
     <Content Include="Scripts\Profile\ProfileVue.js" />
     <Content Include="Scripts\Profile\RequestEmail.js" />
+    <Content Include="Scripts\Profile\SingleApplicationVue.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -644,6 +645,7 @@
     <Content Include="Views\Shared\Notifier.cshtml" />
     <Content Include="Views\Application\SimilarApplication.cshtml" />
     <Content Include="Views\Profile\OfficialProfile.cshtml" />
+    <Content Include="Views\Profile\SingleApplication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
