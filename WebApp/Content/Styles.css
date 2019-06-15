@@ -336,9 +336,13 @@ button:focus {
   color: #3aa0fe;
   cursor: pointer;
 }
-.fa-telegram-plane {
-  color: white;
-}
+/*.fa-telegram-plane{
+	color:white;
+	font-size:12px;
+	width:12px;
+	height:12px;
+
+}*/
 /************/
 .currentCommentPageNumber {
   color: #3aa0fe;
