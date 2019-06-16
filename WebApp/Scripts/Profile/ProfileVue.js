@@ -143,11 +143,7 @@
                     self.$set(self.user, 'FullName', userInfo.FullName);
 
 
-                    console.log(today.getFullYear());
-                    console.log(date.getFullYear());
-                    console.log(age);
-
-                    console.log(self.user);
+                  
 
                     self.objForLoading.loading = false;
                     self.objForLoading.loaded = true;

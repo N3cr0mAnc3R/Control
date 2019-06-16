@@ -46,8 +46,7 @@
                 );
             }
         },
-
-
+		
         //Получение заявки
         selectApplicationById: function () {
             var self = this;

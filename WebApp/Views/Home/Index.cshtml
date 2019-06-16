@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
 
@@ -9,166 +9,172 @@
 <script src="~/Scripts/Directives/loader.js"></script>
 <section id="main-section">
 
-    <div class="sk-wave"><div class="sk-rect sk-rect-1"></div><div class="sk-rect sk-rect-2"></div><div class="sk-rect sk-rect-3"></div><div class="sk-rect sk-rect-4"></div><div class="sk-rect sk-rect-5"></div></div>
-    <section id="home" style="display: none;">
-        <div class="custom-container">
-            <nav class="profile-menu">
-                <ul>
-                    <li><span v-bind:class="{'current': tabNumber === 1}" v-on:click="changeTabNumber(1)">Обращения</span></li>
-                    <li><span v-bind:class="{'current': tabNumber === 2}" v-on:click="changeTabNumber(2)">Новости</span></li>
-                    <li><span v-bind:class="{'current': tabNumber === 3}" v-on:click="changeTabNumber(3)">Карта</span></li>
+	<div class="sk-wave"><div class="sk-rect sk-rect-1"></div><div class="sk-rect sk-rect-2"></div><div class="sk-rect sk-rect-3"></div><div class="sk-rect sk-rect-4"></div><div class="sk-rect sk-rect-5"></div></div>
+	<section id="home" style="display: none;">
+		<div class="custom-container">
+			<nav class="profile-menu">
+				<ul>
+					<li><span v-bind:class="{'current': tabNumber === 1}" v-on:click="changeTabNumber(1)">Обращения</span></li>
+					<li><span v-bind:class="{'current': tabNumber === 2}" v-on:click="changeTabNumber(2)">Новости</span></li>
+					<li><span v-bind:class="{'current': tabNumber === 3}" v-on:click="changeTabNumber(3)">Карта</span></li>
 
-                </ul>
-            </nav>
-            <div class="main-content" v-loader="objForLoading">
-                <section id="applications" v-if="tabNumber === 1">
-                    <div>
-                        <div v-for="app in applications">
-                            <div class="application">
+				</ul>
+			</nav>
+			<div class="main-content" v-loader="objForLoading">
+				<section id="applications" v-if="tabNumber === 1">
+					<div>
+						<div v-for="app in applications">
+							<div class="application">
 
-                                <div class="application-data">
+								<div class="application-data">
 
-                                    <div v-if="app.imgs.length<1" class="img-holder">
-                                        <img class="d-block w-100" src="~/Content/Images/noImage.png">
-                                    </div>
-                                    <div v-else-if="app.imgs.length===1" class="img-holder">
-                                        <img v-bind:src="app.imgs[0]" alt="Alternate Text" />
-                                    </div>
-                                    <div v-else-if="app.imgs.length>1" class="img-holder">
+									<div v-if="app.imgs.length<1" class="img-holder">
+										<img class="d-block w-100" src="~/Content/Images/noImage.png">
+									</div>
+									<div v-else-if="app.imgs.length===1" class="img-holder">
+										<img v-bind:src="app.imgs[0]" alt="Alternate Text" />
+									</div>
+									<div v-else-if="app.imgs.length>1" class="img-holder">
 
-                                        <div v-bind:id="'app-' + app.Id" class="carousel slide" data-ride="carousel">
-                                            <ol class="carousel-indicators">
-                                                <li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
-                                            </ol>
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs">
-                                                    <img class="d-block w-100" v-bind:src="img">
-                                                </div>
-                                            </div>
-                                            <a class="carousel-control-prev" v-bind:href="'#app-' + app.Id" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" v-bind:href="'#app-' + app.Id" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="application-body">
+										<div v-bind:id="'app-' + app.Id" class="carousel slide" data-ride="carousel">
+											<ol class="carousel-indicators">
+												<li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
+											</ol>
+											<div class="carousel-inner">
+												<div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs">
+													<img class="d-block w-100" v-bind:src="img">
+												</div>
+											</div>
+											<a class="carousel-control-prev" v-bind:href="'#app-' + app.Id" role="button" data-slide="prev">
+												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												<span class="sr-only">Previous</span>
+											</a>
+											<a class="carousel-control-next" v-bind:href="'#app-' + app.Id" role="button" data-slide="next">
+												<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												<span class="sr-only">Next</span>
+											</a>
+										</div>
+									</div>
+									<div class="application-body">
 
-                                        <p class="title"><a v-bind:href="'/home/application/' + app.Id">{{app.Title}}</a></p>
-                                        <p v-if="app.isEditing===false">
-                                            {{app.Text}}
-                                        </p>
-                                        <textarea v-if="app.isEditing===true" class="form-control" rows="6" v-model="app.Text"> </textarea>
-                                    </div>
+										<p class="title"><a v-bind:href="'/home/application/' + app.Id">{{app.Title}}</a></p>
+										<p v-if="app.isEditing===false">
+											{{app.Text}}
+										</p>
+										<textarea v-if="app.isEditing===true" class="form-control" rows="6" v-model="app.Text"> </textarea>
+									</div>
 
-                                </div>
-                                <div v-loader="app" parent="applications">
-                                    <section class="comments" v-if="app.IsOpened">
-                                        <div v-for="com in app.comments" class="comment">
-                                            <div class="custom-container">
-                                                <div class="img-holder">
-                                                    <img v-bind:src="com.img" alt="Нет изображения" />
-                                                </div>
-                                                <div class="comment-text">
-                                                    <p class="comment-author">{{com.AuthorName}}</p>
-                                                    <p>{{com.Text}}</p>
-                                                    <p> <small>{{com.dateTimeOfCreation}}</small><button class="button-third" v-on:click="reply(com)"> ответить</button></p>
-                                                </div>
-                                            </div>
-                                            <div v-if="com.Children.length > 0">
-                                                <div class="custom-container answer-comment" v-for="commen in com.Children">
-                                                    <div class="img-holder">
-                                                        <img v-bind:src="com.img" alt="Нет изображения" />
-                                                    </div>
-                                                    <div class="comment-text">
-                                                        <p class="comment-author">{{commen.AuthorName}}</p>
-                                                        <p>{{commen.Text}}</p>
-                                                        <p> <small>{{commen.dateTimeOfCreation}}</small><button class="button-third" v-on:click="reply(com)"> ответить</button></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="custom-container ">
-                                            <div class="custom-container ">
-                                                <div class="form-inline form-group mt-4">
+								</div>
+								<div v-loader="app" parent="applications">
+									<section class="comments" v-if="app.IsOpened">
+										<div v-for="com in app.comments" class="comment">
+											<div class="custom-container">
+												<div class="img-holder">
+													<img v-bind:src="com.img" alt="Нет изображения" />
+												</div>
+												<div class="comment-text">
+													<p class="comment-author">{{com.AuthorName}}</p>
+													<p>{{com.Text}}</p>
+													<p> <small>{{com.dateTimeOfCreation}}</small><button class="button-third" v-on:click="reply(com)"> ответить</button></p>
+												</div>
+											</div>
+											<div v-if="com.Children.length > 0">
+												<div class="custom-container answer-comment" v-for="commen in com.Children">
+													<div class="img-holder">
+														<img v-bind:src="com.img" alt="Нет изображения" />
+													</div>
+													<div class="comment-text">
+														<p class="comment-author">{{commen.AuthorName}}</p>
+														<p>{{commen.Text}}</p>
+														<p> <small>{{commen.dateTimeOfCreation}}</small><button class="button-third" v-on:click="reply(com)"> ответить</button></p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="custom-container ">
+											<div class="custom-container ">
+												<div class="form-inline form-group mt-4">
 
-                                                    <textarea v-model="comment.text" class="form-control w-75 p-2 mr-2"></textarea>
+													<textarea  v-model="comment.text"  class="textarea" data-autoresize rows="1"></textarea>
 
-                                                    <button v-on:click="addComment(app.Id)" class="button button-primary" style="padding-top: 23.5px ; padding-bottom:23px">
-                                                        <i class="fa fa-paper-plane"></i>
-                                                    </button>
-                                                </div>
-                                                <div>
-                                                    <div v-if="app.commentPagesNumber > 5" class="page-wrapper">
-                                                        <div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
+													<button id="comment-send-button" v-on:click="addComment(app.Id)" class="button button-primary "><i class="fa fa-paper-plane"></i></button>
+												</div>
 
-                                                        <span v-if="app.currentCommentPageNumber > 3"> ... </span>
+												
+												<div>
+													<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
+														<div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
 
-                                                        <div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+														<span v-if="app.currentCommentPageNumber > 3"> ... </span>
 
-                                                        <span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
+														<div v-for="number in app.commentPagesNumber" v-if="isShowAsPage(number, app.currentCommentPageNumber, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
 
-                                                        <div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
-                                                    </div>
-                                                    <div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
-                                                        <div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
-                                                    </div>
-                                                </div>
+														<span v-if="app.commentPagesNumber - app.currentCommentPageNumber > 2"> ... </span>
 
-
-                                            </div>
-                                        </div>
+														<div v-on:click="ChangePageNumber(app.Id, app.commentPagesNumber)" class="page-number" v-bind:class="{ 'current': app.commentPagesNumber === app.currentCommentPageNumber }">{{app.commentPagesNumber}}</div>
+													</div>
+													<div v-if="app.commentPagesNumber > 1 && app.commentPagesNumber < 6" class="page-wrapper">
+														<div class="page-number" v-for="number in app.commentPagesNumber" v-bind:class="{ 'current': number === app.currentCommentPageNumber }" v-on:click="ChangePageNumber(app.Id, number)">{{number}}</div>
+													</div>
+												</div>
 
 
-
-
-
-                                    </section>
-                                </div>
-                                <div class="application-control">
-                                    <div class="comment-button-holder">
-                                        <small v-on:click="toggleComments(app.Id)">
-                                            <span v-if="!app.IsOpened">показать комментарии</span>
-                                            <span v-if="app.IsOpened">скрыть комментарии</span>
-                                        </small>
-                                    </div>
+											</div>
+										</div>
 
 
 
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section v-if="tabNumber === 2">
-                    <div v-for="n in news" class="short-application">
-                        <div class="custom-container">
-                            <div v-html="n.Text"></div>
-                        </div>
-                    </div>
-                </section>
-                <section v-if="tabNumber === 3">
-                    <div>
-                        <div id="map"></div>
-                    </div>
-                </section>
-            </div>
-            <div class="sidebar" v-if="HasTop">
 
-                <div v-for="app in topApplications" class="short-application">
-                    <div class="custom-container">
-                        {{app.Title}}
-                    </div>
-                </div>
+									</section>
+								</div>
+								<div class="application-control">
+									<div class="comment-button-holder">
+										<small v-on:click="toggleComments(app.Id)">
+											<span v-if="!app.IsOpened">показать комментарии</span>
+											<span v-if="app.IsOpened">скрыть комментарии</span>
+										</small>
+									</div>
 
-            </div>
-        </div>
+									<div class="likesContainer">
+										<div class="homeLikesContainer" >
+											<a v-on:click="Like(app.Id)"><i v-bind:class="{'active-like': app.likeStatus === 1}" class="fa fa-thumbs-up inactive-like">{{app.PosCount}}</i></a>
+											<a v-on:click="Dislike(app.Id)"><i v-bind:class="{'active-dislike': app.likeStatus === -1}" class="fa fa-thumbs-down inactive-dislike">{{app.NegCount}}</i></a>
+										</div>
+									</div>
 
-    </section>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section v-if="tabNumber === 2">
+					<div v-for="n in news" class="short-application">
+						<div class="custom-container">
+							<div v-html="n.Text"></div>
+						</div>
+					</div>
+				</section>
+				<section v-if="tabNumber === 3">
+					<div>
+						<div id="map"></div>
+					</div>
+				</section>
+			</div>
+			<div class="sidebar" v-if="HasTop">
+
+				<div v-for="app in topApplications" class="short-application">
+					<div class="custom-container">
+						{{app.Title}}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</section>
 </section>
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
 <script src="~/Scripts/Home/HomeVue.js"></script>

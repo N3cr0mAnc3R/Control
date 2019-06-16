@@ -95,9 +95,9 @@
 								<div class="custom-container ">
 									<div class="form-inline form-group mt-4">
 
-										<textarea v-on:input="changeComment" class="textarea" data-autoresize rows="1"></textarea>
+										<textarea  v-on:input="changeComment" class="textarea" data-autoresize rows="1"></textarea>
 
-										<button v-on:click="addComment(app.Id)" class="button button-primary "><i class="fa fa-paper-plane"></i></button>
+										<button  id="comment-send-button" v-on:click="addComment(app.Id)" class="button button-primary "><i class="fa fa-paper-plane"></i></button>
 									</div>
 									<div>
 										<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
@@ -134,9 +134,9 @@
 							</div>
 							<div class="buttons">
 
-								<button v-if="app.StatusId!==2" class="button button-primary" v-on:click="acceptApplication(app.Id)">Принять</button>
-								<button v-if="app.StatusId!==3" class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
-								<button class="button button-third">Направить</button>
+								<button v-if="app.StatusId!==2" class="button button-primary" v-on:click="acceptApplication(app.Id)" style="margin-right:5px">Принять</button>
+								<button style="margin-right:5px" v-if="app.StatusId!==3" class="button button-secondary" v-on:click="declineApplication(app.Id)">Отклонить</button>
+								<button  class="button button-secondary" ><i class="fa fa-level-up"></i></button>
 
 							</div>
 

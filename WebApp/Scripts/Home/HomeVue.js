@@ -79,7 +79,69 @@
                     app.selectApplicationsByUserId();
                 }
             });
-        },
+		},
+		//Получение информации о состоянии like/dislike
+		GetApplicationLikeStatus: function (application) {
+			var self = this;
+			$.ajax({
+				url: "/application/GetLikeDislike",
+				type: "POST",
+				data: { applicationId: application.Id },
+				async: false,
+				success: function (contribution) {
+					application.likeStatus = contribution;
+				}
+			});
+		},
+		//Получение количества like-ов/dislike-ов
+		GetPosNegCount: function (application) {
+			var self = this;
+			$.ajax({
+				url: "/application/GetPosNegCount",
+				type: "POST",
+				data: { applicationId: application.Id },
+				async: false,
+				success: function (PosNegCount) {
+					application.PosCount = PosNegCount.PosCount;
+					application.NegCount = PosNegCount.NegCount;
+				}
+			});
+		},
+		//Изменение статуса на Like
+		Like: function (Id) {
+			let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+
+			var self = this;
+			$.ajax({
+				url: "/application/Like",
+				type: "POST",
+				data: { applicationId: application.Id },
+				async: false,
+				success: function (PosNegCount) {
+					application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
+					application.PosCount = PosNegCount.PosCount;
+					application.NegCount = PosNegCount.NegCount;
+
+				}
+			});
+		},
+		//Изменение статуса на Dislike
+		Dislike: function (Id) {
+			let application = this.applications.find(a => a.Id === Id);
+			var self = this;
+			$.ajax({
+				url: "/application/Dislike",
+				type: "POST",
+				data: { applicationId: application.Id },
+				async: false,
+				success: function (PosNegCount) {
+					application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
+					application.PosCount = PosNegCount.PosCount;
+					application.NegCount = PosNegCount.NegCount;
+				}
+			});
+		},
+
         selectApplications: function () {
 
             var self = this;
@@ -92,7 +154,9 @@
                 success: function (applications) {
                     console.log(applications);
                     if (applications && applications.length > 0) {
-                        applications.forEach(function (application) {
+						applications.forEach(function (application) {
+							self.GetApplicationImages(application);
+							self.GetApplicationLikeStatus(application);
                             self.GetApplicationImages(application);
                             application.IsOpened = false;
                             application.isEditing = false;
@@ -331,7 +395,8 @@
                         self.GetApplicationImages(application);
                         application.IsOpened = false;
                         application.isEditing = false;
-
+						self.GetApplicationImages(application);
+						self.GetApplicationLikeStatus(application);
                         self.$set(application, 'loading', false);
                         self.$set(application, 'loaded', true);
                         application.currentCommentPageNumber = 1;
