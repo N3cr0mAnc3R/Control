@@ -151,6 +151,10 @@ namespace WebApp.Controllers
             PosNegCount pnc = ApplicationManager.GetPosNegCount(applicationId);
             return Json(pnc);
         }
+        public JsonResult GetApplicationStats()
+        {
+            return Json(ApplicationManager.GetApplicationStats());
+        }
         public JsonResult Like(int applicationId)
         {
             ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);

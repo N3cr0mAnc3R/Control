@@ -3,9 +3,11 @@ window.onload = function () {const app = new Vue({
     el: "#userProfile",
     data: {
         applications: [], //Заявки
-        comment: '', //Текст набранного комментария
-        //img: '', //
-        commentImg: '', //Аватарка пользователя
+        comment: {
+            text: '',
+            img: '',
+            parent: null
+        },
         user: {}, // Пользователь
         //userImg: "/Content/Images/noImage.png", //Кажется, бесполезно
         //Files: [], Тоже бесполезно

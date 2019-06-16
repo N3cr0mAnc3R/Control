@@ -880,3 +880,7 @@ footer {
 .dep-card-wrapper .dep-card .d-block {
   margin-top: 10px;
 }
+.top-application {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

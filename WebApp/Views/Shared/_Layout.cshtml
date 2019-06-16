@@ -21,8 +21,6 @@
 				<div id="left-menu">
 					<ul>
 						<li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-						<li>@Html.ActionLink("О программе", "About", "Home")</li>
-						<li>@Html.ActionLink("Контакт", "Contact", "Home" )</li>
 						<li>@Html.ActionLink("Заявки", "GetApplication", "Application")</li>
 					</ul>
 				</div>
@@ -41,12 +39,9 @@
         @RenderBody()
         @Html.Partial("Notifier")
 
-        @*<footer>
-            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
-        </footer>*@
     </div>
 <footer>
-	<div class="custom-container"> Подвал</div>
+	<div class="custom-container"> Горячая линия: 8-(865)-233-06-66</div>
 </footer>
 
 

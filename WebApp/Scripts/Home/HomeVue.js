@@ -20,6 +20,9 @@
         myPlacemarks: [],
         datetime: '',
         news: '',
+        solved: 0,
+        currentApplication: {},
+        total: 0,
         HasTop: false,
         objForLoading: {
             loading: false,
@@ -253,7 +256,6 @@
                         //comment.authorName = comment.AuthorName;
                         var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                         comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-                        console.log(comment);
 
                         applicationComments.push(comment);
                     });
@@ -310,6 +312,17 @@
             this.comment.text = comment.AuthorName + ', ';
             $('textarea').focus();
         },
+        showInfoAboutApplication: function (Id) {
+            let appl = this.applications.find(a => a.Id === Id);
+            ymaps.geocode([appl.Latitude.replace(',', '.'), appl.Longitude.replace(',', '.')]).then(function (res) {
+                var firstGeoObject = res.geoObjects.get(0);
+                appl.Address = [firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                            firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                        ].filter(Boolean).join(', ');
+            });
+            this.currentApplication = appl;
+            $('#currentModal').modal('show');
+        },
         getAddress: function (placemark, title, coords) {
             placemark.properties.set('iconCaption', 'поиск...');
             ymaps.geocode(coords).then(function (res) {
@@ -325,12 +338,15 @@
             });
         },
         //Создание метки на яндекс картах
-        addPlacemark: function (title, coordinates) {
+        addPlacemark: function (Id, title, coordinates) {
             let placemark = this.createPlacemark(coordinates);
             app.myPlacemarks.push(placemark);
             this.myMap.geoObjects.add(placemark);
 
             this.getAddress(placemark, title, coordinates);
+            placemark.events.add('click', function () {
+                app.showInfoAboutApplication(Id);
+            });
         },
         createPlacemark: function (coords) {
             return new ymaps.Placemark(coords, {
@@ -366,7 +382,7 @@
                 success: function (applications) {
                     if (applications && applications.length > 0) {
                         applications.forEach(function (application) {
-                            self.addPlacemark(application.Title, [application.Latitude.replace(',', '.'), application.Longitude.replace(',', '.')]);
+                            self.addPlacemark(application.Id, application.Title, [application.Latitude.replace(',', '.'), application.Longitude.replace(',', '.')]);
                         });
                     }
                     app.objForLoading.loading = false;
@@ -387,7 +403,11 @@
             url: "/home/GetTopApplications",
             type: "POST",
             async: true
-        })).then(function (resp1, resp2) {
+        }), $.ajax({
+            url: "/application/GetApplicationStats",
+            type: "POST",
+            async: true
+        })).then(function (resp1, resp2, resp3) {
             Vue.nextTick(function () {
                 self.applications = [];
                 if (resp1[0] && resp1[0].length > 0) {
@@ -409,6 +429,9 @@
                 if (self.topApplications.length > 0) {
                     self.HasTop = true;
                 }
+                self.solved = resp3[0].Solved;
+                self.total = resp3[0].Total;
+
                 self.objForLoading.loading = false;
                 self.objForLoading.loaded = true;
             });

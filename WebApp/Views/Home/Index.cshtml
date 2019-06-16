@@ -151,6 +151,7 @@
 					</div>
 				</section>
 				<section v-if="tabNumber === 2">
+                    <div v-if="news.length === 0">Новостей пока нет</div>
 					<div v-for="n in news" class="short-application">
 						<div class="custom-container">
 							<div v-html="n.Text"></div>
@@ -164,17 +165,38 @@
 				</section>
 			</div>
 			<div class="sidebar" v-if="HasTop">
-
+                <div>Всего обращений: {{total}}</div>
+                <div>Решённых обращений: {{solved}}</div>
 				<div v-for="app in topApplications" class="short-application">
 					<div class="custom-container">
-						{{app.Title}}
+                        <a v-bind:href="'/home/application/' + app.Id">{{app.Title}}</a>
+                        <p class="top-application">{{app.Text}}</p>
 					</div>
 				</div>
 
 			</div>
 		</div>
-
+        <div class="modal" tabindex="-1" role="dialog" id="currentModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{currentApplication.Title}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{currentApplication.Text}}</p>
+                        <p>{{currentApplication.Address}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</section>
 </section>
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3936ff9e-b64c-4aef-8fe1-b6bc0a4e5fe7" type="text/javascript"></script>
 <script src="~/Scripts/Home/HomeVue.js"></script>
+

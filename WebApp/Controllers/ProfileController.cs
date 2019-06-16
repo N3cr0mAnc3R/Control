@@ -22,6 +22,9 @@ namespace WebApp.Controllers
         // GET: Profile
         public ActionResult UserProfile()
         {
+            var roles = CurrentUser.Roles.ToList().First().RoleId;
+            var user = User.Identity.Name;
+            var calculated = User.IsInRole("1") ||User.IsInRole("Admin") ||User.IsInRole("Администратор") ||User.IsInRole("2") ||User.IsInRole("User") ||User.IsInRole("Пользователь");
             return View();
         }
         public ActionResult ModeratorProfile()

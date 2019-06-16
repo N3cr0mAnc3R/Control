@@ -312,6 +312,20 @@ namespace WebApp.Models.Managers
                );
             }
         }
+
+        public dynamic GetApplicationStats()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                using (var multi = cnt.QueryMultiple(
+                   sql: "dbo.GetApplicationStats",
+                   commandType: CommandType.StoredProcedure))
+                {
+
+                    return new { Solved = multi.Read<int>().First(), Total = multi.Read<int>().First() };
+                }
+            }
+        }
         public PosNegCount GetPosNegCount(int applicationId)
         {
             using (var cnt = Concrete.OpenConnection())
