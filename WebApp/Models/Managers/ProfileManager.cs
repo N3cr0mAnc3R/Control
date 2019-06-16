@@ -74,7 +74,7 @@ namespace WebApp.Models.Managers
                       },
 
                     commandType: CommandType.StoredProcedure
-                ).First();
+                ).FirstOrDefault();
 
             }
         }
@@ -138,7 +138,6 @@ namespace WebApp.Models.Managers
             using (var cnt = Concrete.OpenConnection())
             {
                 List<CommentModel> comments;
-                List<CommentModel> commentsAnswered;
                 int commentNumber;
                 using (var multi = cnt.QueryMultiple(
                       sql: "dbo.Select5CommentsByApplicationId",

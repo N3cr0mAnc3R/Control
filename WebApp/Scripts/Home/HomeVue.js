@@ -55,8 +55,8 @@
                     success: function () {
                         let appl = app.applications.find(a => a.Id === applicationId);
                         appl.IsOpened = false;//немного костыля  
-                        appl.currentCommentPageNumber = 1;//немного костыля  
-                        app.SelectCommentsByApplicationId(appl);
+                        //appl.currentCommentPageNumber = 1;//немного костыля  
+                        self.ChangePageNumber(appl.currentCommentPageNumber);
                         app.comment.text = '';
                         app.comment.parent = null;
                     }
@@ -189,7 +189,7 @@
                         //comment.authorName = comment.AuthorName;
                         var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                         comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-
+                        console.log(comment);
 
                         applicationComments.push(comment);
                     });
