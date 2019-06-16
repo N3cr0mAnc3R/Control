@@ -87,10 +87,7 @@ header {
 	border-bottom: rgb(219, 218, 218) 1px solid;
 	box-shadow: 0 1px 5px 2px rgb(219, 218, 218);
 }
-#main-nav {
-	margin-left: 10%;
-	margin-right: 10%;
-}
+
 nav a {
 	color: #777a7f;
 	text-decoration: none;
@@ -717,14 +714,16 @@ footer {
         display: block;
         cursor: pointer;
     }
-
-    #left-menu, #right-menu, header li {
-        width: 100%
-    }
-
-    #right-menu {
-        padding-bottom: 10px;
-    }
+	#left-menu{
+		padding-top:5px;
+	}
+	#left-menu, #right-menu, header li {
+		width: 100%;
+	}
+	#left-menu li, #right-menu li {
+		padding-left: 0;
+	}
+    
 
     #main-nav {
         display: none
@@ -738,6 +737,7 @@ footer {
     #toggle:checked + #main-nav {
         display: block;
         padding-bottom: 20px;
+		background-color:white;
     }
 
 
