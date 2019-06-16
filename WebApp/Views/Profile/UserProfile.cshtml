@@ -124,13 +124,13 @@
 <textarea v-on:input="changeComment" class="textarea" data-autoresize rows="1"></textarea>
 
 
-                                            <button v-on:click="addComment(app.Id)" class="button button-primary">
-                                                <i class="fa fa-paper-plane"></i>
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <div v-if="app.commentPagesNumber > 5" class="page-wrapper">
-                                                <div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
+											<button id="comment-send-button" v-on:click="addComment(app.Id)" class="button button-primary">
+											<i class="fa fa-paper-plane"></i>
+											</button>
+										</div>
+										<div>
+											<div v-if="app.commentPagesNumber > 5" class="page-wrapper">
+												<div v-on:click="ChangePageNumber(app.Id, 1)" class="page-number" v-bind:class="{ 'current': 1 === app.currentCommentPageNumber }">1</div>
 
                                                 <span v-if="app.currentCommentPageNumber > 3"> ... </span>
 
