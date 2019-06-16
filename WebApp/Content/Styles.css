@@ -546,37 +546,6 @@ footer {
   }
 }
 @media (max-width: 1050px) {
-  #toggle-icon {
-    display: block;
-    cursor: pointer;
-  }
-  #left-menu {
-    padding-top: 5px;
-  }
-  #left-menu,
-  #right-menu,
-  header li {
-    width: 100%;
-  }
-  #left-menu li,
-  #right-menu li {
-    padding-left: 0;
-  }
-  #main-nav {
-    display: none;
-  }
-  header li {
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  #toggle:checked + #main-nav {
-    display: block;
-    padding-bottom: 20px;
-    background-color: white;
-  }
-  #toggle:checked + header nav #right-menu {
-    padding-bottom: 20px;
-  }
   #home .application .application-data.img-holder {
     width: 50%;
   }
@@ -619,6 +588,37 @@ footer {
   }
 }
 @media (max-width: 680px) {
+  #toggle-icon {
+    display: block;
+    cursor: pointer;
+  }
+  #left-menu {
+    padding-top: 5px;
+  }
+  #left-menu,
+  #right-menu,
+  header li {
+    width: 100%;
+  }
+  #left-menu li,
+  #right-menu li {
+    padding-left: 0;
+  }
+  #main-nav {
+    display: none;
+  }
+  header li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  #toggle:checked + #main-nav {
+    display: block;
+    padding-bottom: 20px;
+    background-color: white;
+  }
+  #toggle:checked + header nav #right-menu {
+    padding-bottom: 20px;
+  }
   #home .application .img-holder,
   .application .img-holder img {
     float: none;
