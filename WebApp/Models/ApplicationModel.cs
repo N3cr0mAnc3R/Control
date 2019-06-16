@@ -28,6 +28,8 @@ namespace WebApp.Models
         public bool IsActive { get; set; }
 
         public int StatusId { get; set; }
+        public int PosCount { get; set; }
+        public int NegCount { get; set; }
 
         public string Latitude { get; set; }
 
