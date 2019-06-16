@@ -578,6 +578,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Application\ApplicationValidate.js" />
     <Content Include="Scripts\Directives\loader.js" />
+    <Content Include="Scripts\f-awesome.js" />
     <Content Include="Scripts\Home\HomeVue.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
