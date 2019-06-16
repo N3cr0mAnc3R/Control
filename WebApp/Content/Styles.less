@@ -21,16 +21,17 @@ textarea {
 }
 
 .textarea {
-    resize: none;
-    width: 80%;
-    padding: 5px 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-size: 15px;
-    line-height: 1.2;
-    overflow: hidden;
-    float: left;
-    margin-right: 10px;
+	resize: none;
+	width: 80%;
+	padding: 5px 8px;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+	font-size: 15px;
+	line-height: 1.2;
+	overflow: hidden;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 5px;
 }
 
 .comment-control-container {
@@ -79,37 +80,44 @@ ul {
 }
 
 header {
-    background: #fff;
-    padding-top: 12px;
-    min-height: 48px;
-    box-sizing: border-box;
-    border-bottom: rgb(219, 218, 218) 1px solid;
-    box-shadow: 0 1px 5px 2px rgb(219, 218, 218);
+	background: #fff;
+	padding-top: 12px;
+	min-height: 48px;
+	box-sizing: border-box;
+	border-bottom: rgb(219, 218, 218) 1px solid;
+	box-shadow: 0 1px 5px 2px rgb(219, 218, 218);
 }
-
+#main-nav {
+	margin-left: 10%;
+	margin-right: 10%;
+}
 nav a {
-    color: #777a7f;
-    text-decoration: none;
-    /*font-size: 16px;*/
+	color: #777a7f;
+	text-decoration: none;
+	/*font-size: 16px;*/
 }
 
 header a:hover, nav a:hover {
-    color: #3aa0fe;
-    text-decoration: none;
+	color: #3aa0fe;
+	text-decoration: none;
 }
 
 header li, nav li {
-    float: left;
-    display: inline;
-    padding: 0 20px 0 20px;
+	float: left;
+	display: inline;
+	padding: 0 20px 0 20px;
 }
 
 #left-menu {
-    float: left;
+	float: left;
+	background: #fff;
 }
 
 #right-menu {
-    float: right;
+	float: right;
+	background: #fff;
+	/*border-bottom: rgb(219, 218, 218) 1px solid;*/
+	/*box-shadow: 0 1px 5px 2px rgb(219, 218, 218);*/
 }
 
 
@@ -130,6 +138,7 @@ header li, nav li {
     font-weight: bold;
     box-sizing: border-box;
     border-radius: 3px;
+	margin-bottom:10px;
 }
 
 button,
@@ -471,6 +480,7 @@ footer {
 
 .filter {
     margin-right: 10px;
+	margin-bottom:5px;
     padding: 5px;
     font-size: 12px;
     border-radius: 2px;
@@ -782,7 +792,7 @@ footer {
 
 	#home nav .profile-menu {
 		width: 100%;
-		color: red;
+	
 	}
 	#home.homeLikesContainer {
 		
@@ -822,7 +832,7 @@ footer {
 @media (max-width:614px) {
 	#home .textarea {
 		width: 100%;
-		margin-bottom: 5px;
+		
 	}
 
 	#home #comment-send-button {
