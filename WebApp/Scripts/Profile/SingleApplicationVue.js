@@ -134,7 +134,21 @@
                     application.NegCount = PosNegCount.NegCount;
                 }
             });
-        },
+		},
+		//изменение размеров окна ввода комментария
+		addAutoResize:function () {
+		document.querySelectorAll('[data-autoresize]').forEach(function (element) {
+			element.style.boxSizing = 'border-box';
+			var offset = element.offsetHeight - element.clientHeight;
+			document.addEventListener('input', function (event) {
+				event.target.style.height = 'auto';
+				event.target.style.height = event.target.scrollHeight + offset + 'px';
+			});
+			element.removeAttribute('data-autoresize');
+		});
+	},
+
+
         //Изменение статуса на Like
         Like: function (Id) {
             let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
@@ -269,7 +283,7 @@
         var str = window.location.href;
         this.appId = Number.parseInt(str.substr(str.lastIndexOf('/') + 1));
         this.selectApplicationById();
-
+		this.addAutoResize();
     }
 
 
