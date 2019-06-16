@@ -15,6 +15,15 @@ namespace WebApp.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult Application(int? Id)
+        {
+            if (Id == null)
+            {
+                return Redirect("/");
+            }
+            return View();
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

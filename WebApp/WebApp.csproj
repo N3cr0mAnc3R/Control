@@ -645,7 +645,7 @@
     <Content Include="Views\Shared\Notifier.cshtml" />
     <Content Include="Views\Application\SimilarApplication.cshtml" />
     <Content Include="Views\Profile\OfficialProfile.cshtml" />
-    <Content Include="Views\Profile\SingleApplication.cshtml" />
+    <Content Include="Views\Home\Application.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

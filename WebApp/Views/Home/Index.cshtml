@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="application-body">
 
-                                        <p class="title"><a href="">{{app.Title}}</a></p>
+                                        <p class="title"><a v-bind:href="'/home/application/' + app.Id">{{app.Title}}</a></p>
                                         <p v-if="app.isEditing===false">
                                             {{app.Text}}
                                         </p>

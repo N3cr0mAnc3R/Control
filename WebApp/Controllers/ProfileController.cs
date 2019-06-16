@@ -35,11 +35,6 @@ namespace WebApp.Controllers
             //проверить доступ
             return View();
         }
-        [AllowAnonymous]
-        public ActionResult SingleApplication(int Id)
-        {
-            return View();
-        }
         public ActionResult Edit(int Id)
         {
             if (CheckAccess(Id))
