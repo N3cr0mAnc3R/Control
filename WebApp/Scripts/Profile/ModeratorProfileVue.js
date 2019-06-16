@@ -131,16 +131,16 @@ window.onload = function () {const app = new Vue({
         },
 
         //Получение аваторки пользователя комментария
-        GetUserImageForComment: function (id) {
+        GetUserImageForComment: function (comment) {
             var self = this;
             $.ajax({
                 url: "/profile/GetUserImage",
                 type: "POST",
-                data: { UserId: id },
+				data: { UserId: comment.UserId },
                 async: false,
                 success: function (img) {
                     if (img) {
-                        self.commentImg = 'data:image/png;base64, ' + img;
+                        comment.img = 'data:image/png;base64, ' + img;
                     }
                 }
             });
@@ -158,9 +158,19 @@ window.onload = function () {const app = new Vue({
                 type: "POST",
                 data: { ApplicationId: appl.Id, Offset: offset },
                 async: false,
-                success: function (obj) {
-                    let applicationComments = [];
-                    obj.Comments.forEach(function (comment) {
+				success: function (obj) {
+					let applicationComments = [];
+					let tempUsers = [];
+					obj.Comments.forEach(function (comment) {
+						if (tempUsers.indexOf(comment.UserId) === -1) {
+							app.GetUserImageForComment(comment);
+							tempUsers.push(comment.UserId);
+						}
+						else {
+							comment.img = applicationComments.find(a => a.UserId === comment.UserId).img;
+						}
+						var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+						comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
                         applicationComments.push(comment);
                     });
                     app.$set(appl, 'comments', applicationComments);
@@ -188,11 +198,16 @@ window.onload = function () {const app = new Vue({
                     async: false,
                     success: function (obj) {
                         let applicationComments = [];
-                        obj.Comments.forEach(function (comment) {
+						let tempUsers = [];
+						obj.Comments.forEach(function (comment) {
 
-                            app.GetUserImageForComment(comment.UserId);
-                            comment.img = app.commentImg;
-                            comment.authorName = comment.AuthorName;
+							if (tempUsers.indexOf(comment.UserId) === -1) {
+								app.GetUserImageForComment(comment);
+								tempUsers.push(comment.UserId);
+							}
+							else {
+								comment.img = applicationComments.find(a => a.UserId === comment.UserId).img;
+							}
                             var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                             comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
 
