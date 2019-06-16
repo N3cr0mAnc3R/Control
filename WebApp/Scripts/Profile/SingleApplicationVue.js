@@ -200,6 +200,10 @@
                         //comment.img = app.commentImg;
                         var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                         comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        comment.Children.forEach(function (item) {
+                            var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                            item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        })
                         applicationComments.push(comment);
                     });
                     self.$set(self.appl, 'comments', applicationComments);
@@ -241,7 +245,10 @@
                         //comment.img = app.commentImg;
                         var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                         comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-
+                        comment.Children.forEach(function (item) {
+                            var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                            item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        })
                         applicationComments.push(comment);
                     });
                     self.$set(self.appl, 'comments', applicationComments);

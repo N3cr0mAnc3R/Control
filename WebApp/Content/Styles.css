@@ -257,7 +257,8 @@ button:focus {
 }
 .application .img-holder img {
   float: left;
-  height: 200px;
+  /*height: 200px;*/
+  max-height: 375px;
   width: 100%;
   object-fit: cover;
 }

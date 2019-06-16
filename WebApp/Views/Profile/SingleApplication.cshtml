@@ -9,13 +9,13 @@
         <div id="app" style="display: none;">
             <div class="application clearfix" v-if="!error">
 
-                <div class="application-data"  style="width:40%;">
+                <div class="application-data" >
 
                     <div v-if="appl.imgs.length<1" class="img-holder">
                         <img class="d-block w-100" src="~/Content/Images/noImage.png">
                     </div>
                     <div v-else-if="appl.imgs.length===1" class="img-holder">
-                        <img v-bind:src="appl.imgs[0]" alt="Alternate Text" />
+                        <img class="d-block w-100" v-bind:src="appl.imgs[0]" alt="Alternate Text" />
                     </div>
                     <div v-else-if="appl.imgs.length>1" class="img-holder">
 
