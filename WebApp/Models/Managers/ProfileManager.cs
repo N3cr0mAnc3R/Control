@@ -11,6 +11,7 @@ using WebApp.Models.News;
 using System.IO;
 using WebApp.Models.Common;
 using System.Data.SqlTypes;
+using WebApp.Models.Application;
 
 namespace WebApp.Models.Managers
 {
@@ -38,19 +39,36 @@ namespace WebApp.Models.Managers
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<ApplicationModel>(
+                List<ApplicationModel> apps = cnt.Query<ApplicationModel>(
                     sql: "dbo.SelectApplications",
 
                     commandType: CommandType.StoredProcedure
                 ).ToList();
 
+                foreach(ApplicationModel app in apps)
+                {
+                    app.Info = GetReasonInfo(app.Id);
+                }
+                return apps;
+            }
+        }
+
+        public ApplicationInfo GetReasonInfo(int Id)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return cnt.Query<ApplicationInfo>(
+                   sql: "dbo.GetApplicationDepartmentAndReasonByApplicationId",
+                   param: new { Id = Id },
+                   commandType: CommandType.StoredProcedure
+               ).First();
             }
         }
         public List<ApplicationModel> SelectApplicationsByUserId(string UserId)
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<ApplicationModel>(
+                List <ApplicationModel>  apps = cnt.Query<ApplicationModel>(
                     sql: "dbo.SelectApplicationsByUserId",
                       param: new
                       {
@@ -59,6 +77,11 @@ namespace WebApp.Models.Managers
 
                     commandType: CommandType.StoredProcedure
                 ).ToList();
+                foreach (ApplicationModel app in apps)
+                {
+                    app.Info = GetReasonInfo(app.Id);
+                }
+                return apps;
 
             }
         }
@@ -82,7 +105,7 @@ namespace WebApp.Models.Managers
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<ApplicationModel>(
+                List<ApplicationModel> apps = cnt.Query<ApplicationModel>(
                     sql: "dbo.SelectApplicationsByStatusId",
                       param: new
                       {
@@ -92,6 +115,11 @@ namespace WebApp.Models.Managers
                     commandType: CommandType.StoredProcedure
                 ).ToList();
 
+                foreach (ApplicationModel app in apps)
+                {
+                    app.Info = GetReasonInfo(app.Id);
+                }
+                return apps;
             }
         }
         public UserInfoModel GetUserInfo(string UserId)
@@ -359,11 +387,11 @@ namespace WebApp.Models.Managers
 
         }
 
-        public List<StatusModel> GetApplicationStatuses()
+        public List<IndexType> GetApplicationStatuses()
         {
             using (var cnt = Concrete.OpenConnection())
             {
-                return cnt.Query<StatusModel>(
+                return cnt.Query<IndexType>(
                     sql: "dbo.GetApplicationStatuses",
                     commandType: CommandType.StoredProcedure
                 ).ToList();

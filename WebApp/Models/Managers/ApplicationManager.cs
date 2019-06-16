@@ -25,6 +25,18 @@ namespace WebApp.Models.Managers
 
             }
         }
+        public void ChangeReason(string UserId, int applicationId, int reasonId)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                cnt.Execute(
+                    sql: "dbo.ChangeReason",
+                    param: new { UserId, applicationId, reasonId },
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+        }
 
 
         public IEnumerable<IndexType> GetReasonsByDepartment(int id)

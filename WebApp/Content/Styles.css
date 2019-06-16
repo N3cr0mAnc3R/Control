@@ -101,7 +101,7 @@ nav li {
 #right-menu {
   float: right;
   background: #fff;
-  border-bottom: #dbdada 1px solid;
+  /*border-bottom: rgb(219, 218, 218) 1px solid;*/
   /*box-shadow: 0 1px 5px 2px rgb(219, 218, 218);*/
 }
 .input-file {
@@ -279,6 +279,10 @@ button:focus {
   width: 60%;
   height: 200px;
   overflow-y: auto;
+}
+.application-body .app-reason {
+  position: relative;
+  bottom: 0;
 }
 .comments {
   min-height: 200px;
