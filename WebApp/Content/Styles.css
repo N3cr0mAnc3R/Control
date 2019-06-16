@@ -42,7 +42,7 @@ textarea {
   clear: both;
 }
 .answer-comment {
-  padding-left: 50px!important;
+  padding-left: 50px !important;
 }
 .application .application-body textarea {
   font-size: 12px;
@@ -843,4 +843,19 @@ footer {
   /*width: 600px;*/
   width: 100%;
   height: 600px;
+}
+.dep-card-wrapper {
+  margin: 0 !important;
+}
+.dep-card-wrapper .dep-card {
+  width: 200px;
+  height: 275px;
+  background: #fff;
+  margin: 10px 0;
+  padding: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+.dep-card-wrapper .dep-card .d-block {
+  margin-top: 10px;
 }

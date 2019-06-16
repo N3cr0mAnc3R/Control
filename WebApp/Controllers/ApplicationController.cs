@@ -22,8 +22,8 @@ namespace WebApp.Controllers
         public ActionResult GetApplication()
         {
             ViewBag.News = NewsManager.ShowFreshNews(DateTime.Now);
-            ViewBag.Departments = ApplicationManager.SelectAllDepartments();
-            ViewBag.Reasons = ApplicationManager.GetReasonsByDepartment(1);
+           // ViewBag.Departments = ApplicationManager.SelectAllDepartments();
+           // ViewBag.Reasons = ApplicationManager.GetReasonsByDepartment(1);
 
             return View();
         }
@@ -31,6 +31,12 @@ namespace WebApp.Controllers
         public async Task<ActionResult> SimilarApplication(string Longitude, string Latitude, int ReasonId)
         {
             return View(await ApplicationManager.GetSimilarApplications(Longitude, Latitude, ReasonId));
+        }
+        
+
+        public JsonResult SelectAllDepartments()
+        {
+            return Json(ApplicationManager.SelectAllDepartments());
         }
 
         public ActionResult Attach(int Id)

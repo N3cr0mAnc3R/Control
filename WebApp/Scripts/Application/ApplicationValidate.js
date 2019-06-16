@@ -6,7 +6,9 @@
         Files: [],
         Errors: [],
         departmentId: 1,
+        departments: [],
         reasons: [],
+        unselected: true,
         reasonId: 0,
         coordinates: [],
         isMap: false,
@@ -42,7 +44,10 @@
         },
         init: function () {
             //подгрузка причин для первоначальной загрузки
-            this.ajaxGetReasonsByDepartment();
+            this.ajaxGetDepartments();
+        },
+        reselect: function () {
+            this.unselected = true;
         },
         //Отправка заявки на сервер
         submit: function () {
@@ -174,15 +179,17 @@
             this.objForLoading.loaded = true;
         },
         //Функция для получения возможных причин по идентификатору ведомства
-        ajaxGetReasonsByDepartment: function () {
+        ajaxGetReasonsByDepartment: function (Id) {
             this.objForLoading.loading = true;
             this.objForLoading.loaded = false;
+
+            this.unselected = false;
             var self = this;
             $.ajax({
                 url: "/application/GetReasonsByDepartment",
                 type: "POST",
                 async: false,
-                data: { Id: this.departmentId },
+                data: { Id: Id },
                 success: function (reasons) {
                     //Vue.nextTick(function () {
                     //Обнуление
@@ -191,10 +198,35 @@
                     //reasons.forEach(function (reason) {
                     //    self.reasons.push(reason);
                     self.reasons = reasons;
+
                     //});
                     //Освобождение загрузчика
                     self.objForLoading.loaded = true;
                     self.objForLoading.loading = false;
+                    // });
+                }
+            });
+        },
+        //Функция для получения возможных причин по идентификатору ведомства
+        ajaxGetDepartments: function () {
+            this.objForLoading.loading = true;
+            this.objForLoading.loaded = false;
+            var self = this;
+            $.ajax({
+                url: "/application/SelectAllDepartments",
+                type: "POST",
+                async: false,
+                success: function (departments) {
+                    //Vue.nextTick(function () {
+                    //Обнуление
+                    self.departments = [];
+                    //Перезапись доступных причин 
+                    //reasons.forEach(function (reason) {
+                    //    self.reasons.push(reason);
+                    self.departments = departments;
+                    self.objForLoading.loaded = true;
+                    self.objForLoading.loading = false;
+                    //});
                     // });
                 }
             });
