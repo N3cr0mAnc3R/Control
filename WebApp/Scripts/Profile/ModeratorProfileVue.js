@@ -29,11 +29,6 @@ window.onload = function () {const app = new Vue({
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
 
         },
-        //Непонятный байндинг. Почему нельзя сразу v-model
-        changeComment: function (event) {//байндинг комментария с vue 
-            this.comment = event.target.value;
-
-        },
         //Добавление комментария и занесение в базу
         addComment: function (applicationId) {
             //Если не состоит из пробелов
@@ -172,7 +167,11 @@ window.onload = function () {const app = new Vue({
 							comment.img = applicationComments.find(a => a.UserId === comment.UserId).img;
 						}
 						var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
-						comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        comment.Children.forEach(function (item) {
+                            var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                            item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        });
                         applicationComments.push(comment);
                     });
                     app.$set(appl, 'comments', applicationComments);

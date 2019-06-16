@@ -87,12 +87,24 @@
 
                                     </div>
                                 </div>
+                                <div v-if="com.Children.length > 0">
+                                    <div class="custom-container answer-comment" v-for="commen in com.Children">
+                                        <div class="img-holder">
+                                            <img v-bind:src="com.img" alt="Нет изображения" />
+                                        </div>
+                                        <div class="comment-text">
+                                            <p class="comment-author">{{commen.AuthorName}}</p>
+                                            <p>{{commen.Text}}</p>
+                                            <p> <small>{{commen.dateTimeOfCreation}}</small><button class="button-third" v-on:click="reply(com)"> ответить</button></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="custom-container ">
                                 <div class="custom-container ">
                                     <div class="form-inline form-group mt-4">
 
-                                        <textarea v-on:input="changeComment" class="textarea" data-autoresize rows="1"></textarea>
+                                        <textarea v-model="comment.Text" class="textarea" data-autoresize rows="1"></textarea>
 
 										<button  id="comment-send-button" v-on:click="addComment(app.Id)" class="button button-primary "><i class="fa fa-paper-plane"></i></button>
 									</div>

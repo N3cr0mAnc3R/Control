@@ -46,7 +46,7 @@
                 );
             }
         },
-		
+
         //Получение заявки
         selectApplicationById: function () {
             var self = this;
@@ -133,19 +133,19 @@
                     application.NegCount = PosNegCount.NegCount;
                 }
             });
-		},
-		//изменение размеров окна ввода комментария
-		addAutoResize:function () {
-		document.querySelectorAll('[data-autoresize]').forEach(function (element) {
-			element.style.boxSizing = 'border-box';
-			var offset = element.offsetHeight - element.clientHeight;
-			document.addEventListener('input', function (event) {
-				event.target.style.height = 'auto';
-				event.target.style.height = event.target.scrollHeight + offset + 'px';
-			});
-			element.removeAttribute('data-autoresize');
-		});
-	},
+        },
+        //изменение размеров окна ввода комментария
+        addAutoResize: function () {
+            document.querySelectorAll('[data-autoresize]').forEach(function (element) {
+                element.style.boxSizing = 'border-box';
+                var offset = element.offsetHeight - element.clientHeight;
+                document.addEventListener('input', function (event) {
+                    event.target.style.height = 'auto';
+                    event.target.style.height = event.target.scrollHeight + offset + 'px';
+                });
+                element.removeAttribute('data-autoresize');
+            });
+        },
 
 
         //Изменение статуса на Like
@@ -261,7 +261,7 @@
                         comment.Children.forEach(function (item) {
                             var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
                             item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-                        })
+                        });
                         applicationComments.push(comment);
                     });
                     self.$set(self.appl, 'comments', applicationComments);
@@ -282,7 +282,7 @@
         var str = window.location.href;
         this.appId = Number.parseInt(str.substr(str.lastIndexOf('/') + 1));
         this.selectApplicationById();
-		this.addAutoResize();
+        this.addAutoResize();
     }
 
 

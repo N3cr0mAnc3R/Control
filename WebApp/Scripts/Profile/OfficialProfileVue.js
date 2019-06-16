@@ -3,7 +3,11 @@
         el: "#profile",
         data: {
             applications: [], //Заявки
-            comment: '', //Текст набранного комментария
+            comment: {
+                text: '',
+                img: '',
+                parent: null
+            },
             commentImg: '', //Аватарка пользователя
             user: {}, // Пользователь
             statusFilter: 1, //текущий фильтр по статусу
@@ -20,11 +24,6 @@
                 let appl = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
                 app.SelectCommentsByApplicationId(appl);
                 //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
-
-            },
-            //Непонятный байндинг. Почему нельзя сразу v-model
-            changeComment: function (event) {//байндинг комментария с vue 
-                this.comment = event.target.value;
 
             },
             //Добавление комментария и занесение в базу
@@ -114,21 +113,24 @@
             },
 
             //Получение аваторки пользователя комментария
-            GetUserImageForComment: function (id) {
+            GetUserImageForComment: function (comment) {
                 var self = this;
                 $.ajax({
                     url: "/profile/GetUserImage",
                     type: "POST",
-                    data: { UserId: id },
+                    data: { UserId: comment.UserId },
                     async: false,
                     success: function (img) {
-                        if (img) {
-                            self.commentImg = 'data:image/png;base64, ' + img;
-                        }
+                        if (img)
+                            comment.img = 'data:image/png;base64, ' + img;
                     }
                 });
             },
-
+            reply: function (comment) {
+                this.comment.parent = comment.Id;
+                this.comment.text = comment.AuthorName + ', ';
+                $('textarea').focus();
+            },
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             //Переход на другую страницу с комментариями
@@ -143,7 +145,21 @@
                     async: false,
                     success: function (obj) {
                         let applicationComments = [];
+                    let tempUsers = [];
                         obj.Comments.forEach(function (comment) {
+                            if (tempUsers.indexOf(comment.UserId) === -1) {
+                                app.GetUserImageForComment(comment);
+                                tempUsers.push(comment.UserId);
+                            }
+                            else {
+                                comment.img = applicationComments.find(a => a.UserId === comment.UserId).img;
+                            }
+                            var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
+                            comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                            comment.Children.forEach(function (item) {
+                                var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                                item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                            });
                             applicationComments.push(comment);
                         });
                         app.$set(appl, 'comments', applicationComments);
@@ -171,14 +187,21 @@
                         async: false,
                         success: function (obj) {
                             let applicationComments = [];
+                    let tempUsers = [];
                             obj.Comments.forEach(function (comment) {
-
-                                app.GetUserImageForComment(comment.UserId);
-                                comment.img = app.commentImg;
-                                comment.authorName = comment.AuthorName;
+                                if (tempUsers.indexOf(comment.UserId) === -1) {
+                                    self.GetUserImageForComment(comment);
+                                    tempUsers.push(comment.UserId);
+                                }
+                                else {
+                                    comment.img = applicationComments.find(a => a.UserId === comment.UserId).img;
+                                }
                                 var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
                                 comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-
+                                comment.Children.forEach(function (item) {
+                                    var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                                    item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                                });
 
                                 applicationComments.push(comment);
                             });

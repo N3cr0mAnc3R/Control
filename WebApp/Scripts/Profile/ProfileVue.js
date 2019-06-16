@@ -169,7 +169,7 @@
 			$.ajax({
 				url: "/profile/GetUserImage",
 				type: "POST",
-				data: { UserId: comment.Id },
+				data: { UserId: comment.UserId },
 				async: false,
 				success: function (img) {
 					if (img)
@@ -262,7 +262,10 @@
 						}
 						var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
 						comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-
+                        comment.Children.forEach(function (item) {
+                            var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                            item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                        });
 						applicationComments.push(comment);
 					});
 					app.$set(appl, 'comments', applicationComments);
@@ -300,7 +303,10 @@
 							}
 							var date = new Date(Number(comment.DateTimeOfCreation.substr(comment.DateTimeOfCreation.indexOf('(') + 1, comment.DateTimeOfCreation.indexOf(')') - comment.DateTimeOfCreation.indexOf('(') - 1)));
 							comment.dateTimeOfCreation = date.toLocaleString('Ru-ru');
-
+                            comment.Children.forEach(function (item) {
+                                var date = new Date(Number(item.DateTimeOfCreation.substr(item.DateTimeOfCreation.indexOf('(') + 1, item.DateTimeOfCreation.indexOf(')') - item.DateTimeOfCreation.indexOf('(') - 1)));
+                                item.dateTimeOfCreation = date.toLocaleString('Ru-ru');
+                            });
 							applicationComments.push(comment);
 						});
 						app.$set(application, 'comments', applicationComments);
