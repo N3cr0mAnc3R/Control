@@ -297,6 +297,7 @@
 			else return false;
         },
         openPhoto: function (application, img) {
+            this.currentApplication = null;
             this.currentApplication = application;
             this.currentApplication.img = img;
             $('#photo').modal('show');

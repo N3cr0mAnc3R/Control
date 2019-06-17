@@ -165,7 +165,7 @@ namespace WebApp.Models.Managers
                         Latitude = double.Parse(Latitude.Replace('.', ','))
                     },
                     commandType: CommandType.StoredProcedure
-                )).First();
+                )).FirstOrDefault();
             }
         }
 

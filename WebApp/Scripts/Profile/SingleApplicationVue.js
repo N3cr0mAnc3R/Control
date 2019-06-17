@@ -9,6 +9,7 @@
             parent: null
         },
         img: '',
+        openedImg: '',
         //user: {},
         //userImg: "/Content/Images/noImage.png",
         Files: [],
@@ -235,6 +236,10 @@
                 return true;
             }
             else return false;
+        },
+        openPhoto: function (img) {
+            this.openedImg = img;
+            $('#photo').modal('show');
         },
         //Открытие комментариев (загрузка)
         SelectComments: function (offset) {

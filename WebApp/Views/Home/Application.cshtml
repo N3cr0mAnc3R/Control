@@ -8,46 +8,46 @@
 
 		<div class="sk-wave"><div class="sk-rect sk-rect-1"></div><div class="sk-rect sk-rect-2"></div><div class="sk-rect sk-rect-3"></div><div class="sk-rect sk-rect-4"></div><div class="sk-rect sk-rect-5"></div></div>
 
-		<div id="app" style="display: none;">
-			<div class="application clearfix" v-if="!error">
+        <div id="app" style="display: none;">
+            <div class="application clearfix" v-if="!error">
 
-				<div class="application-data">
+                <div class="application-data">
 
-					<div v-if="appl.imgs.length<1" class="img-holder">
-						<img class="d-block w-100" src="~/Content/Images/noImage.png">
-					</div>
-					<div v-else-if="appl.imgs.length===1" class="img-holder">
-						<img class="d-block w-100" v-bind:src="appl.imgs[0]" alt="Alternate Text" />
-					</div>
-					<div v-else-if="appl.imgs.length>1" class="img-holder">
+                    <div v-if="appl.imgs.length<1" class="img-holder">
+                        <img class="d-block w-100" src="~/Content/Images/noImage.png">
+                    </div>
+                    <div v-else-if="appl.imgs.length===1" class="img-holder">
+                        <img class="d-block w-100" v-bind:src="appl.imgs[0]" alt="Alternate Text" v-on:click="openPhoto(appl.imgs[0])" style="cursor:pointer;" />
+                    </div>
+                    <div v-else-if="appl.imgs.length>1" class="img-holder">
 
-						<div v-bind:id="'app-' + appl.Id" class="carousel slide" data-ride="carousel">
-							<ol class="carousel-indicators">
-								<li v-bind:data-target="'#app-' + appl.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in appl.imgs"></li>
-							</ol>
-							<div class="carousel-inner">
-								<div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in appl.imgs">
-									<img class="d-block w-100" v-bind:src="img">
-								</div>
-							</div>
-							<a class="carousel-control-prev" v-bind:href="'#app-' + appl.Id" role="button" data-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="sr-only">Previous</span>
-							</a>
-							<a class="carousel-control-next" v-bind:href="'#app-' + appl.Id" role="button" data-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="sr-only">Next</span>
-							</a>
-						</div>
-					</div>
-					<div class="application-body" style="width:60% ; float:left; box-sizing:border-box;padding-left:20px;padding-right:20px">
-						<p class="title" style="font-size:22px">{{appl.Title}}</p>
-						<p>
-							{{appl.Text}}
-						</p>
-					</div>
+                        <div v-bind:id="'app-' + appl.Id" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li v-bind:data-target="'#app-' + appl.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in appl.imgs"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in appl.imgs">
+                                    <img class="d-block w-100" v-bind:src="img"  v-on:click="openPhoto(img)" style="cursor:pointer;">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" v-bind:href="'#app-' + appl.Id" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" v-bind:href="'#app-' + appl.Id" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="application-body" style="width:60% ; float:left; box-sizing:border-box;padding-left:20px;padding-right:20px">
+                        <p class="title" style="font-size:22px">{{appl.Title}}</p>
+                        <p>
+                            {{appl.Text}}
+                        </p>
+                    </div>
 
-				</div>
+                </div>
                 <section class="comments" v-loader="commentLoader" style="background:none; border:none">
                     <p class="title" style="text-align:center">Комментарии</p>
                     <div class="title text-center" v-if="appl.comments.length === 0"> Комментариев пока нет</div>
@@ -112,12 +112,30 @@
 
 
                 </section>
-			</div>
-			<div v-if="error">
-				Страницы не существует
-			</div>
+            </div>
+            <div v-if="error">
+                Страницы не существует
+            </div>
 
-		</div>
+            <div class="modal" tabindex="-1" role="dialog" id="photo">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{appl.Title}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img v-bind:src="openedImg" style="max-width: 467px;" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 	</section>
 </section>

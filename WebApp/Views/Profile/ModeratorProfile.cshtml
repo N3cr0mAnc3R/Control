@@ -65,14 +65,14 @@
                                     </div>
                                 </div>
                                 <div class="application-body">
-                                    <p class="title">{{app.Title}}</p> 
+                                    <p class="title"><a v-bind:href="'/home/application/' + app.Id">{{app.Title}}</a></p> 
                                     <div style="float:right;" v-bind:class="getStatusClass(app.StatusId)">{{getStatus(app.StatusId)}}</div>
                                     <p v-if="app.isEditing===false">
                                         {{app.Text}}
                                     </p>
                                     <div class="app-reason">
-                                        <p>{{app.Info.Department}}</p>
-                                        <p>{{app.Info.Reason}}</p>
+                                        <p><strong>Направлено в: </strong>{{app.Info.Department}}</p>
+                                        <p><strong>Причина обращения: </strong>{{app.Info.Reason}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                             <img v-bind:src="com.img" alt="Alternate Text" />
                                         </div>
                                         <div class="comment-text">
-                                            <p class="comment-author">{{com.authorName}}</p>
+                                            <p class="comment-author">{{com.AuthorName}}</p>
                                             <p>{{com.Text}}</p>
                                             <p> <small>{{com.dateTimeOfCreation}}</small><button class="button-third"> ответить</button></p>
 
