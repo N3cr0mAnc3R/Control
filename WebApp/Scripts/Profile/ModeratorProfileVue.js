@@ -39,20 +39,24 @@ window.onload = function () {
             //Добавление комментария и занесение в базу
             addComment: function (applicationId) {
                 //Если не состоит из пробелов
-                if (app.comment.trim() !== '') {
+                let self = this;
+                if (self.comment.text.trim() !== '') {
                     $.ajax({
                         url: "/profile/AddComment",
                         type: "POST",
                         async: false,
-                        data: { ApplicationId: applicationId, Text: app.comment },
+                        data: { ApplicationId: applicationId, Text: app.comment.text, ParentCommentId: app.comment.parent },
                         success: function () {
                             let appl = app.applications.find(a => a.Id === applicationId);
-                            appl.IsOpened = false;//немного костыля  
-                            appl.currentCommentPageNumber = 1;//немного костыля  
-                            app.SelectCommentsByApplicationId(appl);
-                            app.comment = '';
+                            self.ChangePageNumber(appl.Id, appl.currentCommentPageNumber);
+
+
+                            self.comment.text = '';
+                            self.comment.parent = null;
                         }
-                    });
+                    }
+
+                    );
                 }
             },
             //"Удаление" заявки
@@ -74,7 +78,7 @@ window.onload = function () {
                 self.statusFilter = 0;
                 self.applications = [];
                 $.ajax({
-                    url: "/profile/SelectApplications",
+                    url: "/profile/SelectApplicationsForAdmin",
                     type: "POST",
                     async: false,
                     success: function (applications) {
@@ -90,6 +94,17 @@ window.onload = function () {
                         self.objForLoading.loaded = true;
                     }
                 });
+            },
+            getStatus: function (Id) {
+                return this.applicationStatuses.find(a => a.Id === Id).Name;
+            },
+            getStatusClass: function (Id) {
+                switch (Id) {
+                    case 1: return 'badge badge-pill badge-primary';
+                    case 2: return 'badge badge-pill badge-secondary';
+                    case 3: return 'badge badge-pill badge-danger';
+                    case 4: return 'badge badge-pill badge-success';
+                }
             },
             //Фильтрация сообщений по статусу
             selectApplicationsByStatusId: function (statusId) {
@@ -297,6 +312,11 @@ window.onload = function () {
                     }
                 });
 
+            },
+            openPhoto: function (application, img) {
+                this.currentApplication = application;
+                this.currentApplication.img = img;
+                $('#photo').modal('show');
             },
             //Добавление новости
             addNews: function () {

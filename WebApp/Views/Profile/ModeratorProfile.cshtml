@@ -41,7 +41,7 @@
                                     <img class="d-block w-100" src="~/Content/Images/noImage.png">
                                 </div>
                                 <div v-else-if="app.imgs.length===1" class="img-holder">
-                                    <img v-bind:src="app.imgs[0]" alt="Alternate Text" />
+                                    <img v-bind:src="app.imgs[0]" alt="Alternate Text" v-on:click="openPhoto(app, app.imgs[0])" style="cursor:pointer;" />
                                 </div>
                                 <div v-else-if="app.imgs.length>1" class="img-holder">
 
@@ -50,7 +50,7 @@
                                             <li v-bind:data-target="'#app-' + app.Id" class="active" v-bind:data-slide-to="index" v-for="(img, index) in app.imgs"></li>
                                         </ol>
                                         <div class="carousel-inner">
-                                            <div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs">
+                                            <div class="carousel-item" v-bind:class="{ 'active': index === 0 }" v-for="(img, index) in app.imgs" v-on:click="openPhoto(app, img)" style="cursor:pointer;">
                                                 <img class="d-block w-100" v-bind:src="img">
                                             </div>
                                         </div>
@@ -65,8 +65,8 @@
                                     </div>
                                 </div>
                                 <div class="application-body">
-
-                                    <p class="title">{{app.Title}}</p>
+                                    <p class="title">{{app.Title}}</p> 
+                                    <div style="float:right;" v-bind:class="getStatusClass(app.StatusId)">{{getStatus(app.StatusId)}}</div>
                                     <p v-if="app.isEditing===false">
                                         {{app.Text}}
                                     </p>
@@ -75,9 +75,9 @@
                                         <p>{{app.Info.Reason}}</p>
                                     </div>
                                 </div>
-
                             </div>
                             <section class="comments" v-if="app.IsOpened">
+                                <div class="title text-center" v-if="app.comments.length === 0"> Комментариев пока нет</div>
                                 <div v-for="com in app.comments" class="comment">
                                     <div class="custom-container">
                                         <div class="img-holder">
@@ -171,6 +171,24 @@
                     <button class="button button-primary" v-on:click="addNews">Добавить новость</button>
                 </div>
             </section>
+            <div class="modal" tabindex="-1" role="dialog" id="photo">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{currentApplication.Title}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img v-bind:src="currentApplication.img" style="max-width: 467px;" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal" tabindex="-1" role="dialog" id="currentModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

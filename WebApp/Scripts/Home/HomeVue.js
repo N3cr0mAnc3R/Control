@@ -221,23 +221,11 @@
             app.$set(appl, 'loading', true);
             app.$set(appl, 'loaded', false);
             this.SelectCommentsByApplicationId(appl, offset);
-            //appl.comments = [];
-            //$.ajax({
-            //    url: "/profile/SelectCommentsByApplicationId",
-            //    type: "POST",
-            //    data: { ApplicationId: appl.Id, Offset: offset },
-            //    async: false,
-            //    success: function (obj) {
-            //        let applicationComments = [];
-            //        obj.Comments.forEach(function (comment) {
-            //            applicationComments.push(comment);
-            //        });
-            //        app.$set(appl, 'comments', applicationComments);
-            //        app.$set(appl, 'currentCommentPageNumber', offset);
-            //        //app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
-
-            //    }
-            //});
+        },
+        openPhoto: function (application, img) {
+            this.currentApplication = application;
+            this.currentApplication.img = img;
+            $('#photo').modal('show');
         },
         isShowAsPage: function (number, current, max) {
             if (number > current - 2 && number < current + 2 && number < max && number > 1) {

@@ -66,6 +66,12 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
+        public JsonResult SelectApplicationsForAdmin()
+        {
+            return Json(ProfileManager.SelectAllApplications());
+        }
+
+        [HttpPost]
         public JsonResult SelectApplicationsByUserId()
         {
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));

@@ -52,6 +52,23 @@ namespace WebApp.Models.Managers
                 return apps;
             }
         }
+        public List<ApplicationModel> SelectAllApplications()
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                List<ApplicationModel> apps = cnt.Query<ApplicationModel>(
+                    sql: "dbo.SelectAllApplications",
+
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+                foreach(ApplicationModel app in apps)
+                {
+                    app.Info = GetReasonInfo(app.Id);
+                }
+                return apps;
+            }
+        }
 
         public ApplicationInfo GetReasonInfo(int Id)
         {
