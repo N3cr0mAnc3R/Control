@@ -21,6 +21,7 @@ window.onload = function () {
             departmentId: 0,
             departments: [],
             reasons: [],
+            news: [],
             isSelectReason: false,
             objForLoading: {
                 loading: false,
@@ -289,8 +290,17 @@ window.onload = function () {
             //Преключить на вкладку "Новости"
             showNews: function () {
                 app.IsNewsShown = true;
+                let self = this;
+
+                $.ajax({
+                    url: "/home/ShowAllNews",
+                    type: "POST",
+                    async: false,
+                    success: function (data) {
+                        self.news = data;
+                    }
+                });
                 //редактор для новостей со стилями
-                setTimeout(function () { CKEDITOR.replace('news1'); }, 500);
             },
             //Переключить на вкладку "Заявки" Непонятно, почему бы и не toggle
             showApplications: function () {

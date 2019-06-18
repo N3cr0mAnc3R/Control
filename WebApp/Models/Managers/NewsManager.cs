@@ -35,5 +35,16 @@ namespace WebApp.Models.Managers
                 );
             }
         }
+        public New GetNewById(int Id)
+        {
+            using (var cnt = Concrete.OpenConnection())
+            {
+                return (cnt.Query<New>(
+                    sql: "dbo.GetNewById",
+                  param: new {Id},
+                    commandType: CommandType.StoredProcedure
+                )).First();
+            }
+        }
     }
 }

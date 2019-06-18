@@ -592,6 +592,7 @@
     <Content Include="Scripts\Login\ExternalLogin.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Notifier\NotifierCtrl.js" />
+    <Content Include="Scripts\Profile\changeNews.js" />
     <Content Include="Scripts\Profile\EditProfileInfoVue.js" />
     <Content Include="Scripts\Profile\ModeratorProfileVue.js" />
     <Content Include="Scripts\Profile\OfficialProfileVue.js" />
@@ -647,6 +648,7 @@
     <Content Include="Views\Application\SimilarApplication.cshtml" />
     <Content Include="Views\Profile\OfficialProfile.cshtml" />
     <Content Include="Views\Home\Application.cshtml" />
+    <Content Include="Views\Profile\ChangeNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
