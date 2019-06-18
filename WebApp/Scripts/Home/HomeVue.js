@@ -23,6 +23,7 @@
         solved: 0,
         currentApplication: {},
         total: 0,
+        topApplications: [],
         HasTop: false,
         objForLoading: {
             loading: false,
@@ -49,6 +50,7 @@
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
         },
         addComment: function (applicationId) {
+            let self = this;
             if (app.comment.text !== '') {
                 $.ajax({
                     url: "/profile/AddComment",
@@ -57,9 +59,9 @@
                     data: { ApplicationId: applicationId, Text: app.comment.text, ParentCommentId: app.comment.parent },
                     success: function () {
                         let appl = app.applications.find(a => a.Id === applicationId);
-                        appl.IsOpened = false;//немного костыля  
+                        //appl.IsOpened = false;//немного костыля  
                         //appl.currentCommentPageNumber = 1;//немного костыля  
-                        self.ChangePageNumber(appl.currentCommentPageNumber);
+                        self.ChangePageNumber(appl.Id, appl.currentCommentPageNumber);
                         app.comment.text = '';
                         app.comment.parent = null;
                     }
@@ -67,10 +69,6 @@
 
                 );
             }
-
-
-
-
         },
         deleteApplication: function (applicationId) {
             $.ajax({
@@ -113,18 +111,31 @@
         //Изменение статуса на Like
         Like: function (Id) {
             let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+            let topApplication = this.topApplications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
 
             var self = this;
             $.ajax({
                 url: "/application/Like",
                 type: "POST",
-                data: { applicationId: application.Id },
+                data: { applicationId: application ? application.Id : topApplication.Id },
                 async: false,
                 success: function (PosNegCount) {
                     if (PosNegCount) {
-                        application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
-                        application.PosCount = PosNegCount.PosCount;
-                        application.NegCount = PosNegCount.NegCount;
+                        if (!topApplication) {
+                            application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
+                            application.PosCount = PosNegCount.PosCount;
+                            application.NegCount = PosNegCount.NegCount;
+                        }
+                        else {
+                            topApplication.likeStatus = (topApplication.likeStatus === 1) ? 0 : 1;
+                            topApplication.PosCount = PosNegCount.PosCount;
+                            topApplication.NegCount = PosNegCount.NegCount;
+                            if (application) {
+                                application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
+                                application.PosCount = PosNegCount.PosCount;
+                                application.NegCount = PosNegCount.NegCount;
+                            }
+                        }
                     }
                     else {
                         notifier([{ Type: 'error', Body: "Для выставления отметки нужно авторизоваться" }]);
@@ -136,17 +147,30 @@
         //Изменение статуса на Dislike
         Dislike: function (Id) {
             let application = this.applications.find(a => a.Id === Id);
+            let topApplication = this.topApplications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
             var self = this;
             $.ajax({
                 url: "/application/Dislike",
                 type: "POST",
-                data: { applicationId: application.Id },
+                data: { applicationId: application ? application.Id : topApplication.Id },
                 async: false,
                 success: function (PosNegCount) {
                     if (PosNegCount) {
-                        application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
-                        application.PosCount = PosNegCount.PosCount;
-                        application.NegCount = PosNegCount.NegCount;
+                        if (!topApplication) {
+                            application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
+                            application.PosCount = PosNegCount.PosCount;
+                            application.NegCount = PosNegCount.NegCount;
+                        }
+                        else {
+                            topApplication.likeStatus = (topApplication.likeStatus === -1) ? 0 : -1;
+                            topApplication.PosCount = PosNegCount.PosCount;
+                            topApplication.NegCount = PosNegCount.NegCount;
+                            if (application) {
+                                application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
+                                application.PosCount = PosNegCount.PosCount;
+                                application.NegCount = PosNegCount.NegCount;
+                            }
+                        }
 
                     }
                     else {
@@ -172,7 +196,6 @@
                         applications.forEach(function (application) {
                             self.GetApplicationImages(application);
                             self.GetApplicationLikeStatus(application);
-                            self.GetApplicationImages(application);
                             application.IsOpened = false;
                             application.isEditing = false;
                             application.currentCommentPageNumber = 1;
@@ -417,8 +440,6 @@
                         application.isEditing = false;
                         self.GetApplicationImages(application);
                         self.GetApplicationLikeStatus(application);
-                        self.$set(application, 'loading', false);
-                        self.$set(application, 'loaded', true);
                         application.currentCommentPageNumber = 1;
                         self.applications.push(application);
                     });
@@ -426,6 +447,9 @@
                 $('.sk-wave').css('display', 'none');
                 $('#home').css('display', 'block');
                 self.topApplications = resp2[0];
+                self.topApplications.forEach(function (app) {
+                    self.GetApplicationLikeStatus(app);
+                })
                 if (self.topApplications.length > 0) {
                     self.HasTop = true;
                 }

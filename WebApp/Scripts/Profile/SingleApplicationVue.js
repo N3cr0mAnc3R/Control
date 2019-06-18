@@ -237,8 +237,8 @@
             }
             else return false;
         },
-        openPhoto: function (img) {
-            this.openedImg = img;
+        openPhoto: function () {
+            //this.openedImg = img;
             $('#photo').modal('show');
         },
         //Открытие комментариев (загрузка)

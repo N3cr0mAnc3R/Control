@@ -120,6 +120,10 @@
                     async: false,
                     data: app.user,
                     success: function () {
+                        notifier([{Type: 'success', Body: 'Успешно сохранено!'}]);
+                    },
+                    error: function () {
+                        notifier([{ Type: 'error', Body: 'При сохранении произошла ошибка!' }]);
                     }
                 });
             }
