@@ -139,6 +139,7 @@ namespace WebApp.Controllers
             throw new ArgumentException();
         }
         #region Like/dislike
+        [Authorize]
         public JsonResult GetLikeDislike(int applicationId)
         {
             ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
@@ -151,10 +152,24 @@ namespace WebApp.Controllers
             PosNegCount pnc = ApplicationManager.GetPosNegCount(applicationId);
             return Json(pnc);
         }
+        [Authorize]
+        public JsonResult ChangeReason(int applicationId, int ReasonId)
+        {
+            try
+            {
+                ApplicationManager.ChangeReason(CurrentUser.Id, applicationId, ReasonId);
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message);
+            }
+            return Json("Успешно");
+        }
         public JsonResult GetApplicationStats()
         {
             return Json(ApplicationManager.GetApplicationStats());
         }
+        [Authorize]
         public JsonResult Like(int applicationId)
         {
             ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);
@@ -179,6 +194,7 @@ namespace WebApp.Controllers
             return Json(ApplicationManager.GetPosNegCount(applicationId));
            
         }
+        [Authorize]
         public JsonResult Dislike(int applicationId)
         {
             ApplicationUser user = ApplicationUserManager.FindByName(User.Identity.Name);

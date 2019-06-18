@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using WebApp.Models.Application;
 using WebApp.Models.Common;
 using WebApp.Models.News;// это странно, ведь то,что нужно лежит в WebApp.Models
 
@@ -32,6 +33,7 @@ namespace WebApp.Models
         public int NegCount { get; set; }
 
         public string Latitude { get; set; }
+        public ApplicationInfo Info { get; set; }
 
         public List<CommentModel> Comments { get; set; }
 

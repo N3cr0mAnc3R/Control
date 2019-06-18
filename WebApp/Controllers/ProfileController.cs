@@ -22,9 +22,6 @@ namespace WebApp.Controllers
         // GET: Profile
         public ActionResult UserProfile()
         {
-            var roles = CurrentUser.Roles.ToList().First().RoleId;
-            var user = User.Identity.Name;
-            var calculated = User.IsInRole("1") ||User.IsInRole("Admin") ||User.IsInRole("Администратор") ||User.IsInRole("2") ||User.IsInRole("User") ||User.IsInRole("Пользователь");
             return View();
         }
         public ActionResult ModeratorProfile()
@@ -69,11 +66,18 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
+        public JsonResult SelectApplicationsForAdmin()
+        {
+            return Json(ProfileManager.SelectAllApplications());
+        }
+
+        [HttpPost]
         public JsonResult SelectApplicationsByUserId()
         {
             return Json(ProfileManager.SelectApplicationsByUserId(CurrentUser.Id));
         }
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult SelectApplicationById(int Id)
         {
             return Json(ProfileManager.SelectApplicationById(Id));
@@ -111,6 +115,7 @@ namespace WebApp.Controllers
             ProfileManager.ChangeUserInfo(CurrentUser.Id, userinfo);
 
         }
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult SelectCommentsByApplicationId(int ApplicationId, int Offset = 1)
         {

@@ -10,7 +10,8 @@
 		img: '',
 		user: {},
 		userImg: "/Content/Images/noImage.png",
-		Files: [],
+        Files: [],
+        currentApplication: {},
 		objForLoading: {
 			loading: false,
 			loaded: true
@@ -19,7 +20,18 @@
 	},
 	methods: {
 		//Раскрытие/закрытие комментариев
-		toggleComments: function (Id) {
+        toggleComments: function (Id) {
+            let self = this;
+            this.applications.forEach(function (appl) {
+                if (appl.Id !== Id) {
+                    appl.IsOpened = false;
+                    self.comment = {
+                        text: '',
+                        img: '',
+                        parent: null
+                    };
+                }
+            });
 			let appl = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
 			app.SelectCommentsByApplicationId(appl);
 			//appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
@@ -27,18 +39,20 @@
 		},
 		//Добавление комментария
 		addComment: function (applicationId) {
-			if (app.comment !== '') {
+            let self = this;
+            if (self.comment.text.trim() !== '') {
 				$.ajax({
 					url: "/profile/AddComment",
 					type: "POST",
 					async: false,
-					data: { ApplicationId: applicationId, Text: app.comment },
+                    data: { ApplicationId: applicationId, Text: app.comment.text, ParentCommentId: app.comment.parent },
 					success: function () {
 						let appl = app.applications.find(a => a.Id === applicationId);
-						appl.IsOpened = false;//немного костыля  
-						appl.currentCommentPageNumber = 1;//немного костыля  
-						app.SelectCommentsByApplicationId(appl);
-						app.comment = '';
+                        self.ChangePageNumber(appl.Id, appl.currentCommentPageNumber);
+
+
+                        self.comment.text = '';
+                        self.comment.parent = null;
 					}
 				}
 
@@ -281,7 +295,19 @@
 				return true;
 			}
 			else return false;
-		},
+        },
+        openPhoto: function (application, img) {
+            this.currentApplication = null;
+            this.currentApplication = application;
+            this.currentApplication.img = img;
+            $('#photo').modal('show');
+        },
+        reply: function (appl, comment) {
+            console.log(comment);
+            this.comment.parent = comment.Id;
+            this.comment.text = comment.AuthorName + ', ';
+            $('textarea').focus();
+        },
 		//Открытие комментариев (загрузка)
 		SelectCommentsByApplicationId: function (application, offset) {
 			if (!application.IsOpened) {

@@ -23,6 +23,7 @@
         solved: 0,
         currentApplication: {},
         total: 0,
+        topApplications: [],
         HasTop: false,
         objForLoading: {
             loading: false,
@@ -49,6 +50,7 @@
             //appl.comments =app.SelectCommentsByApplicationId(appl.Id);//заполнение комметариев для данного обращения
         },
         addComment: function (applicationId) {
+            let self = this;
             if (app.comment.text !== '') {
                 $.ajax({
                     url: "/profile/AddComment",
@@ -57,9 +59,9 @@
                     data: { ApplicationId: applicationId, Text: app.comment.text, ParentCommentId: app.comment.parent },
                     success: function () {
                         let appl = app.applications.find(a => a.Id === applicationId);
-                        appl.IsOpened = false;//немного костыля  
+                        //appl.IsOpened = false;//немного костыля  
                         //appl.currentCommentPageNumber = 1;//немного костыля  
-                        self.ChangePageNumber(appl.currentCommentPageNumber);
+                        self.ChangePageNumber(appl.Id, appl.currentCommentPageNumber);
                         app.comment.text = '';
                         app.comment.parent = null;
                     }
@@ -67,10 +69,6 @@
 
                 );
             }
-
-
-
-
         },
         deleteApplication: function (applicationId) {
             $.ajax({
@@ -82,68 +80,106 @@
                     app.selectApplicationsByUserId();
                 }
             });
-		},
-		//Получение информации о состоянии like/dislike
-		GetApplicationLikeStatus: function (application) {
-			var self = this;
-			$.ajax({
-				url: "/application/GetLikeDislike",
-				type: "POST",
-				data: { applicationId: application.Id },
-				async: false,
-				success: function (contribution) {
-					application.likeStatus = contribution;
-				}
-			});
-		},
-		//Получение количества like-ов/dislike-ов
-		GetPosNegCount: function (application) {
-			var self = this;
-			$.ajax({
-				url: "/application/GetPosNegCount",
-				type: "POST",
-				data: { applicationId: application.Id },
-				async: false,
-				success: function (PosNegCount) {
-					application.PosCount = PosNegCount.PosCount;
-					application.NegCount = PosNegCount.NegCount;
-				}
-			});
-		},
-		//Изменение статуса на Like
-		Like: function (Id) {
-			let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+        },
+        //Получение информации о состоянии like/dislike
+        GetApplicationLikeStatus: function (application) {
+            var self = this;
+            $.ajax({
+                url: "/application/GetLikeDislike",
+                type: "POST",
+                data: { applicationId: application.Id },
+                async: false,
+                success: function (contribution) {
+                    application.likeStatus = contribution;
+                }
+            });
+        },
+        //Получение количества like-ов/dislike-ов
+        GetPosNegCount: function (application) {
+            var self = this;
+            $.ajax({
+                url: "/application/GetPosNegCount",
+                type: "POST",
+                data: { applicationId: application.Id },
+                async: false,
+                success: function (PosNegCount) {
+                    application.PosCount = PosNegCount.PosCount;
+                    application.NegCount = PosNegCount.NegCount;
+                }
+            });
+        },
+        //Изменение статуса на Like
+        Like: function (Id) {
+            let application = this.applications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+            let topApplication = this.topApplications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
 
-			var self = this;
-			$.ajax({
-				url: "/application/Like",
-				type: "POST",
-				data: { applicationId: application.Id },
-				async: false,
-				success: function (PosNegCount) {
-					application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
-					application.PosCount = PosNegCount.PosCount;
-					application.NegCount = PosNegCount.NegCount;
+            var self = this;
+            $.ajax({
+                url: "/application/Like",
+                type: "POST",
+                data: { applicationId: application ? application.Id : topApplication.Id },
+                async: false,
+                success: function (PosNegCount) {
+                    if (PosNegCount) {
+                        if (!topApplication) {
+                            application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
+                            application.PosCount = PosNegCount.PosCount;
+                            application.NegCount = PosNegCount.NegCount;
+                        }
+                        else {
+                            topApplication.likeStatus = (topApplication.likeStatus === 1) ? 0 : 1;
+                            topApplication.PosCount = PosNegCount.PosCount;
+                            topApplication.NegCount = PosNegCount.NegCount;
+                            if (application) {
+                                application.likeStatus = (application.likeStatus === 1) ? 0 : 1;
+                                application.PosCount = PosNegCount.PosCount;
+                                application.NegCount = PosNegCount.NegCount;
+                            }
+                        }
+                    }
+                    else {
+                        notifier([{ Type: 'error', Body: "Для выставления отметки нужно авторизоваться" }]);
 
-				}
-			});
-		},
-		//Изменение статуса на Dislike
-		Dislike: function (Id) {
-			let application = this.applications.find(a => a.Id === Id);
-			var self = this;
-			$.ajax({
-				url: "/application/Dislike",
-				type: "POST",
-				data: { applicationId: application.Id },
-				async: false,
-				success: function (PosNegCount) {
-					application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
-					application.PosCount = PosNegCount.PosCount;
-					application.NegCount = PosNegCount.NegCount;
-				}
-			});
-		},
+                    }
+                }
+            });
+        },
+        //Изменение статуса на Dislike
+        Dislike: function (Id) {
+            let application = this.applications.find(a => a.Id === Id);
+            let topApplication = this.topApplications.find(a => a.Id === Id);//обращение из заполненного заранее массива обращений...
+            var self = this;
+            $.ajax({
+                url: "/application/Dislike",
+                type: "POST",
+                data: { applicationId: application ? application.Id : topApplication.Id },
+                async: false,
+                success: function (PosNegCount) {
+                    if (PosNegCount) {
+                        if (!topApplication) {
+                            application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
+                            application.PosCount = PosNegCount.PosCount;
+                            application.NegCount = PosNegCount.NegCount;
+                        }
+                        else {
+                            topApplication.likeStatus = (topApplication.likeStatus === -1) ? 0 : -1;
+                            topApplication.PosCount = PosNegCount.PosCount;
+                            topApplication.NegCount = PosNegCount.NegCount;
+                            if (application) {
+                                application.likeStatus = (application.likeStatus === -1) ? 0 : -1;
+                                application.PosCount = PosNegCount.PosCount;
+                                application.NegCount = PosNegCount.NegCount;
+                            }
+                        }
+
+                    }
+                    else {
+                        notifier([{ Type: 'error', Body: "Для выставления отметки нужно авторизоваться" }]);
+
+                    }
+                }
+            });
+        },
 
         selectApplications: function () {
 
@@ -157,10 +193,9 @@
                 success: function (applications) {
                     console.log(applications);
                     if (applications && applications.length > 0) {
-						applications.forEach(function (application) {
-							self.GetApplicationImages(application);
-							self.GetApplicationLikeStatus(application);
+                        applications.forEach(function (application) {
                             self.GetApplicationImages(application);
+                            self.GetApplicationLikeStatus(application);
                             application.IsOpened = false;
                             application.isEditing = false;
                             application.currentCommentPageNumber = 1;
@@ -209,23 +244,11 @@
             app.$set(appl, 'loading', true);
             app.$set(appl, 'loaded', false);
             this.SelectCommentsByApplicationId(appl, offset);
-            //appl.comments = [];
-            //$.ajax({
-            //    url: "/profile/SelectCommentsByApplicationId",
-            //    type: "POST",
-            //    data: { ApplicationId: appl.Id, Offset: offset },
-            //    async: false,
-            //    success: function (obj) {
-            //        let applicationComments = [];
-            //        obj.Comments.forEach(function (comment) {
-            //            applicationComments.push(comment);
-            //        });
-            //        app.$set(appl, 'comments', applicationComments);
-            //        app.$set(appl, 'currentCommentPageNumber', offset);
-            //        //app.$set(appl, 'commentPagesNumber', parseInt(obj.CommentNumber / 10));
-
-            //    }
-            //});
+        },
+        openPhoto: function (application, img) {
+            this.currentApplication = application;
+            this.currentApplication.img = img;
+            $('#photo').modal('show');
         },
         isShowAsPage: function (number, current, max) {
             if (number > current - 2 && number < current + 2 && number < max && number > 1) {
@@ -263,7 +286,7 @@
 
 
                     app.$set(application, 'commentPagesNumber', Math.ceil(parseFloat(obj.CommentNumber) / 5));
-                    app.$set(application, 'currentCommentPageNumber', offset? offset : 1);
+                    app.$set(application, 'currentCommentPageNumber', offset ? offset : 1);
 
                     //app.$set(application, 'loading', false);
                     //app.$set(application, 'loaded', true);
@@ -317,8 +340,8 @@
             ymaps.geocode([appl.Latitude.replace(',', '.'), appl.Longitude.replace(',', '.')]).then(function (res) {
                 var firstGeoObject = res.geoObjects.get(0);
                 appl.Address = [firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
-                            firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
-                        ].filter(Boolean).join(', ');
+                firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                ].filter(Boolean).join(', ');
             });
             this.currentApplication = appl;
             $('#currentModal').modal('show');
@@ -415,10 +438,8 @@
                         self.GetApplicationImages(application);
                         application.IsOpened = false;
                         application.isEditing = false;
-						self.GetApplicationImages(application);
-						self.GetApplicationLikeStatus(application);
-                        self.$set(application, 'loading', false);
-                        self.$set(application, 'loaded', true);
+                        self.GetApplicationImages(application);
+                        self.GetApplicationLikeStatus(application);
                         application.currentCommentPageNumber = 1;
                         self.applications.push(application);
                     });
@@ -426,6 +447,9 @@
                 $('.sk-wave').css('display', 'none');
                 $('#home').css('display', 'block');
                 self.topApplications = resp2[0];
+                self.topApplications.forEach(function (app) {
+                    self.GetApplicationLikeStatus(app);
+                })
                 if (self.topApplications.length > 0) {
                     self.HasTop = true;
                 }

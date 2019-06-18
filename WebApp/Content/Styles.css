@@ -276,6 +276,10 @@ button:focus {
   height: 200px;
   overflow-y: auto;
 }
+.application-body .app-reason {
+  position: relative;
+  bottom: 0;
+}
 .comments {
   min-height: 200px;
   width: 100%;

@@ -51,6 +51,18 @@
         },
         //Отправка заявки на сервер
         submit: function () {
+            if (app.Title.trim() === "" || app.Title.trim().length < 5) {
+                notifier([{ Type: 'error', Body: "Необходимо корректно ввести заголовок обращения" }]);
+                return;
+            }
+            if (app.Text.trim() === "" || app.Text.trim().length < 5) {
+                notifier([{ Type: 'error', Body: "Пожалуйста, опишите проблему подробнее" }]);
+                return;
+            }
+            if (app.reasonId == 0) {
+                notifier([{ Type: 'error', Body: "Требуется выбрать причину обращения" }]);
+                return;
+            }
             //Если выбран способ записи адреса точкой на карте
             if (app.isMap) {
                 app.coordinates = [];
@@ -58,8 +70,18 @@
                     app.coordinates.push(coord);
                 });
             }
-            //Если выбран способ записи адреса через форму, то склеиваем в строку
-            app.AddressText = "" + app.CityText + " " + app.StreetText + " " + app.HouseText;
+            else {
+                //Если выбран способ записи адреса через форму, то склеиваем в строку
+                app.AddressText = "" + app.CityText + " " + app.StreetText + " " + app.HouseText;
+                if (app.CityText.trim() === "") {
+                    notifier([{ Type: 'error', Body: "Пожалуйста, введите город" }]);
+                    return;
+                }
+                if (app.StreetText.trim() === "") {
+                    notifier([{ Type: 'error', Body: "Пожалуйста, введите улицу и номер дома" }]);
+                    return;
+                }
+            }
             //Для отправки на сервер используем формдата (из-за файлов)
             var ajaxData = new FormData();
             //По очереди добавляем свойства объекта в формдата

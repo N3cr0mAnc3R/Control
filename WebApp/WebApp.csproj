@@ -203,7 +203,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ApplicationModel.cs" />
+    <Compile Include="Models\Application\ApplicationInfo.cs" />
+    <Compile Include="Models\Application\ApplicationModel.cs" />
     <Compile Include="Models\Common\FileStreamResult.cs" />
     <Compile Include="Models\Common\UploadFile.cs" />
     <Compile Include="Models\FileDescription.cs" />
@@ -218,12 +219,11 @@
     <Compile Include="Models\Managers\NewsManager.cs" />
     <Compile Include="Models\Managers\ProfileManager.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\CommentModel.cs" />
+    <Compile Include="Models\Application\CommentModel.cs" />
     <Compile Include="Models\MvcResultSqlFileStream.cs" />
     <Compile Include="Models\News\New.cs" />
     <Compile Include="Models\SocialUserInfo.cs" />
-    <Compile Include="Models\StatusModel.cs" />
-    <Compile Include="Models\PosNegCount.cs" />
+    <Compile Include="Models\Application\PosNegCount.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Models\VkUserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
