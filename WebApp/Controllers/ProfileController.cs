@@ -24,17 +24,30 @@ namespace WebApp.Controllers
         {
             return View();
         }
+        [Authorize(Roles ="Администратор")]
         public ActionResult ModeratorProfile()
         {
             //проверить доступ
             return View();
         }
+        [Authorize(Roles ="Администратор")]
+        public ActionResult ChangeNew(int? Id)
+        {
+            //проверить доступ
+            return View();
+        }
+        public JsonResult GetNewById(int Id)
+        {
+            return Json(NewsManager.GetNewById(Id));
+        }
 
+        [Authorize(Roles = "Чиновник")]
         public ActionResult OfficialProfile()
         {
             //проверить доступ
             return View();
         }
+        [Authorize(Roles = "Администратор")]
         public ActionResult Edit(int Id)
         {
             if (CheckAccess(Id))
@@ -50,6 +63,7 @@ namespace WebApp.Controllers
 
             //return Redirect("/");
         }
+        [AllowAnonymous]
         public ActionResult RequestEmail()
         {
             return View();
@@ -66,6 +80,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Администратор")]
         public JsonResult SelectApplicationsForAdmin()
         {
             return Json(ProfileManager.SelectAllApplications());
@@ -83,6 +98,7 @@ namespace WebApp.Controllers
             return Json(ProfileManager.SelectApplicationById(Id));
         }
         [HttpPost]
+        [Authorize(Roles = "Администратор, Чиновник")]
         public JsonResult SelectApplicationsByStatusId(int StatusId)
         {
             return Json(ProfileManager.SelectApplicationsByStatusId(StatusId));
@@ -152,6 +168,7 @@ namespace WebApp.Controllers
         }
         #region модератор
         [HttpPost]
+        [Authorize(Roles = "Администратор")]
         public void AcceptApplication(int ApplicationId)
         {
             //!проверить доступ
@@ -159,6 +176,7 @@ namespace WebApp.Controllers
 
         }
         [HttpPost]
+        [Authorize(Roles = "Администратор")]
         public void DeclineApplication(int ApplicationId)
         {
             //!проверить доступ
@@ -166,6 +184,7 @@ namespace WebApp.Controllers
 
         }
         [HttpPost, ValidateInput(false)]
+        [Authorize(Roles = "Администратор")]
         public void AddNews(string Text, DateTime dateTime)
         {
             //!проверить доступ
@@ -173,6 +192,7 @@ namespace WebApp.Controllers
 
         }
         [HttpPost]
+        [Authorize(Roles = "Администратор")]
         public JsonResult GetApplicationStatuses()
         {
             return Json(ProfileManager.GetApplicationStatuses());
@@ -191,6 +211,13 @@ namespace WebApp.Controllers
             get
             {
                 return Request.GetOwinContext().Get<ApplicationUserManager>();
+            }
+        }
+        protected NewsManager NewsManager
+        {
+            get
+            {
+                return Request.GetOwinContext().Get<NewsManager>();
             }
         }
     }
