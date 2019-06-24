@@ -469,3 +469,6 @@
     //    $('#home').css('display', 'block');
     //}
 });
+window.onload = function () {
+    $('#test').modal('show');
+}
